@@ -33,4 +33,23 @@ public class ComicController {
     public Comic createComic(@RequestBody Comic comic) {
         return comicRepository.save(comic);
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Comic> updateComic(
+            @PathVariable Long id,
+            @RequestBody Comic comicDetails) {
+        return comicRepository.findById(id)
+                .map(comic -> {
+                    comic.setTitle(comicDetails.getTitle());
+                    comic.setAuthor(comicDetails.getAuthor());
+                    comic.setCoverImgUrl(comicDetails.getCoverImgUrl());
+                    comic.setIssueNumber(comicDetails.getIssueNumber());
+                    comic.setReleaseDate(comicDetails.getReleaseDate());
+
+                    Comic updatedComic = comicRepository.save(comic);
+                    return ResponseEntity.ok(updatedComic);
+                })
+                .orElse(ResponseEntity.notFound().build());
+    }
+
 }

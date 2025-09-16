@@ -11,4 +11,10 @@ export class HelloService {
   getHello(): Observable<string> {
     return this.http.get('http://localhost:8080/api/hello', { responseType: 'text' });
   }
+
+  getAllComics(): Observable<string> {
+    return this.http.get('http://localhost:8080/api/comic', { responseType: 'text' });
+  }
+
+
 }

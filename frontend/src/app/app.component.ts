@@ -7,13 +7,14 @@ import { HelloService } from './hello.service';
   styleUrls: ['./app.component.scss'],
 })
 export class AppComponent implements OnInit {
-  title = 'library-of-solitude';
+  title = 'Comic Vault Raiders';
   helloMessage: string = 'Betöltés...';
 
   constructor(private helloService: HelloService) {}
 
   ngOnInit() {
     this.helloService.getHello().subscribe({
+    //this.helloService.getAllComics().subscribe({
       next: (response) => {
         this.helloMessage = response;
       },
@@ -23,4 +24,6 @@ export class AppComponent implements OnInit {
       }
     });
   }
+  
+
 }
