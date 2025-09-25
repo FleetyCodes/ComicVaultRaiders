@@ -1,10 +1,10 @@
-package com.libraryofsolitude.libraryofsolitude;
+package com.comicvaultraiders.comicvaultraiders;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class LibraryofsolitudeApplicationTests {
+class ComicVaultRaidersApplicationTests {
 
 	@Test
 	void contextLoads() {

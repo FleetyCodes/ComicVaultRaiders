@@ -1,0 +1,19 @@
+.panel-header{
+display: flex;
+    flex-direction: row;
+    gap: 4px;
+    align-items: center;
+    border: 2px solid black;
+     border-top-left-radius: 8px;
+  border-top-right-radius: 8px;  
+  border-bottom-left-radius: 0;  
+  border-bottom-right-radius: 0; 
+  border-bottom: none;
+    width: 155px;
+    
+}
+
+
+#back-button{
+    color: black;
+}

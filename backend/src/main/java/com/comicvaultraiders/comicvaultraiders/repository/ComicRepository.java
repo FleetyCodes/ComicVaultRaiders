@@ -1,6 +1,6 @@
-package com.libraryofsolitude.libraryofsolitude.repository;
+package com.comicvaultraiders.comicvaultraiders.repository;
 
-import com.libraryofsolitude.libraryofsolitude.entity.Comic;
+import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

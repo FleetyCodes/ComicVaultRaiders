@@ -1,13 +1,13 @@
-package com.libraryofsolitude.libraryofsolitude;
+package com.comicvaultraiders.comicvaultraiders;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LibraryofsolitudeApplication {
+public class ComicVaultRaidersApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LibraryofsolitudeApplication.class, args);
+		SpringApplication.run(ComicVaultRaidersApplication.class, args);
 	}
 
 }

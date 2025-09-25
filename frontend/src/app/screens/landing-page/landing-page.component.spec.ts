@@ -14,16 +14,16 @@ describe('AppComponent', () => {
     expect(app).toBeTruthy();
   });
 
-  it(`should have the 'comic-book-raiders' title`, () => {
+  it(`should have the 'library-of-solitude' title`, () => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.componentInstance;
-    expect(app.title).toEqual('comic-book-raiders');
+    expect(app.title).toEqual('library-of-solitude');
   });
 
   it('should render title', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, comic-book-raiders');
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, library-of-solitude');
   });
 });
