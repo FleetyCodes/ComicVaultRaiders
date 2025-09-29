@@ -4,10 +4,10 @@
       <button mat-icon-button id="back-button" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <h2>Register</h2>
+      <h2>Login</h2>
     </div>
 
-    <form #registerForm="ngForm" (ngSubmit)="onSubmit(registerForm)" novalidate>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
       <mat-form-field appearance="fill">
         <mat-label>Username</mat-label>
         <input
@@ -19,22 +19,6 @@
         />
         <mat-error *ngIf="usernameCtrl.invalid && usernameCtrl.touched">
           Username is required
-        </mat-error>
-      </mat-form-field>
-
-      <mat-form-field appearance="fill">
-        <mat-label>Email</mat-label>
-        <input
-          matInput
-          name="email"
-          ngModel
-          required
-          email
-          #emailCtrl="ngModel"
-        />
-        <mat-error *ngIf="emailCtrl.invalid && emailCtrl.touched">
-          <span *ngIf="emailCtrl.errors?.['required']">Email is required</span>
-          <span *ngIf="emailCtrl.errors?.['email']">Invalid email format</span>
         </mat-error>
       </mat-form-field>
 
@@ -57,13 +41,13 @@
         </mat-error>
       </mat-form-field>
 
-      <button id = "reg-button"
+      <button id="login-button"
         mat-raised-button
         color="primary"
         type="submit"
-        [disabled]="registerForm.invalid"
+         [disabled]="loginForm.invalid"
       >
-        Register
+        Login
       </button>
     </form>
   </div>

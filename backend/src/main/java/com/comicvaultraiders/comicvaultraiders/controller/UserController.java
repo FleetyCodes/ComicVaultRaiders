@@ -30,8 +30,9 @@ public class UserController {
 
 
     @PostMapping("/reg")
-    public User createUser(@Valid @RequestBody User user) {
-        return userService.createUser(user);
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) {
+        userService.createUser(user);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
@@ -44,7 +45,7 @@ public class UserController {
     public ResponseEntity<Object> login(@RequestBody User user) {
         User loggedIn = userService.login(user);
         if (loggedIn != null) {
-            return ResponseEntity.ok(jwtUtils.generateToken(loggedIn.getUsername()));
+            return ResponseEntity.ok(Map.of("token", jwtUtils.generateToken(loggedIn.getUsername())));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { CookieService } from 'ngx-cookie-service';
 
 
 export interface RegisterRequest {
@@ -27,7 +28,7 @@ export class UserService {
     private apiUrl = 'http://localhost:8080/v1/user';
 
 
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private cookieService: CookieService) { }
 
 
     register(data: RegisterRequest): Observable<any> {
@@ -40,10 +41,20 @@ export class UserService {
     }
 
     setToken(token: string) {
-        localStorage.setItem('authToken', token);
+        const expires = new Date();
+        expires.setHours(expires.getHours() + 2);
+        this.cookieService.set('token', token, expires, '/');
     }
 
     getToken(): string | null {
-        return localStorage.getItem('authToken');
+        return this.cookieService.get('token');
+    }
+
+    isLoggedIn(): boolean {
+        return !!this.getToken();
+    }
+
+    clearToken() {
+        this.cookieService.delete('token', '/');
     }
 }

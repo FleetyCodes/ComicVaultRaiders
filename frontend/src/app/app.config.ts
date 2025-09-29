@@ -5,6 +5,8 @@ import { MatButtonModule } from '@angular/material/button';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { AuthGuard } from './auth.guard';
+import { NoAuthGuard } from './no.auth.guard';
 
 
 export const appConfig: ApplicationConfig = {
@@ -17,5 +19,6 @@ export const appConfig: ApplicationConfig = {
       BrowserAnimationsModule,
       MatButtonModule
     ),
+    AuthGuard, NoAuthGuard,
   ],
 };

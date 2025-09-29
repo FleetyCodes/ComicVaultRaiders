@@ -29,7 +29,7 @@ export class RegisterComponent {
             this.userService.register(form.value).subscribe({
                 next: (res: any) => {
                     console.log('User registered', res);
-                    this.router.navigate(['/']);
+                    this.router.navigate(['/login']);
                 },
                 error: (err: any) => console.error(err)
             });
