@@ -1,0 +1,48 @@
+#login-dialog {
+    width: 500px;
+    height: 310px;
+    display: grid;
+}
+
+#title {
+    text-align: center;
+    color: #c93b3b;
+    padding-top: 27px;
+}
+
+#btn-div {
+    justify-content: center;
+    display: flex;
+    gap: 6px;
+    padding-top: 16px;
+}
+
+#ok-btn {
+    color: white;
+    background-color: #3e686d;
+}
+
+#ok-btn:disabled {
+    background-color: #867e7e;
+    color: #5c5756;
+}
+
+#cancel-btn {
+    color: white;
+    background-color: #6d381a;
+}
+
+#formfields-container {
+    gap: 15px;
+    margin-top: 10px;
+    justify-content: center;
+    display: flex;
+}
+
+:host ::ng-deep .inputfield .mat-mdc-text-field-wrapper.mdc-text-field.mdc-text-field--filled {
+    border-radius: 22px;
+}
+
+:host ::ng-deep .inputfield .mdc-line-ripple {
+    display: none;
+}

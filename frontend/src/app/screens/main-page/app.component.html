@@ -1,0 +1,18 @@
+<main class="main">
+  <div class="nav">
+    <button *ngIf="userService.isLoggedIn()" id="logout-button" mat-raised-button color="primary" (click)="logout()" >
+      Logout
+    </button>
+  </div>
+
+  <div class="content">
+    <h1>{{ helloService.helloMessage() }}</h1>
+    <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
+    <p>
+      Comic Vault Raiders - The website where you can catalog your books and
+      recommend them to your friends !
+    </p>
+    <router-outlet></router-outlet>
+  </div>
+  
+</main>

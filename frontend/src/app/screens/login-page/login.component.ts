@@ -19,7 +19,7 @@ import { HelloService } from '../../services/hello.service';
 
 export class LoginComponent {
 
-    constructor(private router: Router, private userService: UserService, private helloService: HelloService) { }
+    constructor(private router: Router, private userService: UserService, private helloService: HelloService,) { }
 
     goBack() {
         this.router.navigate(['/']);

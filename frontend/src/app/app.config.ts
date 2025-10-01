@@ -4,10 +4,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatButtonModule } from '@angular/material/button';
 import { routes } from './app.routes';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { AuthGuard } from './auth.guard';
 import { NoAuthGuard } from './no.auth.guard';
-
+import { Idle, IdleExpiry, SimpleExpiry } from '@ng-idle/core';
+import { Keepalive } from '@ng-idle/keepalive';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -20,5 +21,8 @@ export const appConfig: ApplicationConfig = {
       MatButtonModule
     ),
     AuthGuard, NoAuthGuard,
+     Idle,
+    Keepalive,
+    { provide: IdleExpiry, useClass: SimpleExpiry  },
   ],
 };

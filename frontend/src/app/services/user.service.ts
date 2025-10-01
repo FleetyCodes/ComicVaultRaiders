@@ -40,6 +40,11 @@ export class UserService {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data);
     }
 
+    logOut() : Observable<any> {
+        const data = { refreshToken: this.getToken() };
+        return this.http.post(`${this.apiUrl}/logout`, data);
+    }
+
     setToken(token: string) {
         const expires = new Date();
         expires.setHours(expires.getHours() + 2);
