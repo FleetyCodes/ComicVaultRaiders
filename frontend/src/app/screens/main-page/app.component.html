@@ -1,8 +1,68 @@
 <main class="main">
-  <div class="nav">
-    <button *ngIf="userService.isLoggedIn()" id="logout-button" mat-raised-button color="primary" (click)="logout()" >
+  <div class="nav" [ngClass]="[isLeftSideNav() ? 'left-side-nav' : '']">
+    <button
+      *ngIf="userService.isLoggedIn() && isLeftSideNav()"
+      id="position-left-button"
+      mat-raised-button
+      color="primary"
+      (click)="setLeftSideNav(false)"
+    ></button>
+
+    <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
+    <button
+      *ngIf="userService.isLoggedIn()"
+      class="nav_button"
+      mat-raised-button
+      color="primary"
+      [routerLink]="['/logged-in']"
+    >
+      Main Page
+    </button>
+
+    <button
+      *ngIf="userService.isLoggedIn()"
+      class="nav_button"
+      mat-raised-button
+      color="primary"
+    >
+      My Comics
+    </button>
+
+    <button
+      *ngIf="userService.isLoggedIn()"
+      class="nav_button"
+      mat-raised-button
+      color="primary"
+    >
+      Friends
+    </button>
+
+    <button
+      *ngIf="userService.isLoggedIn()"
+      class="nav_button"
+      mat-raised-button
+      color="primary"
+    >
+      Wishlist
+    </button>
+
+    <button
+      *ngIf="userService.isLoggedIn()"
+      class="nav_button"
+      mat-raised-button
+      color="primary"
+      (click)="logout()"
+    >
       Logout
     </button>
+</div>
+    <button
+      *ngIf="userService.isLoggedIn() && !isLeftSideNav()"
+      id="position-right-button"
+      mat-raised-button
+      color="primary"
+      (click)="setLeftSideNav(true)"
+    ></button>
   </div>
 
   <div class="content">
@@ -14,5 +74,4 @@
     </p>
     <router-outlet></router-outlet>
   </div>
-  
 </main>

@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
 import { HelloService } from '../../services/hello.service';
 import { NoAuthGuard } from '../../no.auth.guard';
 import { AuthGuard } from '../../auth.guard';
@@ -18,7 +18,7 @@ import { UserService } from '../../services/user.service';
   providers: [AuthGuard, NoAuthGuard, Idle, Keepalive],
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatButtonModule],
+  imports: [CommonModule, RouterOutlet, MatButtonModule, RouterModule],
 })
 
 
@@ -28,6 +28,7 @@ export class AppComponent implements OnInit {
 
   
   title = 'Comic Vault Raiders';
+  protected isLeftSideNav = signal<boolean>(false); 
 
   ngOnInit() {
     this.helloService.getHello().subscribe({
@@ -40,6 +41,7 @@ export class AppComponent implements OnInit {
         this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
       }
     });
+    this.isLeftSideNav.set(this.userService.isLeftSidedNavbar());
   }
 
 
@@ -50,5 +52,9 @@ export class AppComponent implements OnInit {
     this.router.navigate(['/']);
   }
 
+  setLeftSideNav(isLeft: boolean){ 
+    this.userService.setLeftSidedNavbar(isLeft);
+    this.isLeftSideNav.set(isLeft);
+  }
 }
 

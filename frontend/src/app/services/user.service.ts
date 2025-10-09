@@ -62,4 +62,20 @@ export class UserService {
     clearToken() {
         this.cookieService.delete('token', '/');
     }
+
+    isLeftSidedNavbar(): boolean {
+        const isLeft = this.cookieService.get('isLeftSidedNavbar');
+        if(isLeft === null || isLeft === 'true' || isLeft === ''){
+            return true;
+        }else{
+            return false;
+        }
+        
+    }
+
+    setLeftSidedNavbar(isLeft: boolean) {
+        const expires = new Date();
+        expires.setFullYear(expires.getFullYear() + 1);
+        this.cookieService.set('isLeftSidedNavbar', isLeft.toString(), expires, '/');
+    }
 }

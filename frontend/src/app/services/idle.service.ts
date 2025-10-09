@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
-import { loginDialog } from '../components/login-dialog';
+import { loginDialog } from '../components/login-dialog/login-dialog';
 
 @Injectable({ providedIn: 'root' })
 

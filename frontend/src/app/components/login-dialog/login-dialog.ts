@@ -1,8 +1,8 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '../services/user.service';
-import { IdleService } from '../services/idle.service';
+import { UserService } from '../../services/user.service';
+import { IdleService } from '../../services/idle.service';
 import { Router } from '@angular/router';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import { CommonModule } from '@angular/common';

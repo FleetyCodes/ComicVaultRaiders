@@ -5,7 +5,7 @@
     padding: 5px;
     padding-left: 20px;
     padding-right: 20px;
-    margin-top: 10px;
+    margin-top: 15px;
 
     .nav {
         padding-left: 0;
@@ -13,13 +13,16 @@
         width: 100%;
         top: 0;
         position: absolute;
-        height: 35px;
+        display: flex;
 
-        #logout-button {
+        &.left-side-nav {
+            justify-content: flex-end;
+        }
+
+        .nav_button {
             height: 35px;
-            right: 0;
-            position: absolute;
             border-radius: 0 !important;
+            z-index: 10;
         }
     }
 
@@ -27,5 +30,25 @@
         display: flex;
         justify-content: center;
         margin-bottom: 50px;
+    }
+
+    #position-left-button {
+        clip-path: polygon(0 50%, 40% 0, 100% 0%, 100% 100%, 40% 100%);
+        right: -25px;
+        height: 36px;
+        top: 0px;
+        z-index: 5;
+    }
+
+    #position-right-button {
+        clip-path: polygon(0 0, 60% 0, 100% 50%, 60% 100%, 0 100%);
+        left: -25px;
+        height: 36px;
+        top: 0px;
+        z-index: 5;
+    }
+    .menu-items{
+        display: flex;
+        flex-direction: row-reverse
     }
 }

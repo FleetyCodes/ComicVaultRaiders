@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -8,6 +8,8 @@ import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
 import { HelloService } from '../../services/hello.service';
+import { basicDialog } from '../../components/basic-dialog/basic-dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector: 'app-login',
@@ -18,6 +20,8 @@ import { HelloService } from '../../services/hello.service';
 })
 
 export class LoginComponent {
+    private dialog = inject(MatDialog);
+
 
     constructor(private router: Router, private userService: UserService, private helloService: HelloService,) { }
 
@@ -45,10 +49,17 @@ export class LoginComponent {
 
                     this.router.navigate(['/logged-in']);
                 },
-                error: (err: any) => console.error(err)
+                error: (err: any) => {
+                    console.error(err);
+                    const dialogRef = this.dialog.open(basicDialog, {
+                        data: {
+                            title: 'Login failed',
+                            message: 'User not found or incorrect password. Please try again.',
+                        },
+                    });
+                }
+
             });
-        } else {
-            //handle invalid auth
         }
     }
 }
