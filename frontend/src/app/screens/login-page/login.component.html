@@ -1,13 +1,13 @@
 <main class="main">
   <div class="content">
-    <div class="panel-header">
+    <div class="panel-header" *ngIf="!isLoading()">
       <button mat-icon-button id="back-button" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
       </button>
       <h2>Login</h2>
     </div>
 
-    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate>
+    <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate *ngIf="!isLoading()">
       <mat-form-field appearance="fill">
         <mat-label>Username</mat-label>
         <input
@@ -50,5 +50,6 @@
         Login
       </button>
     </form>
+    <div id="spinner-div"><mat-spinner *ngIf="isLoading()"></mat-spinner></div>    
   </div>
 </main>

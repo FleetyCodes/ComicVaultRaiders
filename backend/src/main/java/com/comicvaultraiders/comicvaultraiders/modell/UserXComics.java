@@ -1,6 +1,5 @@
 package com.comicvaultraiders.comicvaultraiders.modell;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

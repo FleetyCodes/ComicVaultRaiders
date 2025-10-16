@@ -5,11 +5,13 @@ import { LoginComponent } from './screens/login-page/login.component';
 import { LoggedInPageComponent } from './screens/logged-in-page/logged-in';
 import { NoAuthGuard } from './no.auth.guard';
 import { AuthGuard } from './auth.guard';
+import { MyComicsPageComponent } from './screens/my-comics/my-comics';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, canActivate: [NoAuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] }, 
   { path: 'logged-in', component: LoggedInPageComponent, canActivate: [AuthGuard] }, 
+  {path: 'my-comics', component: MyComicsPageComponent, canActivate: [AuthGuard] },
   //{ path: '**', redirectTo: '', pathMatch: 'full' }   // fallback
 ];

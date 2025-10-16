@@ -3,6 +3,8 @@ package com.comicvaultraiders.comicvaultraiders.service;
 import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsException;
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -57,7 +59,8 @@ public class UserService implements UserDetailsService {
         return userRepository.save(user);
     }
 
-    public User login(User user)  {
+    @Transactional
+    public User login(User user) {
         try{
             String encData = encryptionUtil.encrypt(user.getUsername(), encryptionUtil.getSecretKeyString());
             Optional<User> checkUser = userRepository.findByUsername(encData);
@@ -65,9 +68,13 @@ public class UserService implements UserDetailsService {
             if(checkUser.isEmpty()){
                 return null;
             }
-
             if(passwordEncoder.matches(user.getPassword(), checkUser.get().getPassword())){
-                return checkUser.get();
+                int updatedRows = userRepository.setLastLoginDateByUsername(encData, ZonedDateTime.now(ZoneId.of("UTC")));
+                if(updatedRows>0){
+                    return checkUser.get();
+                }else{
+                    throw new UsernameNotFoundException("User Not Found with username: " + user.getUsername());
+                }
             }else{
                 return null;
             }
@@ -98,8 +105,25 @@ public class UserService implements UserDetailsService {
         userRepository.save(user);
     }
 
-    public List<Comic> getUserComics(Long userId) {
-        return userRepository.findComicsByUser(userId);
+    public List<UserXComicsDto> getUserComics(Long userId) {
+        try{
+            User tmpUser = userRepository.findUserById(userId);
+            List<UserXComics> userComics = tmpUser.getUserXComics();
+            return tmpUser.getUserXComics().stream()
+                    .map(uxc -> new UserXComicsDto(uxc
+                    ))
+                    .toList();
+        }catch(Exception e){
+            return null;
+        }
     }
 
+    public Long getUserId(String username) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isPresent()){
+            return user.get().getId();
+        }else{
+            throw new UsernameNotFoundException("User Not Found with username: " + username);
+        }
+    }
 }

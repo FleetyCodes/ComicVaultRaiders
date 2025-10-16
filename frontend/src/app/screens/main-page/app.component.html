@@ -1,72 +1,41 @@
 <main class="main">
   <div class="nav" [ngClass]="[isLeftSideNav() ? 'left-side-nav' : '']">
-    <button
-      *ngIf="userService.isLoggedIn() && isLeftSideNav()"
-      id="position-left-button"
-      mat-raised-button
-      color="primary"
-      (click)="setLeftSideNav(false)"
-    ></button>
+    <button *ngIf="userService.isLoggedIn() && isLeftSideNav()" id="position-left-button" mat-raised-button
+      color="primary" (click)="setLeftSideNav(false)"></button>
 
     <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
-    <button
-      *ngIf="userService.isLoggedIn()"
-      class="nav_button"
-      mat-raised-button
-      color="primary"
-      [routerLink]="['/logged-in']"
-    >
-      Main Page
-    </button>
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/logged-in']">
+        Main Page
+      </button>
 
-    <button
-      *ngIf="userService.isLoggedIn()"
-      class="nav_button"
-      mat-raised-button
-      color="primary"
-    >
-      My Comics
-    </button>
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/my-comics']">
+        My Comics
+      </button>
 
-    <button
-      *ngIf="userService.isLoggedIn()"
-      class="nav_button"
-      mat-raised-button
-      color="primary"
-    >
-      Friends
-    </button>
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
+        Friends
+      </button>
 
-    <button
-      *ngIf="userService.isLoggedIn()"
-      class="nav_button"
-      mat-raised-button
-      color="primary"
-    >
-      Wishlist
-    </button>
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
+        Wishlist
+      </button>
 
-    <button
-      *ngIf="userService.isLoggedIn()"
-      class="nav_button"
-      mat-raised-button
-      color="primary"
-      (click)="logout()"
-    >
-      Logout
-    </button>
-</div>
-    <button
-      *ngIf="userService.isLoggedIn() && !isLeftSideNav()"
-      id="position-right-button"
-      mat-raised-button
-      color="primary"
-      (click)="setLeftSideNav(true)"
-    ></button>
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
+        Settings
+      </button>
+
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary" (click)="logout()">
+        Logout
+      </button>
+    </div>
+    <button *ngIf="userService.isLoggedIn() && !isLeftSideNav()" id="position-right-button" mat-raised-button
+      color="primary" (click)="setLeftSideNav(true)"></button>
   </div>
 
   <div class="content">
-    <h1>{{ helloService.helloMessage() }}</h1>
+    <!--<h1>{{ helloService.helloMessage() }}</h1>-->
     <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
     <p>
       Comic Vault Raiders - The website where you can catalog your books and

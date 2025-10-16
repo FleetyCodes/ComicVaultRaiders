@@ -15,7 +15,7 @@ import java.util.List;
 @Table(name = "app_user")
 @NamedQueries({
         @NamedQuery(
-                name = "User.findComicsByUser",
+                name = "User.findUserByUserId",
                 query = "SELECT b FROM User b WHERE b.id = :userId"
         )
 })
@@ -49,7 +49,7 @@ public class User {
     @Column(name = "confirmed")
     private boolean isConfirmed;
 
-    @NotBlank(message = "E-mail address is required")
+    //@NotBlank(message = "E-mail address is required")
     @Column(name = "email")
     private String email;
 

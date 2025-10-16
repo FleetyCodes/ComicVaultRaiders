@@ -1,7 +1,8 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
@@ -82,8 +83,11 @@ public class UserController {
                 .orElse(ResponseEntity.badRequest().body("Invalid refresh token."));
     }
 
-    @GetMapping("/{userId}/comics")
-    public List<Comic> getUserComics(@PathVariable Long userId){
+    @GetMapping("/{token}/comics")
+    public List<UserXComicsDto> getUserComics(@PathVariable String token){
+        jwtUtils.validateJwtToken(token);
+        String username = jwtUtils.getUsernameFromToken(token);
+        Long userId = userService.getUserId(username);
         return userService.getUserComics(userId);
     }
 }

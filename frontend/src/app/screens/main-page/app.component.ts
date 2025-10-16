@@ -1,5 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive, RouterModule, RouterOutlet } from '@angular/router';
+import { Router, RouterModule, RouterOutlet } from '@angular/router';
 import { HelloService } from '../../services/hello.service';
 import { NoAuthGuard } from '../../no.auth.guard';
 import { AuthGuard } from '../../auth.guard';
@@ -28,9 +28,15 @@ export class AppComponent implements OnInit {
 
   
   title = 'Comic Vault Raiders';
+  
+
   protected isLeftSideNav = signal<boolean>(false); 
+  
 
   ngOnInit() {
+
+
+
     this.helloService.getHello().subscribe({
       //this.helloService.getAllComics().subscribe({
       next: (response) => {
