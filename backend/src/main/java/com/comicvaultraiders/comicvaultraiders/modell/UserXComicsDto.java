@@ -26,7 +26,6 @@ public class UserXComicsDto {
         this.panelRate = UserXComics.getPanelRate();
         this.wishlisted = UserXComics.getWishlisted();
     }
-
 }
 
 

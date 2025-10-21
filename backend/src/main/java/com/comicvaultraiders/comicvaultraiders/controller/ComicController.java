@@ -27,11 +27,23 @@ public class ComicController {
     }
 
     @GetMapping
-    public List<ComicDto> getAllComic() {
+    public List<ComicDto> getAllComic(){
         return comicService.getAllComics()
                 .stream()
-                .map(ComicDto::new)
-                .toList();
+                    .map(ComicDto::new)
+                    .toList();
+    }
+
+    @GetMapping("/exceptUser/{token}")
+    public List<ComicDto> getAllComic(@PathVariable String token){
+        if(token != null && token !="" && !token.isEmpty()){
+            return comicService.getAllComicsWithoutUsers(token);
+        }else{
+            return comicService.getAllComics()
+                    .stream()
+                    .map(ComicDto::new)
+                    .toList();
+        }
     }
 
     @PostMapping

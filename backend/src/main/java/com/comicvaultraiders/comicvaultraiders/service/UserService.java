@@ -1,12 +1,11 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsException;
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
+import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -25,15 +24,16 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
-    public UserService(UserRepository userRepository, EncryptionUtil encryptionUtil) {
+    public UserService(UserRepository userRepository, EncryptionUtil encryptionUtil, JwtUtil jwtUtils) {
         this.userRepository = userRepository;
         this.encryptionUtil = encryptionUtil;
+        this.jwtUtils = jwtUtils;
     }
 
     private final UserRepository userRepository;
     private final EncryptionUtil encryptionUtil;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
+    private final JwtUtil jwtUtils;
 
     @Transactional
     public User createUser(User user) {
@@ -108,17 +108,17 @@ public class UserService implements UserDetailsService {
     public List<UserXComicsDto> getUserComics(Long userId) {
         try{
             User tmpUser = userRepository.findUserById(userId);
-            List<UserXComics> userComics = tmpUser.getUserXComics();
             return tmpUser.getUserXComics().stream()
-                    .map(uxc -> new UserXComicsDto(uxc
-                    ))
+                    .map(uxc -> new UserXComicsDto(uxc))
                     .toList();
         }catch(Exception e){
             return null;
         }
     }
 
-    public Long getUserId(String username) {
+    public Long getUserId(String token) {
+        jwtUtils.validateJwtToken(token);
+        String username = jwtUtils.getUsernameFromToken(token);
         Optional<User> user = userRepository.findByUsername(username);
         if(user.isPresent()){
             return user.get().getId();

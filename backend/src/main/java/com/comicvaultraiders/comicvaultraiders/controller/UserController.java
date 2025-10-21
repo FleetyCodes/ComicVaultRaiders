@@ -1,7 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
 import com.comicvaultraiders.comicvaultraiders.modell.User;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
@@ -9,7 +8,6 @@ import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.Map;
 @RequestMapping("v1/user")
 public class UserController {
 
-    public UserController(UserService userService, RefreshTokenService refreshTokenService, JwtUtil jwtUtils, AuthenticationManager authenticationManager) {
+    public UserController(UserService userService, RefreshTokenService refreshTokenService, JwtUtil jwtUtils) {
         this.userService = userService;
         this.refreshTokenService = refreshTokenService;
         this.jwtUtils = jwtUtils;
@@ -85,9 +83,7 @@ public class UserController {
 
     @GetMapping("/{token}/comics")
     public List<UserXComicsDto> getUserComics(@PathVariable String token){
-        jwtUtils.validateJwtToken(token);
-        String username = jwtUtils.getUsernameFromToken(token);
-        Long userId = userService.getUserId(username);
+        Long userId = userService.getUserId(token);
         return userService.getUserComics(userId);
     }
 }

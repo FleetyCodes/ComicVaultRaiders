@@ -1,23 +1,28 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
 
+import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class ComicService {
 
     private final ComicRepository comicRepository;
+    private final UserService userService;
 
 
-    public ComicService(ComicRepository comicRepository) {
+    public ComicService(ComicRepository comicRepository, UserService userService) {
         this.comicRepository = comicRepository;
+        this.userService = userService;
     }
 
     @Transactional
@@ -44,5 +49,17 @@ public class ComicService {
 
     public List<Comic> getAllComics() {
         return comicRepository.findAll();
+    }
+
+    public List<ComicDto> getAllComicsWithoutUsers(String token){
+        List<ComicDto> allComics = getAllComics().stream().map(ComicDto::new).toList();
+        Long userId = userService.getUserId(token);
+        Set<Long> userComicIds = userService.getUserComics(userId)
+                .stream()
+                .map(usercom -> usercom.getComic().getId())
+                .collect(Collectors.toSet());
+        return allComics.stream()
+                .filter(c -> !userComicIds.contains(c.getId()))
+                .toList();
     }
 }

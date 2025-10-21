@@ -3,7 +3,7 @@
     <div class="content">
       <div id="">
         <br />
-        <h1>{{yourComicsTitle()}}</h1>
+        <h1  [ngClass]="[userComics().length > 0 ? '' : 'your-comics-title'] ">{{yourComicsTitle()}}</h1>
         <br />
         <div *ngIf="userComics().length > 0" class="comics-container">
           <app-comic *ngFor="let comic of userComics()" [comic]="comic"></app-comic>
