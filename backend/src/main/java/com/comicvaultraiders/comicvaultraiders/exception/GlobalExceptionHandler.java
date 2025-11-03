@@ -14,7 +14,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EncryptionException.class)
     public ResponseEntity<String> handleEncryptionException(EncryptionException ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Encryption error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Encryption error: " + ex.getMessage());
     }
 
     @ExceptionHandler(UserAlreadyExistsException.class)

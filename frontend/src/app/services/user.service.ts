@@ -70,7 +70,7 @@ export class UserService {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`,
         });
-        return this.http.get<UserComic[]>(`${this.apiUrl}/${token}/comics`, { headers });
+        return this.http.get<UserComic[]>(`${this.apiUrl}/user/comics`, { headers });
     }
 
 

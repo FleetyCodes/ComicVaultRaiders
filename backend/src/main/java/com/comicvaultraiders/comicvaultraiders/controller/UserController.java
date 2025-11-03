@@ -8,6 +8,7 @@ import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -81,9 +82,18 @@ public class UserController {
                 .orElse(ResponseEntity.badRequest().body("Invalid refresh token."));
     }
 
-    @GetMapping("/{token}/comics")
-    public List<UserXComicsDto> getUserComics(@PathVariable String token){
-        Long userId = userService.getUserId(token);
-        return userService.getUserComics(userId);
+    @GetMapping("/user/comics")
+    public ResponseEntity<?> getUserComics(@RequestHeader("Authorization") String authHeader) {
+        String jwt = "";
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+        }
+        if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
+            Long userId = userService.getUserId(jwt);
+            return ResponseEntity.ok(userService.getUserComics(userId));
+        }else{
+            return ResponseEntity.badRequest().body("Invalid JWT");
+        }
     }
+
 }
