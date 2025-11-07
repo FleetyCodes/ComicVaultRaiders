@@ -1,6 +1,5 @@
-import { Component, Input } from '@angular/core';
-import { UserComic } from '../../models/user-comic';
-
+import { Component, Input } from "@angular/core";
+import { Comic } from "../../models/comic";
 
 @Component({
   selector: 'app-comic',
@@ -8,5 +7,5 @@ import { UserComic } from '../../models/user-comic';
   styleUrls: ['./comic-component.scss']
 })
 export class ComicComponent {
-  @Input() comic!: UserComic;
+  @Input() comic!: Comic;
 }

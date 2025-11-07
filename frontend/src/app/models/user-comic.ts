@@ -1,6 +1,6 @@
 import { Comic } from './comic';
 
-export interface UserComic {
+export interface UserComic{
   id: number;
   comic: Comic;
   positiveDescription?: string | null;

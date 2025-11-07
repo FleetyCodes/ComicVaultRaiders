@@ -12,6 +12,12 @@ import java.util.List;
 @Setter
 @Entity
 @Table(name = "comic")
+@NamedQueries({
+        @NamedQuery(
+                name = "Comic.findBySearchFilter",
+                query = "SELECT b FROM Comic b WHERE lower(b.title) like lower(:title) or lower(b.author) like lower(:author)"
+        )
+})
 public class Comic {
 
     @Id

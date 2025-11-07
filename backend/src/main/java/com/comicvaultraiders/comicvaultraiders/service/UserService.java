@@ -4,6 +4,7 @@ import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsExcept
 import com.comicvaultraiders.comicvaultraiders.modell.User;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
+import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,13 +25,15 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
-    public UserService(UserRepository userRepository, EncryptionUtil encryptionUtil, JwtUtil jwtUtils) {
+    public UserService(UserRepository userRepository, UserXComicsRepo userXComicsRepo, EncryptionUtil encryptionUtil, JwtUtil jwtUtils) {
         this.userRepository = userRepository;
+        this.userXComicsRepo = userXComicsRepo;
         this.encryptionUtil = encryptionUtil;
         this.jwtUtils = jwtUtils;
     }
 
     private final UserRepository userRepository;
+    private final UserXComicsRepo userXComicsRepo;
     private final EncryptionUtil encryptionUtil;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final JwtUtil jwtUtils;
@@ -126,4 +129,11 @@ public class UserService implements UserDetailsService {
             throw new UsernameNotFoundException("User Not Found with username: " + username);
         }
     }
+
+    @Transactional
+    public void removeUserComic(Long userXComicId) {
+        userXComicsRepo.deleteById(userXComicId);
+    }
+
+
 }

@@ -2,16 +2,16 @@ package com.comicvaultraiders.comicvaultraiders.service;
 
 
 import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class ComicService {
@@ -61,5 +61,11 @@ public class ComicService {
         return allComics.stream()
                 .filter(c -> !userComicIds.contains(c.getId()))
                 .toList();
+    }
+
+    public Page<ComicDto> getFilteredComics(Pageable pageable, String searchBy) {
+        searchBy = "%" + searchBy +"%";
+        Page<ComicDto> comics = comicRepository.getFilteredComics(searchBy, searchBy, pageable).map(ComicDto::new);
+        return comics;
     }
 }

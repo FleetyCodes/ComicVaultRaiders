@@ -59,6 +59,7 @@ export class LoginComponent {
                         data: {
                             title: 'Login failed',
                             message: 'User not found or incorrect password. Please try again.',
+                            isWarningPopup: false
                         },
                     });
                 }

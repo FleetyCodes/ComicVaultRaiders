@@ -2,6 +2,7 @@
  <h1 id="title">{{ data.title }}</h1>
 <div id="content-div"><p>{{ data.message }}</p></div>
   <div mat-dialog-content id="btn-div">
-    <button mat-button id="close-btn" (click)="closeBtnClick()">Ok</button>
+    <button mat-button id="ok-btn" (click)="onConfirmClick()">Ok</button>
+    <button mat-button id="close-btn" *ngIf="data.isWarningPopup" (click)="closeBtnClick()">Cancel</button>
   </div>
 </div>

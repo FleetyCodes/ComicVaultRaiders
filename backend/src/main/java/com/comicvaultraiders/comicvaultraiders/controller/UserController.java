@@ -1,17 +1,13 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
 import com.comicvaultraiders.comicvaultraiders.modell.User;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -82,7 +78,7 @@ public class UserController {
                 .orElse(ResponseEntity.badRequest().body("Invalid refresh token."));
     }
 
-    @GetMapping("/user/comics")
+    @GetMapping("/comics")
     public ResponseEntity<?> getUserComics(@RequestHeader("Authorization") String authHeader) {
         String jwt = "";
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
@@ -91,6 +87,21 @@ public class UserController {
         if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
             Long userId = userService.getUserId(jwt);
             return ResponseEntity.ok(userService.getUserComics(userId));
+        }else{
+            return ResponseEntity.badRequest().body("Invalid JWT");
+        }
+    }
+
+    @DeleteMapping("/comics/{comicId}")
+    public ResponseEntity<?> deleteUserComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId){
+        String jwt = "";
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            jwt = authHeader.substring(7);
+        }
+        if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
+            Long userId = userService.getUserId(jwt);
+            userService.removeUserComic(comicId);
+            return ResponseEntity.noContent().build();
         }else{
             return ResponseEntity.badRequest().body("Invalid JWT");
         }

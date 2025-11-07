@@ -8,9 +8,11 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
 import { UserComic } from "../../models/user-comic";
-import { ComicComponent } from "../../components/comic-component/comic-component";
 import { ComicService } from "../../services/comic.service";
 import { Comic } from "../../models/comic";
+import { UserComicComponent } from "../../components/comic-component/user-comic/user-comic-component";
+import { ComicComponent } from "../../components/comic-component/comic-component";
+import { UserComicsService } from "../../services/user.comic.service";
 
 @Component({
     selector: 'my-comics',
@@ -18,22 +20,31 @@ import { Comic } from "../../models/comic";
     styleUrls: ['./my-comics.scss'],
     standalone: true,
     imports: [
-    FormsModule, MatFormFieldModule, MatInputModule,
-    CommonModule,
-    RouterModule, MatButtonModule,
-    ComicComponent
-],
+        FormsModule, MatFormFieldModule, MatInputModule,
+        CommonModule,
+        RouterModule, MatButtonModule,
+        UserComicComponent, ComicComponent
+    ],
 })
 
 export class MyComicsPageComponent implements OnInit {
 
-    constructor(private helloService: HelloService, private userService: UserService, private comicService: ComicService) { }
+    constructor(private helloService: HelloService, private userService: UserService, private comicService: ComicService, protected userComicService: UserComicsService) { }
 
-    protected userComics = signal<UserComic[]>([]);
-    protected allComics = signal<Comic[]>([]);
+    protected allComicsExcludeUser = signal<Comic[]>([]);
     protected hasComics = signal<boolean>(false);
     protected yourComicsTitle = signal<string>('You haven\'t added any comics yet');
+
+    protected searchedComics = signal<Comic[]>([]);
+    protected totalElements = signal<number>(0);
+    protected pageNumber = signal<number>(0);
+    protected pageSize = signal<number>(0);
+    protected searchKeyword = signal<string>("");
     
+    protected showNotFoundError = signal<boolean>(false);
+    protected searchErrMg = signal<string>("");
+    protected opacity = signal<number>(0);
+
 
     ngOnInit() {
         this.helloService.getHello().subscribe({
@@ -48,8 +59,8 @@ export class MyComicsPageComponent implements OnInit {
 
         this.userService.getUserComics().subscribe({
             next: (response: UserComic[]) => {
-                this.userComics.set(response);
-                if(this.userComics().length > 0){
+                this.userComicService.setComics(response);
+                if (this.userComicService.getComicCount() > 0) {
                     this.hasComics.set(true);
                     this.yourComicsTitle.set('Your Comics');
                 }
@@ -59,19 +70,73 @@ export class MyComicsPageComponent implements OnInit {
             }
         });
 
-
-
-
-        this.comicService.getAllComics().subscribe({
+        this.comicService.getAllComicsExcludeUser().subscribe({
             next: (response: Comic[]) => {
                 console.log(response);
-                this.allComics.set(response);
+                this.allComicsExcludeUser.set(response);
             },
             error: (err) => {
                 console.error('Error:', err);
             }
         });
     }
+
+
+    searchComics() {
+        console.log(this.searchKeyword());
+        if (this.searchKeyword().trim().length > 2) {
+            this.comicService.getComicsBySearchable(this.pageNumber(), this.searchKeyword()).subscribe(response => {
+                console.log(response);
+                const ownedIds = new Set(this.userComicService.getComics().map(u => u.comic.id));
+                this.searchedComics.set(response.content.filter(c => !ownedIds.has(c.id)));
+                if (this.searchedComics().length === 0) {
+                    this.searchErrMg.set("Haven't found any comics with this parameter");
+                    this.showNotFoundError.set(true);
+                    this.opacity.set(1);
+                    
+                    let step = 4.0;
+                    const interval = setInterval(() => {
+                        step -= 0.05;
+                        this.opacity.set(Math.max(step, 0));
+                        if (this.opacity() <= 0) {
+                        clearInterval(interval);
+                        this.showNotFoundError.set(false);
+                        }
+                    }, 50);
+                }
+                this.totalElements.set(response.totalElements);
+                this.pageSize.set(response.size);
+            });
+        }else {
+            this.searchErrMg.set("Please enter at least 3 characters");
+            this.showNotFoundError.set(true);
+            this.opacity.set(1);
+
+            let step = 4.0;
+            const interval = setInterval(() => {
+                step -= 0.05;
+                this.opacity.set(Math.max(step, 0));
+                if (this.opacity() <= 0) {
+                    clearInterval(interval);
+                    this.showNotFoundError.set(false);
+                }
+            }, 50);
+        }
+        console.log(this.searchKeyword().length);
+    }
+
+    nextPage() {
+        this.pageNumber.set(this.pageNumber() + 1);
+        this.searchComics();
+    }
+
+    prevPage() {
+        if (this.pageNumber() > 0) {
+            this.pageNumber.set(this.pageNumber() - 1);
+            this.searchComics();
+        }
+    }
+
 
 
 

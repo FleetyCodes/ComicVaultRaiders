@@ -1,6 +1,6 @@
 <main class="main">
   <div class="nav" [ngClass]="[isLeftSideNav() ? 'left-side-nav' : '']">
-    <button *ngIf="userService.isLoggedIn() && isLeftSideNav()" id="position-left-button" mat-raised-button
+    <button *ngIf="isLeftSideNav()" id="position-left-button" mat-raised-button
       color="primary" (click)="setLeftSideNav(false)"></button>
 
     <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
@@ -22,6 +22,10 @@
         Wishlist
       </button>
 
+      <button class="nav_button" class="nav_button" mat-raised-button color="primary">
+        How to Use
+      </button>
+
       <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
         Settings
       </button>
@@ -30,7 +34,7 @@
         Logout
       </button>
     </div>
-    <button *ngIf="userService.isLoggedIn() && !isLeftSideNav()" id="position-right-button" mat-raised-button
+    <button *ngIf="!isLeftSideNav()" id="position-right-button" mat-raised-button
       color="primary" (click)="setLeftSideNav(true)"></button>
   </div>
 
