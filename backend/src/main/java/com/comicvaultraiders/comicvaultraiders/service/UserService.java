@@ -1,12 +1,15 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsException;
+import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -135,5 +138,25 @@ public class UserService implements UserDetailsService {
         userXComicsRepo.deleteById(userXComicId);
     }
 
+    @Transactional
+    public UserXComicsDto addUserComics(Long userId, Comic comic) {
+        UserXComics userXComics = new UserXComics();
+        Optional<User> user = getUserById(userId);
+        if(user.isPresent()){
+            userXComics.setUser(user.get());
+        }else{
+            throw new EntityNotFoundException();
+        }
+        userXComics.setComic(comic);
+        userXComics.setArtRate(0L);
+        userXComics.setPanelRate(0L);
+        userXComics.setStoryRate(0L);
+        userXComics.setWishlisted(false);
+        UserXComics saveUserComic = userXComicsRepo.save(userXComics);
+        return new UserXComicsDto(saveUserComic);
+    }
 
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
+    }
 }

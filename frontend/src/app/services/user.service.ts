@@ -41,14 +41,6 @@ export class UserService {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data);
     }
 
-    removeUserComic(comicId: String): Observable<any> {
-        const token = this.getToken();
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`,
-        });
-        return this.http.delete(`${this.apiUrl}/comics/${comicId}`, { headers });
-    }
-
     logOut(): Observable<any> {
         const data = { refreshToken: this.getToken() };
         return this.http.post(`${this.apiUrl}/logout`, data);
@@ -80,7 +72,6 @@ export class UserService {
         });
         return this.http.get<UserComic[]>(`${this.apiUrl}/comics`, { headers });
     }
-
 
     isLeftSidedNavbar(): boolean {
         const isLeft = this.cookieService.get('isLeftSidedNavbar');

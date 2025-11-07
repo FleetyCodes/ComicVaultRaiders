@@ -4,7 +4,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog } from '@angular/material/dialog';
 import { basicDialog } from '../../basic-dialog/basic-dialog';
-import { UserService } from '../../../services/user.service';
 import { UserComicsService } from '../../../services/user.comic.service';
 
 
@@ -16,15 +15,13 @@ import { UserComicsService } from '../../../services/user.comic.service';
 })
 export class UserComicComponent {
 
-  constructor(private userService: UserService, private userComicService: UserComicsService) { }
+  constructor(private userComicsService: UserComicsService, private userComicService: UserComicsService) { }
 
   @Input() userComic!: UserComic;
   
   private dialog = inject(MatDialog);
   
   removeComic() {
-    console.log(`Removing comic: ${this.userComic.comic.title}`);
-
     const dialogRef = this.dialog.open(basicDialog, {
       data: {
         title: 'Are you sure you want to remove this comic from your profile?',
@@ -36,9 +33,9 @@ export class UserComicComponent {
   }
 
   confirmRemove(): any {
-    this.userService.removeUserComic(String(this.userComic.id)).subscribe({
-      next: (response) => {
-        this.userComicService.removeComic(this.userComic);
+    this.userComicsService.removeUserComicApi(String(this.userComic.id)).subscribe({
+      next: () => {
+        this.userComicService.removeComicObject(this.userComic);
       },
       error: (err) => {
         console.error('Error removing comic:', err);

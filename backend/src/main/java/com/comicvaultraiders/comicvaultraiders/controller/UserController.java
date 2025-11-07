@@ -1,6 +1,8 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
+import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
+import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
@@ -9,18 +11,21 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("v1/user")
 public class UserController {
 
-    public UserController(UserService userService, RefreshTokenService refreshTokenService, JwtUtil jwtUtils) {
+    public UserController(UserService userService, ComicService comicService, RefreshTokenService refreshTokenService, JwtUtil jwtUtils) {
         this.userService = userService;
+        this.comicService = comicService;
         this.refreshTokenService = refreshTokenService;
         this.jwtUtils = jwtUtils;
     }
 
     private final UserService userService;
+    private final ComicService comicService;
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtils;
 
@@ -93,15 +98,25 @@ public class UserController {
     }
 
     @DeleteMapping("/comics/{comicId}")
-    public ResponseEntity<?> deleteUserComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId){
+    public ResponseEntity<?> deleteUserComic(@PathVariable Long comicId){
+        userService.removeUserComic(comicId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/comic/{comicId}")
+    public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId){
         String jwt = "";
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
         }
         if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
             Long userId = userService.getUserId(jwt);
-            userService.removeUserComic(comicId);
-            return ResponseEntity.noContent().build();
+            Optional<Comic> comic = comicService.getComicById(comicId);
+            if(comic.isPresent()){
+                return ResponseEntity.ok(userService.addUserComics(userId, comic.get()));
+            }else{
+                return ResponseEntity.badRequest().body("Invalid Comic");
+            }
         }else{
             return ResponseEntity.badRequest().body("Invalid JWT");
         }

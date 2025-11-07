@@ -59,8 +59,8 @@ export class MyComicsPageComponent implements OnInit {
 
         this.userService.getUserComics().subscribe({
             next: (response: UserComic[]) => {
-                this.userComicService.setComics(response);
-                if (this.userComicService.getComicCount() > 0) {
+                this.userComicService.setComicsObject(response);
+                if (this.userComicService.getComicObjectCount() > 0) {
                     this.hasComics.set(true);
                     this.yourComicsTitle.set('Your Comics');
                 }
@@ -72,7 +72,6 @@ export class MyComicsPageComponent implements OnInit {
 
         this.comicService.getAllComicsExcludeUser().subscribe({
             next: (response: Comic[]) => {
-                console.log(response);
                 this.allComicsExcludeUser.set(response);
             },
             error: (err) => {
@@ -83,11 +82,9 @@ export class MyComicsPageComponent implements OnInit {
 
 
     searchComics() {
-        console.log(this.searchKeyword());
         if (this.searchKeyword().trim().length > 2) {
             this.comicService.getComicsBySearchable(this.pageNumber(), this.searchKeyword()).subscribe(response => {
-                console.log(response);
-                const ownedIds = new Set(this.userComicService.getComics().map(u => u.comic.id));
+                const ownedIds = new Set(this.userComicService.getComicsObject().map(u => u.comic.id));
                 this.searchedComics.set(response.content.filter(c => !ownedIds.has(c.id)));
                 if (this.searchedComics().length === 0) {
                     this.searchErrMg.set("Haven't found any comics with this parameter");
@@ -108,6 +105,7 @@ export class MyComicsPageComponent implements OnInit {
                 this.pageSize.set(response.size);
             });
         }else {
+            this.searchedComics.set([]);
             this.searchErrMg.set("Please enter at least 3 characters");
             this.showNotFoundError.set(true);
             this.opacity.set(1);
@@ -122,7 +120,6 @@ export class MyComicsPageComponent implements OnInit {
                 }
             }, 50);
         }
-        console.log(this.searchKeyword().length);
     }
 
     nextPage() {

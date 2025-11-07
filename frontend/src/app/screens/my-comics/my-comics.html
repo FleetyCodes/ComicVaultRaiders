@@ -3,10 +3,10 @@
     <div class="content">
       <div id="">
         <br />
-        <h1 [ngClass]="[this.userComicService.getComicCount() > 0 ? '' : 'your-comics-title'] ">{{yourComicsTitle()}}</h1>
+        <h1 [ngClass]="[this.userComicService.getComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{yourComicsTitle()}}</h1>
         <br />
-        <div *ngIf="this.userComicService.getComicCount() > 0" class="comics-container">
-          <app-user-comic *ngFor="let comic of this.userComicService.getComics()" [userComic]="comic"></app-user-comic>
+        <div *ngIf="this.userComicService.getComicObjectCount() > 0" class="comics-container">
+          <app-user-comic *ngFor="let comic of this.userComicService.getComicsObject()" [userComic]="comic"></app-user-comic>
         </div>
         <br />
         <div id="add-container">
