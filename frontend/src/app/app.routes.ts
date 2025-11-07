@@ -6,12 +6,14 @@ import { LoggedInPageComponent } from './screens/logged-in-page/logged-in';
 import { NoAuthGuard } from './no.auth.guard';
 import { AuthGuard } from './auth.guard';
 import { MyComicsPageComponent } from './screens/my-comics/my-comics';
+import { temporaryUnavailableComponent } from './screens/wip-page/temporary-unavailable';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, canActivate: [NoAuthGuard] },
   { path: 'register', component: RegisterComponent, canActivate: [NoAuthGuard] },
   { path: 'login', component: LoginComponent, canActivate: [NoAuthGuard] }, 
   { path: 'logged-in', component: LoggedInPageComponent, canActivate: [AuthGuard] }, 
-  {path: 'my-comics', component: MyComicsPageComponent, canActivate: [AuthGuard] },
+  { path: 'my-comics', component: MyComicsPageComponent, canActivate: [AuthGuard] },
+  { path: 'app-work-in-progress', component: temporaryUnavailableComponent,},
   //{ path: '**', redirectTo: '', pathMatch: 'full' }   // fallback
 ];

@@ -4,8 +4,8 @@
       color="primary" (click)="setLeftSideNav(false)"></button>
 
     <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
-        [routerLink]="['/logged-in']">
+      <button class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/']">
         Main Page
       </button>
 
@@ -14,19 +14,23 @@
         My Comics
       </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/app-work-in-progress']">
         Friends
       </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+      [routerLink]="['/app-work-in-progress']">
         Wishlist
       </button>
 
-      <button class="nav_button" class="nav_button" mat-raised-button color="primary">
+      <button class="nav_button" class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/app-work-in-progress']">
         How to Use
       </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary">
+      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/app-work-in-progress']">
         Settings
       </button>
 
