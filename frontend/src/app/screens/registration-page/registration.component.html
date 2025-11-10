@@ -22,6 +22,7 @@
         </mat-error>
       </mat-form-field>
 
+      <!--
       <mat-form-field appearance="fill">
         <mat-label>Email</mat-label>
         <input
@@ -37,6 +38,7 @@
           <span *ngIf="emailCtrl.errors?.['email']">Invalid email format</span>
         </mat-error>
       </mat-form-field>
+      -->
 
       <mat-form-field appearance="fill">
         <mat-label>Password</mat-label>
@@ -67,4 +69,5 @@
       </button>
     </form>
   </div>
+  <H3 id = "err-msg" *ngIf="showUserAlreadyExistError()" [style.opacity]="opacity()" class="err-msg">{{errMg()}}</H3>
 </main>

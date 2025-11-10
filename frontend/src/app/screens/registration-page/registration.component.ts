@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,6 +20,10 @@ export class RegisterComponent {
 
     constructor(private router: Router, private userService: UserService) { }
 
+    protected showUserAlreadyExistError = signal<boolean>(false);
+    protected opacity = signal<number>(0);
+    protected errMg = signal<string>("");
+
     goBack() {
         this.router.navigate(['/']);
     }
@@ -30,7 +34,25 @@ export class RegisterComponent {
                 next: (res: any) => {
                     this.router.navigate(['/login']);
                 },
-                error: (err: any) => console.error(err)
+                error: (err: any) => {
+                    console.log(err);
+                    console.log(err.status);
+                    if (err.status === 409) {
+                        this.errMg.set("This username already exists!");
+                        this.showUserAlreadyExistError.set(true);
+                        this.opacity.set(1);
+
+                        let step = 4.0;
+                        const interval = setInterval(() => {
+                            step -= 0.05;
+                            this.opacity.set(Math.max(step, 0));
+                            if (this.opacity() <= 0) {
+                                clearInterval(interval);
+                                this.showUserAlreadyExistError.set(false);
+                            }
+                        }, 50);
+                    }
+                }
             });
         } else {
             console.warn('Form is invalid!');
