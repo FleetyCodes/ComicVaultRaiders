@@ -1,0 +1,11 @@
+<div id="popup-window">
+  <h1 id="title">{{ data.title }}</h1>
+  <div id="content-div">
+    <p>{{ data.message }}</p>
+  </div>
+  <div mat-dialog-content id="btn-div">
+    <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
+    <button mat-button (click)="onCancelClick()">Cancel</button>
+    <button mat-button id="next-btn" (click)="onNextClick()">Next</button>
+  </div>
+</div>

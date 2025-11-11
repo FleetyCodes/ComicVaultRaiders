@@ -34,7 +34,7 @@ export class loginDialog {
 
   cancelClick() {
     this.isLoading.set(true);
-    this.userService.logOut();
+    this.userService.logOut().subscribe();
     this.userService.clearToken();
     this.idleService.stopIdleTimer();
     this.isLoading.set(false);

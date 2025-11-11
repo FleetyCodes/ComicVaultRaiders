@@ -15,7 +15,7 @@ import { UserService } from '../../services/user.service';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  providers: [AuthGuard, NoAuthGuard, Idle, Keepalive],
+  providers: [AuthGuard, NoAuthGuard, Idle, Keepalive, ],
   styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterOutlet, MatButtonModule, RouterModule],
@@ -52,7 +52,7 @@ export class AppComponent implements OnInit {
 
 
   logout() {
-    this.userService.logOut();
+    this.userService.logOut().subscribe();
     this.userService.clearToken();
     this.idleService.stopIdleTimer();
     this.router.navigate(['/']);

@@ -38,12 +38,20 @@ export class UserService {
 
 
     login(data: LoginRequest): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data);
+        return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data, {withCredentials: true});
     }
 
     logOut(): Observable<any> {
+        const token = this.getToken();
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+        return this.http.post(`${this.apiUrl}/logout`, null, {headers, withCredentials:true});
+    }
+
+    refreshJwtToken(): Observable<LoginResponse> {
         const data = { refreshToken: this.getToken() };
-        return this.http.post(`${this.apiUrl}/logout`, data);
+        return this.http.post<LoginResponse>(`${this.apiUrl}/refresh`, data, {withCredentials: true});
     }
 
     setToken(token: string) {

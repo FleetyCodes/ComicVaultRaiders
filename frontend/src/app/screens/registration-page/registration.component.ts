@@ -35,8 +35,6 @@ export class RegisterComponent {
                     this.router.navigate(['/login']);
                 },
                 error: (err: any) => {
-                    console.log(err);
-                    console.log(err.status);
                     if (err.status === 409) {
                         this.errMg.set("This username already exists!");
                         this.showUserAlreadyExistError.set(true);

@@ -5,12 +5,14 @@ import { appConfig } from './app.config';
 import { serverRoutes } from './app.routes.server';
 import { AuthGuard } from './auth.guard';
 import { NoAuthGuard } from './no.auth.guard';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+
 
 const serverConfig: ApplicationConfig = {
   providers: [
     provideServerRendering(),
     provideServerRouting(serverRoutes),
-        AuthGuard, NoAuthGuard,
+        AuthGuard, NoAuthGuard,      
   ]
 };
 

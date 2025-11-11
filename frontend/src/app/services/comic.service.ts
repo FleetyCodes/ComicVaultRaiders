@@ -43,6 +43,14 @@ export class ComicService {
         return this.http.get<PageResponse<Comic[]>>(this.apiUrl,{ params, headers });
     }
 
+    addComic(comic: Comic): Observable<any> {
+        const token = this.userService.getToken();
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+        const body = { comic: comic };
+        return this.http.post(`${this.apiUrl}`, {body}, { headers });
+    }
     
 
 }

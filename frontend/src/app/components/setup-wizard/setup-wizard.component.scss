@@ -1,0 +1,33 @@
+#popup-window {
+    width: 500px;
+    height: 310px;
+    display: grid;
+    background-color: #040621;
+    color: #e0e0e0;
+    justify-items: center;
+}
+
+#title {
+    text-align: center;
+    color: #4dd0e1;
+    padding-top: 27px;
+}
+
+#content-div{
+    width:80%;
+}
+
+#btn-div {
+    justify-content: center;
+    display: flex;
+    gap: 6px;
+    padding-top: 16px;
+}
+
+
+#next-btn {
+    color: #fff;
+    background-color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}

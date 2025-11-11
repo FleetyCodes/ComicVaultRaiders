@@ -1,9 +1,9 @@
 import { CommonModule } from "@angular/common";
-import { Component, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { HelloService } from "../../services/hello.service";
 import { UserService } from "../../services/user.service";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, NgForm } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
@@ -13,6 +13,8 @@ import { Comic } from "../../models/comic";
 import { UserComicComponent } from "../../components/comic-component/user-comic/user-comic-component";
 import { ComicComponent } from "../../components/comic-component/comic-component";
 import { UserComicsService } from "../../services/user.comic.service";
+import { MatDialog } from "@angular/material/dialog";
+import { setupWizardComponent } from "../../components/setup-wizard/setup-wizard.component";
 
 @Component({
     selector: 'my-comics',
@@ -40,11 +42,12 @@ export class MyComicsPageComponent implements OnInit {
     protected pageNumber = signal<number>(0);
     protected pageSize = signal<number>(0);
     protected searchKeyword = signal<string>("");
-    
+
     protected showNotFoundError = signal<boolean>(false);
     protected searchErrMg = signal<string>("");
     protected opacity = signal<number>(0);
 
+    private dialog = inject(MatDialog);
 
     ngOnInit() {
         this.helloService.getHello().subscribe({
@@ -90,21 +93,21 @@ export class MyComicsPageComponent implements OnInit {
                     this.searchErrMg.set("Haven't found any comics with this parameter");
                     this.showNotFoundError.set(true);
                     this.opacity.set(1);
-                    
+
                     let step = 4.0;
                     const interval = setInterval(() => {
                         step -= 0.05;
                         this.opacity.set(Math.max(step, 0));
                         if (this.opacity() <= 0) {
-                        clearInterval(interval);
-                        this.showNotFoundError.set(false);
+                            clearInterval(interval);
+                            this.showNotFoundError.set(false);
                         }
                     }, 50);
                 }
                 this.totalElements.set(response.totalElements);
                 this.pageSize.set(response.size);
             });
-        }else {
+        } else {
             this.searchedComics.set([]);
             this.searchErrMg.set("Please enter at least 3 characters");
             this.showNotFoundError.set(true);
@@ -135,7 +138,30 @@ export class MyComicsPageComponent implements OnInit {
     }
 
 
+    createComic() {
+        const comicFrom: NgForm = {} as NgForm;
 
+        const dialogRef = this.dialog.open(setupWizardComponent, {
+            data: {
+                title: 'Add New Comic - Step 1',
+                message: 'By clicking "Next" you will add the Comic to the system.',
+                form: comicFrom,
+                //onConfirm: () => this.confirmRemove()
+            },
+        });
+    }
 
+    /*
+    confirmRemove(): any {
+        this.userComicsService.removeUserComicApi(String(this.userComic.id)).subscribe({
+            next: () => {
+                this.userComicService.removeComicObject(this.userComic);
+            },
+            error: (err) => {
+                console.error('Error removing comic:', err);
+            }
+        });
+    }
+    */
 
 }
