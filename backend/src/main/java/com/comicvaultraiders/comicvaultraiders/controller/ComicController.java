@@ -5,6 +5,7 @@ import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("v1/comic")
@@ -58,8 +60,10 @@ public class ComicController {
     }
 
     @PostMapping
-    public Comic createComic(@RequestBody Comic comic) {
-        return comicService.createComic(comic);
+    public ResponseEntity<ComicDto> createComic(@Valid  @RequestBody Comic comic) {
+        Optional<Comic> newComic = comicService.createComic(comic);
+        return newComic.map(item -> ResponseEntity.ok(new ComicDto (item)))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")

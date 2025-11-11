@@ -28,10 +28,9 @@ export class UserService {
 
     private apiUrl = 'http://localhost:8080/v1/user';
 
-
     constructor(private http: HttpClient, private cookieService: CookieService) { }
 
-
+    
     register(data: RegisterRequest): Observable<any> {
         return this.http.post(`${this.apiUrl}/reg`, data);
     }

@@ -15,7 +15,6 @@ import java.util.stream.Collectors;
 
 @Service
 public class ComicService {
-
     private final ComicRepository comicRepository;
     private final UserService userService;
 
@@ -26,8 +25,9 @@ public class ComicService {
     }
 
     @Transactional
-    public Comic createComic(Comic comic) {
-        return comicRepository.save(comic);
+    public Optional<Comic> createComic(Comic comic) {
+        Optional<Comic> newComic = Optional.of(comicRepository.save(comic));
+        return newComic;
     }
 
     @Transactional
@@ -56,7 +56,7 @@ public class ComicService {
         Long userId = userService.getUserId(token);
         Set<Long> userComicIds = userService.getUserComics(userId)
                 .stream()
-                .map(usercom -> usercom.getComic().getId())
+                .map(userComic -> userComic.getComic().getId())
                 .collect(Collectors.toSet());
         return allComics.stream()
                 .filter(c -> !userComicIds.contains(c.getId()))

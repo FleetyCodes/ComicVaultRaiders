@@ -38,12 +38,6 @@ public class UserController {
     private final JwtUtil jwtUtils;
 
 
-    @PostMapping("/reg")
-    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) {
-        userService.createUser(user);
-        return ResponseEntity.noContent().build();
-    }
-
     @PostMapping("/login")
     public ResponseEntity<Object> login(@RequestBody User user, HttpServletResponse response) {
         User loggedIn = userService.login(user);
@@ -61,6 +55,12 @@ public class UserController {
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
+    }
+
+    @PostMapping("/reg")
+    public ResponseEntity<Void> createUser(@Valid @RequestBody User user) {
+        userService.createUser(user);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")

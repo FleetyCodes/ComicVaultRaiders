@@ -1,0 +1,50 @@
+<div id="popup-window">
+  <h1 id="title">{{ data.title }}</h1>
+  <div id="content-div">
+    <form #addComicForm="ngForm" (ngSubmit)="onSubmit(addComicForm)" novalidate>
+      <mat-form-field appearance="fill">
+        <mat-label>Title</mat-label>
+        <input matInput type="text" name="title" ngModel required #titleCtrl="ngModel" />
+        <mat-error *ngIf="titleCtrl.invalid && titleCtrl.touched">
+          Title is required
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="fill">
+        <mat-label>Author</mat-label>
+        <input matInput type="text" name="author" ngModel required #authorCtrl="ngModel" />
+        <mat-error *ngIf="authorCtrl.invalid && authorCtrl.touched">
+          Author is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Issue Number</mat-label>
+        <input matInput type="number" name="issueNumber" ngModel #issueNumberCtrl="ngModel" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Release Date</mat-label>
+        <input matInput type="date" name="releaseDate" ngModel required #releaseDateCtrl="ngModel" />
+        <mat-error *ngIf="releaseDateCtrl.invalid && releaseDateCtrl.touched">
+          Release Date is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Cover Image</mat-label>
+        <input matInput type="text" name="coverImgUrl" ngModel required #coverImgCtrl="ngModel" />
+        <mat-error *ngIf="coverImgCtrl.invalid && coverImgCtrl.touched">
+    URL is required
+  </mat-error>
+  <mat-error *ngIf="coverImgCtrl.errors?.['pattern']">
+    Please enter a valid URL (must start with http:// or https://)
+  </mat-error>
+      </mat-form-field>
+      <p>{{ data.message }}</p>
+      <div mat-dialog-content id="btn-div">
+        <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
+        <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
+        <button mat-button id="next-btn" type="submit" type="submit"
+          [disabled]="addComicForm.invalid">Next</button>
+      </div>
+    </form>
+  </div>
+</div>

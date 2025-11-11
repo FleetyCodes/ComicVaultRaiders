@@ -48,8 +48,7 @@ export class ComicService {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`,
         });
-        const body = { comic: comic };
-        return this.http.post(`${this.apiUrl}`, {body}, { headers });
+        return this.http.post(`${this.apiUrl}`, comic, { headers });
     }
     
 

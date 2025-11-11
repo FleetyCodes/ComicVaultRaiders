@@ -3,7 +3,7 @@ import { Component, inject, OnInit, signal } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { HelloService } from "../../services/hello.service";
 import { UserService } from "../../services/user.service";
-import { FormsModule, NgForm } from "@angular/forms";
+import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
@@ -14,7 +14,8 @@ import { UserComicComponent } from "../../components/comic-component/user-comic/
 import { ComicComponent } from "../../components/comic-component/comic-component";
 import { UserComicsService } from "../../services/user.comic.service";
 import { MatDialog } from "@angular/material/dialog";
-import { setupWizardComponent } from "../../components/setup-wizard/setup-wizard.component";
+import { setupWizardComponent } from "../../components/add-comic-dialog/add-comic.component";
+
 
 @Component({
     selector: 'my-comics',
@@ -139,29 +140,13 @@ export class MyComicsPageComponent implements OnInit {
 
 
     createComic() {
-        const comicFrom: NgForm = {} as NgForm;
-
         const dialogRef = this.dialog.open(setupWizardComponent, {
+            disableClose: true,
             data: {
                 title: 'Add New Comic - Step 1',
                 message: 'By clicking "Next" you will add the Comic to the system.',
-                form: comicFrom,
-                //onConfirm: () => this.confirmRemove()
             },
         });
     }
-
-    /*
-    confirmRemove(): any {
-        this.userComicsService.removeUserComicApi(String(this.userComic.id)).subscribe({
-            next: () => {
-                this.userComicService.removeComicObject(this.userComic);
-            },
-            error: (err) => {
-                console.error('Error removing comic:', err);
-            }
-        });
-    }
-    */
 
 }

@@ -1,0 +1,55 @@
+#popup-window {
+    width: 500px;
+    height: 400px;
+    display: grid;
+    background-color: #040621;
+    color: #e0e0e0;
+    justify-items: center;
+    overflow: overlay;
+    scrollbar-width: thin;
+    scrollbar-color: #4dd0e1 #040621;
+    //scrollbar-width: none; /* Firefox */
+    //-ms-overflow-style: none; /* Internet Explorer, Edge (legacy) */
+
+    @media (max-width: 768px) {
+        width: 300px;
+    }
+
+    & mat-form-field {
+        margin-right: 5px;
+    }
+}
+/*
+    #popup-window::-webkit-scrollbar {
+        display: none; //Chrome, Safari, Edge
+    }
+*/
+#title {
+    text-align: center;
+    color: #4dd0e1;
+    padding-top: 27px;
+}
+
+#content-div {
+    width: 90%;
+    margin: 10px;
+}
+
+#btn-div {
+    justify-content: center;
+    display: flex;
+    gap: 6px;
+    padding-top: 20px;
+}
+
+
+#next-btn {
+    color: #fff;
+    background-color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#cancel-btn {
+    background-color: #1a3031;
+}
