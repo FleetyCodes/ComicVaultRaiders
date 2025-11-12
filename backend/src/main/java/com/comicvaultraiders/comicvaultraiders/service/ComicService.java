@@ -2,6 +2,7 @@ package com.comicvaultraiders.comicvaultraiders.service;
 
 
 import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
+import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import jakarta.persistence.EntityNotFoundException;
@@ -52,15 +53,8 @@ public class ComicService {
     }
 
     public List<ComicDto> getAllComicsWithoutUsers(String token){
-        List<ComicDto> allComics = getAllComics().stream().map(ComicDto::new).toList();
         Long userId = userService.getUserId(token);
-        Set<Long> userComicIds = userService.getUserComics(userId)
-                .stream()
-                .map(userComic -> userComic.getComic().getId())
-                .collect(Collectors.toSet());
-        return allComics.stream()
-                .filter(c -> !userComicIds.contains(c.getId()))
-                .toList();
+        return comicRepository.getAllComicsWithoutUser(userId).stream().map(ComicDto::new).toList();
     }
 
     public Page<ComicDto> getFilteredComics(Pageable pageable, String searchBy) {

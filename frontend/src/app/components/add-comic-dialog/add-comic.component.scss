@@ -19,6 +19,7 @@
         margin-right: 5px;
     }
 }
+
 /*
     #popup-window::-webkit-scrollbar {
         display: none; //Chrome, Safari, Edge
@@ -28,11 +29,15 @@
     text-align: center;
     color: #4dd0e1;
     padding-top: 27px;
+    height: fit-content;
 }
 
 #content-div {
-    width: 90%;
-    margin: 10px;
+    text-align: center;
+    
+    #add-comic-container {
+        display: flex;
+    }
 }
 
 #btn-div {
@@ -40,6 +45,7 @@
     display: flex;
     gap: 6px;
     padding-top: 20px;
+    padding-bottom: 18px;
 }
 
 
@@ -52,4 +58,34 @@
 
 #cancel-btn {
     background-color: #1a3031;
+}
+
+
+.mat-icon {
+    font-weight: 900;
+    font-size: 100px;
+    min-height: 150px;
+    min-width: 150px;
+    top: 14px;
+    left: -7px;
+}
+
+#add-comic-container {
+    text-align: center;
+    gap: 6px;
+
+    #add-comic-btn-container {
+        min-height: 150px;
+        min-width: 150px;
+    }
+
+    #add-wishlist-btn-container {
+        min-height: 150px;
+        min-width: 150px;
+    }
+
+    button[mat-icon-button] {
+        min-height: 150px;
+        min-width: 150px;
+    }
 }

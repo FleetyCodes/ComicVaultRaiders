@@ -16,7 +16,10 @@ import java.util.List;
         @NamedQuery(
                 name = "Comic.findBySearchFilter",
                 query = "SELECT b FROM Comic b WHERE lower(b.title) like lower(:title) or lower(b.author) like lower(:author)"
-        )
+        ),
+        @NamedQuery(
+                name = "Comic.findAllWithoutUser",
+                query = "SELECT c FROM Comic c LEFT JOIN c.userXComics uc ON uc.user.id = :userId WHERE uc IS NULL")
 })
 public class Comic {
 

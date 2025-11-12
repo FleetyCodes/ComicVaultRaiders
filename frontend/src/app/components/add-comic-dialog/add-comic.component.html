@@ -1,7 +1,8 @@
 <div id="popup-window">
-  <h1 id="title">{{ data.title }}</h1>
+  <h1 id="title">{{ this.title()}}</h1>
   <div id="content-div">
-    <form #addComicForm="ngForm" (ngSubmit)="onSubmit(addComicForm)" novalidate>
+    <!--Step1 form-->
+    <form #addComicForm1="ngForm" (ngSubmit)="onSubmitForm1(addComicForm1)" novalidate *ngIf="this.stepState() === 1">
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
         <input matInput type="text" name="title" ngModel required #titleCtrl="ngModel" />
@@ -9,9 +10,8 @@
           Title is required
         </mat-error>
       </mat-form-field>
-
       <mat-form-field appearance="fill">
-        <mat-label>Author</mat-label>
+        <mat-label>Author(s)</mat-label>
         <input matInput type="text" name="author" ngModel required #authorCtrl="ngModel" />
         <mat-error *ngIf="authorCtrl.invalid && authorCtrl.touched">
           Author is required
@@ -31,19 +31,61 @@
       <mat-form-field appearance="fill">
         <mat-label>Cover Image</mat-label>
         <input matInput type="text" name="coverImgUrl" ngModel required #coverImgCtrl="ngModel" />
-        <mat-error *ngIf="coverImgCtrl.invalid && coverImgCtrl.touched">
-    URL is required
-  </mat-error>
-  <mat-error *ngIf="coverImgCtrl.errors?.['pattern']">
-    Please enter a valid URL (must start with http:// or https://)
-  </mat-error>
+        <mat-error *ngIf="coverImgCtrl.invalid && coverImgCtrl.touched">Cover Image URL is required</mat-error>
       </mat-form-field>
-      <p>{{ data.message }}</p>
+      <p>{{ this.message() }}</p>
       <div mat-dialog-content id="btn-div">
         <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
-        <button mat-button id="next-btn" type="submit" type="submit"
-          [disabled]="addComicForm.invalid">Next</button>
+        <button mat-button id="next-btn" type="submit" type="submit" [disabled]="addComicForm1.invalid">Next</button>
+      </div>
+    </form>
+    <!--Step2 form-->
+    <div id="step2-form" *ngIf="this.stepState() === 2">
+      <div id="add-comic-container">
+        <div id="add-comic-btn-container">
+          <p>Add To Collection</p>
+          <button mat-icon-button color="primary" (click)="addComic()">
+            <mat-icon>add_circle</mat-icon>
+          </button>
+        </div>
+        <div id="add-wishlist-btn-container">
+          <p>Add To Wishlist</p>
+          <button mat-icon-button color="primary" (click)="addWishlist()">
+            <mat-icon>favorite</mat-icon>
+          </button>
+        </div>
+      </div>
+      <div mat-dialog-content id="btn-div">
+        <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
+      </div>
+    </div>
+    <!--Step3 form-->
+    <form #addComicForm3="ngForm" (ngSubmit)="onSubmitForm3(addComicForm3)" novalidate *ngIf="this.stepState() === 3">
+      <p>How do you rate this comic on a scale of five?</p>
+      <mat-form-field appearance="fill">
+        <mat-label>Art rate</mat-label>
+        <input matInput type="number" name="artRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Story rate</mat-label>
+        <input matInput type="number" name="storyRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5"/>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Panel positions, easy to read rate</mat-label>
+        <input matInput type="number" name="panelRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5"/>
+      </mat-form-field>
+      <p>{{ this.message() }}</p>
+      <mat-form-field appearance="fill">
+        <mat-label>What did you like</mat-label>
+        <input matInput type="text-area" name="positiveDescription" ngModel #titleCtrl="ngModel" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>What did you NOT like</mat-label>
+        <input matInput type="text-area" name="negativeDescription" ngModel #titleCtrl="ngModel" />
+      </mat-form-field>
+      <div mat-dialog-content id="btn-div">
+        <button mat-button id="next-btn" type="submit" [disabled]="addComicForm3.invalid">Finish</button>
       </div>
     </form>
   </div>

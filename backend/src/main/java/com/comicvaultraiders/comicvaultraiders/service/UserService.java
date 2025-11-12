@@ -139,7 +139,7 @@ public class UserService implements UserDetailsService {
     }
 
     @Transactional
-    public UserXComicsDto addUserComics(Long userId, Comic comic) {
+    public UserXComicsDto addUserComics(Long userId, Comic comic, UserXComics newComic) {
         UserXComics userXComics = new UserXComics();
         Optional<User> user = getUserById(userId);
         if(user.isPresent()){
@@ -148,10 +148,12 @@ public class UserService implements UserDetailsService {
             throw new EntityNotFoundException();
         }
         userXComics.setComic(comic);
-        userXComics.setArtRate(0L);
-        userXComics.setPanelRate(0L);
-        userXComics.setStoryRate(0L);
-        userXComics.setWishlisted(false);
+        userXComics.setArtRate(newComic.getArtRate()==null ? 0L : newComic.getArtRate());
+        userXComics.setPanelRate(newComic.getPanelRate()==null ? 0L : newComic.getPanelRate());
+        userXComics.setStoryRate(newComic.getStoryRate()==null ? 0L : newComic.getStoryRate());
+        userXComics.setWishlisted(newComic.getWishlisted()==null ? false : newComic.getWishlisted());
+        userXComics.setPositiveDescription(newComic.getPositiveDescription()==null ? "" : newComic.getPositiveDescription());
+        userXComics.setNegativeDescription(newComic.getNegativeDescription()==null ? "" : newComic.getNegativeDescription());
         UserXComics saveUserComic = userXComicsRepo.save(userXComics);
         return new UserXComicsDto(saveUserComic);
     }

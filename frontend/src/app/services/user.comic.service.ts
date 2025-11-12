@@ -22,16 +22,18 @@ export class UserComicsService {
         return this.http.delete(`${this.userBaseApipiUrl}/comics/${comicId}`, { headers });
     }
 
-    addUserComicApi(comicId: String): Observable<any> {
+    addUserComicApi(comicId: String, usercomic: UserComic): Observable<any> {
         const token = this.userService.getToken();
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`,
         });
-        return this.http.post(`${this.userBaseApipiUrl}/comic/${comicId}`, null, { headers });
+        return this.http.post(`${this.userBaseApipiUrl}/comic/${comicId}`, usercomic, { headers });
     }
 
     protected userComics = signal<UserComic[]>([]);
+    protected userWishlistedComics = signal<UserComic[]>([]);
 
+    //user collected comics methods
     setComicsObject(newComics: UserComic[]) {
         this.userComics.set(newComics);
     }
@@ -50,5 +52,26 @@ export class UserComicsService {
 
     getComicObjectCount() {
         return this.userComics().length;
+    }
+
+    //wishlisted comics methods
+    setWishlistedComicsObject(newComics: UserComic[]) {
+        this.userWishlistedComics.set(newComics);
+    }
+
+    addWishlistedComicObject(comic: UserComic) {
+        this.userWishlistedComics.update(cs => [...cs, comic]);
+    }
+
+    removeWishlistedComicObject(comicToRemove: UserComic) {
+        this.userWishlistedComics.update(cs => cs.filter(c => c.comic.id !== comicToRemove.comic.id));
+    }
+
+    getWishlistedComicsObject() {
+        return this.userWishlistedComics();
+    }
+
+    getWishlistedComicObjectCount() {
+        return this.userWishlistedComics().length;
     }
 }

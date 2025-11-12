@@ -6,5 +6,18 @@
 
     display: flex;
     margin: auto;
+    background-size: cover;
+
+    @media (max-width: 767px) {
+        height: 200px;
+        width: 250px;
+
+    }
+
+        @media (min-width: 768px) and (max-width: 1440px) {
+        height: 400px;
+        width: 500px;
+
+    }
 
 }

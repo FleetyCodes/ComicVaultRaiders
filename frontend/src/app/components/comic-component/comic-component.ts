@@ -1,9 +1,10 @@
-import { Component, Input, signal } from "@angular/core";
+import { Component, inject, Input, signal } from "@angular/core";
 import { Comic } from "../../models/comic";
 import { MatIconModule } from "@angular/material/icon";
 import { MatButtonModule } from "@angular/material/button";
-import { UserComicsService } from "../../services/user.comic.service";
 import { CommonModule } from "@angular/common";
+import { MatDialog } from "@angular/material/dialog";
+import { addComicComponent } from "../add-comic-dialog/add-comic.component";
 
 @Component({
   selector: 'app-comic',
@@ -13,22 +14,27 @@ import { CommonModule } from "@angular/common";
 })
 export class ComicComponent {
 
-  constructor(private userComicsService: UserComicsService) { }
+  constructor() { }
 
   @Input() comic!: Comic;
   
+  private dialog = inject(MatDialog);
   protected comicAdded = signal<boolean>(false);
 
   addComic() {
-    this.userComicsService.addUserComicApi(String(this.comic.id)).subscribe({
-      next: (response) => {
-        this.userComicsService.addComicObject(response);
-        this.comicAdded.set(true);
+    const dialogRef = this.dialog.open(addComicComponent, {
+      disableClose: true,
+      autoFocus: false,
+      data: {
+        step: 2,
+        comicParam: this.comic,
+        onAddComic: () => this.setComicAdded(true),
       },
-      error: (err) => {
-        console.error('Error adding comic:', err);
-      }
     });
+  }
+
+  setComicAdded(added: boolean) {
+    this.comicAdded.set(added);
   }
 
 }

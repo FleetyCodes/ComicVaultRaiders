@@ -7,7 +7,8 @@
   margin: 8px;
   display: inline-block;
   vertical-align: top;
-
+  min-height: 420px;
+  
   img {
     width: 100%;
     height: 230px;
@@ -24,8 +25,8 @@
     .mat-icon {
       font-weight: 900;
       font-size: 26px;
-      top: -7px;
-      right: 7px;
+      top: -8px;
+      right: 8px;
     }
   }
 

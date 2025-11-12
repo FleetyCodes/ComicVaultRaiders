@@ -14,7 +14,7 @@ import { UserComicComponent } from "../../components/comic-component/user-comic/
 import { ComicComponent } from "../../components/comic-component/comic-component";
 import { UserComicsService } from "../../services/user.comic.service";
 import { MatDialog } from "@angular/material/dialog";
-import { setupWizardComponent } from "../../components/add-comic-dialog/add-comic.component";
+import { addComicComponent } from "../../components/add-comic-dialog/add-comic.component";
 
 
 @Component({
@@ -63,7 +63,10 @@ export class MyComicsPageComponent implements OnInit {
 
         this.userService.getUserComics().subscribe({
             next: (response: UserComic[]) => {
-                this.userComicService.setComicsObject(response);
+                const filteredComicsWithoutWishlisted = response.filter( uc => !uc.wishlisted);
+                const filteredWishlistedComics = response.filter( uc => uc.wishlisted);
+                this.userComicService.setComicsObject(filteredComicsWithoutWishlisted);
+                this.userComicService.setWishlistedComicsObject(filteredWishlistedComics);
                 if (this.userComicService.getComicObjectCount() > 0) {
                     this.hasComics.set(true);
                     this.yourComicsTitle.set('Your Comics');
@@ -89,7 +92,8 @@ export class MyComicsPageComponent implements OnInit {
         if (this.searchKeyword().trim().length > 2) {
             this.comicService.getComicsBySearchable(this.pageNumber(), this.searchKeyword()).subscribe(response => {
                 const ownedIds = new Set(this.userComicService.getComicsObject().map(u => u.comic.id));
-                this.searchedComics.set(response.content.filter(c => !ownedIds.has(c.id)));
+                const wishlistedIds = new Set(this.userComicService.getWishlistedComicsObject().map(u => u.comic.id));
+                this.searchedComics.set(response.content.filter(c => !ownedIds.has(c.id) && !wishlistedIds.has(c.id)));
                 if (this.searchedComics().length === 0) {
                     this.searchErrMg.set("Haven't found any comics with this parameter");
                     this.showNotFoundError.set(true);
@@ -140,11 +144,11 @@ export class MyComicsPageComponent implements OnInit {
 
 
     createComic() {
-        const dialogRef = this.dialog.open(setupWizardComponent, {
+        const dialogRef = this.dialog.open(addComicComponent, {
             disableClose: true,
-            data: {
-                title: 'Add New Comic - Step 1',
-                message: 'By clicking "Next" you will add the Comic to the system.',
+            autoFocus: false,
+             data: {
+                step: 1,
             },
         });
     }

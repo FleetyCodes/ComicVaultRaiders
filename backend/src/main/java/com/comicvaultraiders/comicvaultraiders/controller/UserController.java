@@ -1,8 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
-import com.comicvaultraiders.comicvaultraiders.modell.RefreshToken;
-import com.comicvaultraiders.comicvaultraiders.modell.User;
+import com.comicvaultraiders.comicvaultraiders.modell.*;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
@@ -138,7 +136,7 @@ public class UserController {
     }
 
     @PostMapping("/comic/{comicId}")
-    public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId){
+    public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId, @RequestBody UserXComics userComic){
         String jwt = "";
         if (authHeader != null && authHeader.startsWith("Bearer ")) {
             jwt = authHeader.substring(7);
@@ -147,7 +145,7 @@ public class UserController {
             Long userId = userService.getUserId(jwt);
             Optional<Comic> comic = comicService.getComicById(comicId);
             if(comic.isPresent()){
-                return ResponseEntity.ok(userService.addUserComics(userId, comic.get()));
+                return ResponseEntity.ok(userService.addUserComics(userId, comic.get(), userComic));
             }else{
                 return ResponseEntity.badRequest().body("Invalid Comic");
             }
