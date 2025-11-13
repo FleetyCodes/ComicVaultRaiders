@@ -117,16 +117,7 @@ public class UserController {
 
     @GetMapping("/comics")
     public ResponseEntity<?> getUserComics(@RequestHeader("Authorization") String authHeader) {
-        String jwt = "";
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
-        }
-        if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
-            Long userId = userService.getUserId(jwt);
-            return ResponseEntity.ok(userService.getUserComics(userId));
-        }else{
-            return ResponseEntity.badRequest().body("Invalid JWT");
-        }
+        return ResponseEntity.ok(userService.getUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromheader(authHeader))));
     }
 
     @DeleteMapping("/comics/{comicId}")
@@ -137,21 +128,7 @@ public class UserController {
 
     @PostMapping("/comic/{comicId}")
     public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId, @RequestBody UserXComics userComic){
-        String jwt = "";
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
-        }
-        if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
-            Long userId = userService.getUserId(jwt);
-            Optional<Comic> comic = comicService.getComicById(comicId);
-            if(comic.isPresent()){
-                return ResponseEntity.ok(userService.addUserComics(userId, comic.get(), userComic));
-            }else{
-                return ResponseEntity.badRequest().body("Invalid Comic");
-            }
-        }else{
-            return ResponseEntity.badRequest().body("Invalid JWT");
-        }
+        return ResponseEntity.ok(userService.addUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromheader(authHeader)),userComic.getComic(), userComic));
     }
 
 }

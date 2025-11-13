@@ -72,6 +72,7 @@ export class addComicComponent implements OnInit {
     const comic = {
       ...form.value,
       wishlisted: false,
+      comic: this.newComic()!,
     };
     if (comic && this.newComic()) {
       this.userComicsService.addUserComicApi(String(this.newComic()?.id), comic).subscribe({

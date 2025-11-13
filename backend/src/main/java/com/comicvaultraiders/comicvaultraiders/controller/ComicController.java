@@ -47,16 +47,7 @@ public class ComicController {
 
     @GetMapping("/exceptUser/")
     public ResponseEntity<?>  getAllComicsExcludeUsers(@RequestHeader("Authorization") String authHeader){
-        String jwt = "";
-        if (authHeader != null && authHeader.startsWith("Bearer ")) {
-            jwt = authHeader.substring(7);
-        }
-        if (!jwt.isBlank() && jwtUtils.validateJwtToken(jwt)) {
-            return ResponseEntity.ok(comicService.getAllComicsWithoutUsers(jwt));
-        }else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid JWT");
-            //return ResponseEntity.badRequest().body("Invalid JWT");
-        }
+        return ResponseEntity.ok(comicService.getAllComicsWithoutUsers(jwtUtils.getJwtFromheader(authHeader)));
     }
 
     @PostMapping

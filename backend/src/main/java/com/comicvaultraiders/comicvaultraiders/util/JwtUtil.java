@@ -4,7 +4,10 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
@@ -47,6 +50,17 @@ public class JwtUtil {
                 .setSigningKey(key).build()
                 .parseClaimsJws(token)
                 .getBody().get("userId", Long.class);
+    }
+
+    public String getJwtFromheader(String headerString){
+        String jwt = "";
+        if (headerString != null && headerString.startsWith("Bearer ")) {
+            jwt = headerString.substring(7);
+        }
+        if (!jwt.isBlank() && validateJwtToken(jwt)) {
+            return jwt;
+        }
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid JWT");
     }
 
     // Validate JWT token
