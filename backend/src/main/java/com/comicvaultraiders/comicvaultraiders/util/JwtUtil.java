@@ -23,13 +23,15 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
     // Generate JWT token
-    public String generateToken(String username) {
-        return Jwts.builder()
+    public String generateToken(String username, Long userId) {
+        String token = Jwts.builder()
                 .setSubject(username)
+                .claim("userId", userId)
                 .setIssuedAt(new Date())
                 .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
+        return token;
     }
     // Get username from JWT token
     public String getUsernameFromToken(String token) {
@@ -39,6 +41,14 @@ public class JwtUtil {
                 .getBody()
                 .getSubject();
     }
+
+    public Long getUserIdFromToken(String token) {
+        return Jwts.parser()
+                .setSigningKey(key).build()
+                .parseClaimsJws(token)
+                .getBody().get("userId", Long.class);
+    }
+
     // Validate JWT token
     public boolean validateJwtToken(String token) {
         try {

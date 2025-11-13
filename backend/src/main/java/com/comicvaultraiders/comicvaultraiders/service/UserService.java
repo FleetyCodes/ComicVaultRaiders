@@ -124,13 +124,7 @@ public class UserService implements UserDetailsService {
 
     public Long getUserId(String token) {
         jwtUtils.validateJwtToken(token);
-        String username = jwtUtils.getUsernameFromToken(token);
-        Optional<User> user = userRepository.findByUsername(username);
-        if(user.isPresent()){
-            return user.get().getId();
-        }else{
-            throw new UsernameNotFoundException("User Not Found with username: " + username);
-        }
+         return jwtUtils.getUserIdFromToken(token);
     }
 
     @Transactional
