@@ -18,14 +18,41 @@
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label>Issue Number</mat-label>
-        <input matInput type="number" name="issueNumber" ngModel #issueNumberCtrl="ngModel" />
+        <mat-label>Illustrator(s)</mat-label>
+        <input matInput type="text" name="illustrator" ngModel required #illustratorCtrl="ngModel" />
+        <mat-error *ngIf="illustratorCtrl.invalid && illustratorCtrl.touched">Illustrator is required
+        </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
-        <mat-label>Release Date</mat-label>
+        <mat-label>Format</mat-label>
+        <mat-select name="format" [(ngModel)]="selectedFormat" required #formatCtrl="ngModel">
+          <mat-option *ngFor="let format of comicFormats" [value]="format">
+            {{ format }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formatCtrl.invalid && formatCtrl.touched">
+          Format is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Issue Number</mat-label>
+        <input matInput type="number" name="issueNumber" ngModel #issueNumberCtrl="ngModel" min="0" />
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Publisher</mat-label>
+        <mat-select name="publisher" [(ngModel)]="selectedPublisher" required #publisherCtrl="ngModel">
+          <mat-option *ngFor="let publisher of publishers" [value]="publisher">
+            {{ publisher }}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="publisherCtrl.invalid && publisherCtrl.touched">
+          Publisher is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>Publication date</mat-label>
         <input matInput type="date" name="releaseDate" ngModel required #releaseDateCtrl="ngModel" />
-        <mat-error *ngIf="releaseDateCtrl.invalid && releaseDateCtrl.touched">
-          Release Date is required
+        <mat-error *ngIf="releaseDateCtrl.invalid && releaseDateCtrl.touched">Publication date is required
         </mat-error>
       </mat-form-field>
       <mat-form-field appearance="fill">
@@ -69,11 +96,11 @@
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Story rate</mat-label>
-        <input matInput type="number" name="storyRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5"/>
+        <input matInput type="number" name="storyRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5" />
       </mat-form-field>
       <mat-form-field appearance="fill">
         <mat-label>Panel positions, easy to read rate</mat-label>
-        <input matInput type="number" name="panelRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5"/>
+        <input matInput type="number" name="panelRate" ngModel #issueNumberCtrl="ngModel" min="0" max="5" />
       </mat-form-field>
       <p>{{ this.message() }}</p>
       <mat-form-field appearance="fill">

@@ -9,16 +9,19 @@ import { MatInputModule } from "@angular/material/input";
 import { ComicService } from "../../services/comic.service";
 import { UserComicsService } from "../../services/user.comic.service";
 import { Comic } from "../../models/comic";
+import { ComicPublishersEnum } from "../../models/comic.publishers.enum";
+import { ComicFormatsEnum } from "../../models/comic.formats.enum";
+import { MatSelectModule } from '@angular/material/select';
+
 
 @Component({
   selector: 'setup-wizard',
   standalone: true,
   templateUrl: './add-comic.component.html',
   styleUrls: ['./add-comic.component.scss'],
-  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule,]
+  imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatSelectModule, ]
 })
 export class addComicComponent implements OnInit {
-
 
   constructor(private userComicsService: UserComicsService, private comicService: ComicService, private dialogRef: MatDialogRef<addComicComponent>, @Inject(MAT_DIALOG_DATA) public data: { step: number, comicParam: Comic, onAddComic?: () => void },) { }
 
@@ -26,6 +29,10 @@ export class addComicComponent implements OnInit {
   protected newComic = signal<Comic | null>(null);
   protected title = computed(() => `Add New Comic - Step ${this.stepState()}`);
   protected message = signal<string>('');
+  publishers = Object.values(ComicPublishersEnum);
+  comicFormats = Object.values(ComicFormatsEnum);
+  selectedPublisher?: string;
+  selectedFormat?: string;
 
   ngOnInit() {
     if (this.data.comicParam) {

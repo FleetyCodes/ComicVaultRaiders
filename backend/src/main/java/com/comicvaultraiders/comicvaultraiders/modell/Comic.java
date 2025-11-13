@@ -34,8 +34,17 @@ public class Comic {
     @Column(name = "author")
     private String author;
 
+    @Column(name = "illustrator")
+    private String illustrator;
+
     @Column(name = "issue_number")
     private Long issueNumber;
+
+    @Column(name = "publisher")
+    private String publisher;
+
+    @Column(name = "format")
+    private String format;
 
     @Column(name = "release_date")
     private ZonedDateTime releaseDate;
