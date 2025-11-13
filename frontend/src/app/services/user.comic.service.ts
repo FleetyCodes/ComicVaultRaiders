@@ -13,7 +13,6 @@ export class UserComicsService {
 
     private userBaseApipiUrl = 'http://localhost:8080/v1/user';
 
-
     removeUserComicApi(comicId: String): Observable<any> {
         const token = this.userService.getToken();
         const headers = new HttpHeaders({
@@ -28,6 +27,16 @@ export class UserComicsService {
             'Authorization': `Bearer ${token}`,
         });
         return this.http.post(`${this.userBaseApipiUrl}/comic/${comicId}`, usercomic, { headers });
+    }
+
+    
+
+    getUserComicsApi(): Observable<UserComic[]> {
+        const token = this.userService.getToken();
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+        return this.http.get<UserComic[]>(`${this.userBaseApipiUrl}/comics`, { headers });
     }
 
     protected userComics = signal<UserComic[]>([]);

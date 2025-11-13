@@ -61,7 +61,7 @@ export class MyComicsPageComponent implements OnInit {
             }
         });
 
-        this.userService.getUserComics().subscribe({
+        this.userComicService.getUserComicsApi().subscribe({
             next: (response: UserComic[]) => {
                 const filteredComicsWithoutWishlisted = response.filter( uc => !uc.wishlisted);
                 const filteredWishlistedComics = response.filter( uc => uc.wishlisted);

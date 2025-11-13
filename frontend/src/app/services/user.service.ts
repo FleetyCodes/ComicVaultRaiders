@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { UserComic } from '../models/user-comic';
 
 
 export interface RegisterRequest {
@@ -71,15 +70,6 @@ export class UserService {
         this.cookieService.delete('token', '/');
     }
 
-
-    getUserComics(): Observable<UserComic[]> {
-        const token = this.getToken();
-        const headers = new HttpHeaders({
-            'Authorization': `Bearer ${token}`,
-        });
-        return this.http.get<UserComic[]>(`${this.apiUrl}/comics`, { headers });
-    }
-
     isLeftSidedNavbar(): boolean {
         const isLeft = this.cookieService.get('isLeftSidedNavbar');
         if (isLeft === null || isLeft === 'true' || isLeft === '') {
@@ -87,7 +77,6 @@ export class UserService {
         } else {
             return false;
         }
-
     }
 
     setLeftSidedNavbar(isLeft: boolean) {
