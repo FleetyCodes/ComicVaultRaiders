@@ -5,6 +5,7 @@ import com.comicvaultraiders.comicvaultraiders.repository.RefreshTokenRepository
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.util.Optional;
@@ -41,5 +42,10 @@ public class RefreshTokenService {
 
     public void delete(RefreshToken token) {
         refreshTokenRepository.delete(token);
+    }
+
+    @Transactional
+    public void deleteAllByUserId(Long userID){
+        refreshTokenRepository.deleteAllByUserId(userID);
     }
 }

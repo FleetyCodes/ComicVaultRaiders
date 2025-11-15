@@ -1,7 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
 import com.comicvaultraiders.comicvaultraiders.modell.*;
-import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
@@ -17,21 +16,19 @@ import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("v1/user")
 public class UserController {
 
-    public UserController(UserService userService, ComicService comicService, RefreshTokenService refreshTokenService, JwtUtil jwtUtils) {
+    public UserController(UserService userService, RefreshTokenService refreshTokenService, JwtUtil jwtUtils) {
         this.userService = userService;
-        this.comicService = comicService;
         this.refreshTokenService = refreshTokenService;
         this.jwtUtils = jwtUtils;
     }
 
     private final UserService userService;
-    private final ComicService comicService;
+
     private final RefreshTokenService refreshTokenService;
     private final JwtUtil jwtUtils;
 
@@ -40,6 +37,7 @@ public class UserController {
     public ResponseEntity<Object> login(@RequestBody User user, HttpServletResponse response) {
         User loggedIn = userService.login(user);
         if (loggedIn != null) {
+            refreshTokenService.deleteAllByUserId(loggedIn.getId());
             RefreshToken refreshToken = refreshTokenService.createRefreshToken(loggedIn.getId());
             ResponseCookie cookie = ResponseCookie.from("refreshToken", refreshToken.getToken())
                     .httpOnly(true)
@@ -127,7 +125,7 @@ public class UserController {
     }
 
     @PostMapping("/comic/{comicId}")
-    public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @PathVariable Long comicId, @RequestBody UserXComics userComic){
+    public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @RequestBody UserXComics userComic){
         return ResponseEntity.ok(userService.addUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromheader(authHeader)),userComic.getComic(), userComic));
     }
 

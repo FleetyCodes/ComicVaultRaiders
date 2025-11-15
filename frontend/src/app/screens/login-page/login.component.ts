@@ -17,14 +17,13 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     standalone: true,
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatProgressSpinnerModule],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatProgressSpinnerModule,],
 })
 
 export class LoginComponent {
     
-    constructor(private router: Router, private userService: UserService, private helloService: HelloService,) { }
-
-    private dialog = inject(MatDialog);
+    constructor(private router: Router, private userService: UserService, private helloService: HelloService, private dialog: MatDialog) { }
+    
     protected isLoading = signal<boolean>(false);
 
     goBack() {
@@ -35,35 +34,8 @@ export class LoginComponent {
     onSubmit(form: NgForm) {
         if (form.valid) {
             this.isLoading.set(true);
-            this.userService.login(form.value).subscribe({
-                next: (res: any) => {
-                    this.userService.setToken(res.token);
-                    this.helloService.getHello().subscribe({
-                        //this.helloService.getAllComics().subscribe({
-                        next: (response) => {
-                            this.isLoading.set(false);
-                            this.helloService.setHelloTestMessage(response);
-                        },
-                        error: (err) => {
-                            this.isLoading.set(false);
-                            console.error('Error:', err);
-                            this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
-                        }
-                    });
-                    this.router.navigate(['/logged-in']);
-                },
-                error: (err: any) => {
-                    console.error(err);
-                    this.isLoading.set(false);
-                    const dialogRef = this.dialog.open(basicDialog, {
-                        data: {
-                            title: 'Login failed',
-                            message: 'User not found or incorrect password. Please try again.',
-                            isWarningPopup: false
-                        },
-                    });
-                }
-            });
+            this.userService.login(form.value, this.router, this.dialog);
+            this.isLoading.set(false);
         }
     }
 }

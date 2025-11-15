@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UserService } from '../../services/user.service';
 import { IdleService } from '../../services/idle.service';
 import { Router } from '@angular/router';
@@ -22,15 +22,12 @@ import { MatInputModule } from '@angular/material/input';
 export class loginDialog {
 
   readonly dialogRef = inject(MatDialogRef<loginDialog>, { optional: true });
+  private dialog = inject(MatDialog);
   private userService = inject(UserService);
   private idleService = inject(IdleService);
   private router = inject(Router);
   protected isLoading = signal<boolean>(false);
 
-
-  ngOnDestroy(): void {
-    this.cancelClick();
-  }
 
   cancelClick() {
     this.isLoading.set(true);
@@ -47,16 +44,9 @@ export class loginDialog {
       //TODO: change to refresh token api call
       //TODO: add loading spinner
       //TODO: open login popup, after 2 unsuccessful tries redirect to login page
-      var loginAttempts = 0;
-
-      this.userService.login(form.value).subscribe({
-        next: (res: any) => {
-          this.userService.setToken(res.token);
-          this.idleService.startIdleTimer();
-          this.dialogRef?.close();
-        },
-        error: (err: any) => console.error(err)
-      });
+      //var loginAttempts = 0;
+      this.userService.login(form.value, this.router, this.dialog);
+      this.dialogRef?.close();
     } else {
       //handle invalid auth
     }

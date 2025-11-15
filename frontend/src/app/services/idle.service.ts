@@ -29,7 +29,7 @@ export class IdleService {
 
   private IdleTimeOver() {
         const dialogRef = this.dialog.open(loginDialog, {
-
+          disableClose: true,
     });
   }
 

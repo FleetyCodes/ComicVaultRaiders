@@ -6,5 +6,6 @@ export enum ComicFormatsEnum {
     COMPACT_COMICS = 'Compact Comics Edition',
     OMNIBUS = 'Omnibus',
     COMPENDIUM = 'Compendium',
-    OTHER = 'Other'
+    BOX_SET = 'Box Set',
+    OTHER = 'Other',
 }

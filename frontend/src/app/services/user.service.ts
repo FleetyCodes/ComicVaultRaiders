@@ -1,7 +1,11 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import { basicDialog } from '../components/basic-dialog/basic-dialog';
+import { IdleService } from './idle.service';
 
 
 export interface RegisterRequest {
@@ -27,7 +31,7 @@ export class UserService {
 
     private apiUrl = 'http://localhost:8080/v1/user';
 
-    constructor(private http: HttpClient, private cookieService: CookieService) { }
+    constructor(private http: HttpClient, private cookieService: CookieService, private idleService: IdleService) { }
 
     
     register(data: RegisterRequest): Observable<any> {
@@ -35,16 +39,37 @@ export class UserService {
     }
 
 
-    login(data: LoginRequest): Observable<LoginResponse> {
+    loginApi(data: LoginRequest): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data, {withCredentials: true});
     }
+
+    login(data: LoginRequest, router: Router, dialog: MatDialog): void {
+        this.loginApi(data).subscribe({
+            next: (res: any) => {
+                this.setToken(res.token);
+                this.idleService.startIdleTimer();
+                router.navigate(['/logged-in']);
+            },
+            error: (err: any) => {
+                console.error(err);
+                const dialogRef = dialog.open(basicDialog, {
+                    data: {
+                        title: 'Login failed',
+                        message: 'User not found or incorrect password. Please try again.',
+                        isWarningPopup: false
+                    },
+                });
+            }
+        });
+    }
+
 
     logOut(): Observable<any> {
         const token = this.getToken();
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`,
         });
-        return this.http.post(`${this.apiUrl}/logout`, null, {headers, withCredentials:true});
+        return this.http.post(`${this.apiUrl}/logout`, {}, {headers, withCredentials:true,  responseType: 'text'});
     }
 
     refreshJwtToken(): Observable<LoginResponse> {

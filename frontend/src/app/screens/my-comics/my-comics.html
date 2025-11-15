@@ -3,12 +3,13 @@
     <div class="content">
       <div id="">
         <br />
-        <h1 [ngClass]="[this.userComicService.getComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{yourComicsTitle()}}</h1>
+        <h1 [ngClass]="[userComicService.getComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{ userComicService.getComicObjectCount() > 0 ? 'Your Comics' : 'You haven\'t added any comics yet' }}</h1>
         <br />
-        <div *ngIf="this.userComicService.getComicObjectCount() > 0" class="comics-container">
-          <app-user-comic *ngFor="let comic of this.userComicService.getComicsObject()" [userComic]="comic"></app-user-comic>
+        <div *ngIf="userComicService.getComicObjectCount() > 0" class="comics-container">
+          <app-user-comic *ngFor="let comic of userComicService.getComicsObject()" [userComic]="comic"></app-user-comic>
         </div>
         <br />
+        <h1>Your shelfies</h1>
         <div id="add-container">
           <h1>Add new titles to your collection</h1>
           <p>add a horizontal scrolling thing here</p>
@@ -33,6 +34,7 @@
           <p>If you can't find it, you can be the first who uploads this comic to the app, Woohoo!</p>
           <button mat-raised-button id="add-new-btn" color="primary" (click)="createComic()">Add New Comic</button>
         </div>
+        <h1>Upload your shelfies</h1>
       </div>
     </div>
   </div>

@@ -5,6 +5,7 @@ import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
+import com.comicvaultraiders.comicvaultraiders.repository.RefreshTokenRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
@@ -52,8 +53,10 @@ public class UserService implements UserDetailsService {
             if(userRepository.findByUsername(encryptedUsername).isPresent()){
                 throw new UserAlreadyExistsException("User already exists");
             }
-            String encryptedEmail = encryptionUtil.encrypt(user.getEmail(), encryptionUtil.getSecretKeyString());
-            user.setEmail(encryptedEmail);
+            if(user.getEmail()!=null){
+                String encryptedEmail = encryptionUtil.encrypt(user.getEmail(), encryptionUtil.getSecretKeyString());
+                user.setEmail(encryptedEmail);
+            }
             user.setConfirmed(false);
             user.setDeleted(false);
             user.setRegDate(ZonedDateTime.now(ZoneId.of("UTC")));

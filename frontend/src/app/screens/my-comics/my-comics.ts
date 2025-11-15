@@ -36,7 +36,6 @@ export class MyComicsPageComponent implements OnInit {
 
     protected allComicsExcludeUser = signal<Comic[]>([]);
     protected hasComics = signal<boolean>(false);
-    protected yourComicsTitle = signal<string>('You haven\'t added any comics yet');
 
     protected searchedComics = signal<Comic[]>([]);
     protected totalElements = signal<number>(0);
@@ -69,7 +68,6 @@ export class MyComicsPageComponent implements OnInit {
                 this.userComicService.setWishlistedComicsObject(filteredWishlistedComics);
                 if (this.userComicService.getComicObjectCount() > 0) {
                     this.hasComics.set(true);
-                    this.yourComicsTitle.set('Your Comics');
                 }
             },
             error: (err) => {
@@ -152,5 +150,4 @@ export class MyComicsPageComponent implements OnInit {
             },
         });
     }
-
 }
