@@ -5,7 +5,6 @@ import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.User;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
-import com.comicvaultraiders.comicvaultraiders.repository.RefreshTokenRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
@@ -47,7 +46,6 @@ public class UserService implements UserDetailsService {
         try{
             String encodedPassword = passwordEncoder.encode(user.getPassword());
             user.setPassword(encodedPassword);
-
             String encryptedUsername = encryptionUtil.encrypt(user.getUsername(), encryptionUtil.getSecretKeyString());
             user.setUsername(encryptedUsername);
             if(userRepository.findByUsername(encryptedUsername).isPresent()){
@@ -95,23 +93,28 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username){
-        User user = userRepository.findByUsername(username).get();
-        if (user == null) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if(user.isPresent()){
+            return new org.springframework.security.core.userdetails.User(
+                    user.get().getUsername(),
+                    user.get().getPassword(),
+                    Collections.emptyList()
+            );
+        }else{
             throw new UsernameNotFoundException("User Not Found with username: " + username);
         }
-        return new org.springframework.security.core.userdetails.User(
-                user.getUsername(),
-                user.getPassword(),
-                Collections.emptyList()
-        );
     }
 
     @Transactional
     public void deleteUser(Long id) {
-        User user = userRepository.findById(id).get();
-        user.setDeleted(true);
-        user.setDeleteDate(ZonedDateTime.now(ZoneId.of("UTC")));
-        userRepository.save(user);
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent()){
+            user.get().setDeleted(true);
+            user.get().setDeleteDate(ZonedDateTime.now(ZoneId.of("UTC")));
+            userRepository.save(user.get());
+        }else {
+            throw new UsernameNotFoundException("User not found");
+        }
     }
 
     public List<UserXComicsDto> getUserComics(Long userId) {
@@ -148,7 +151,7 @@ public class UserService implements UserDetailsService {
         userXComics.setArtRate(newComic.getArtRate()==null ? 0L : newComic.getArtRate());
         userXComics.setPanelRate(newComic.getPanelRate()==null ? 0L : newComic.getPanelRate());
         userXComics.setStoryRate(newComic.getStoryRate()==null ? 0L : newComic.getStoryRate());
-        userXComics.setWishlisted(newComic.getWishlisted()==null ? false : newComic.getWishlisted());
+        userXComics.setWishlisted(newComic.getWishlisted()!=null && newComic.getWishlisted());
         userXComics.setPositiveDescription(newComic.getPositiveDescription()==null ? "" : newComic.getPositiveDescription());
         userXComics.setNegativeDescription(newComic.getNegativeDescription()==null ? "" : newComic.getNegativeDescription());
         UserXComics saveUserComic = userXComicsRepo.save(userXComics);

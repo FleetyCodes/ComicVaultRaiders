@@ -1,9 +1,11 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.modell.RefreshToken;
+import com.comicvaultraiders.comicvaultraiders.modell.User;
 import com.comicvaultraiders.comicvaultraiders.repository.RefreshTokenRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,10 +28,14 @@ public class RefreshTokenService {
 
     public RefreshToken createRefreshToken(Long userId) {
         RefreshToken token = new RefreshToken();
-        token.setUser(userRepository.findById(userId).get());
-        token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
-        token.setToken(UUID.randomUUID().toString());
-        return refreshTokenRepository.save(token);
+        Optional<User> user = userRepository.findById(userId);
+        if(user.isPresent()){
+            token.setUser(user.get());
+            token.setExpiryDate(Instant.now().plusMillis(refreshTokenDurationMs));
+            token.setToken(UUID.randomUUID().toString());
+            return refreshTokenRepository.save(token);
+        }
+        throw new UsernameNotFoundException("User not found");
     }
 
     public boolean isTokenExpired(RefreshToken token) {

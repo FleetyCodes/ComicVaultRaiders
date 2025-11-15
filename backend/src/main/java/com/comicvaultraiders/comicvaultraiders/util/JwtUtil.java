@@ -5,7 +5,6 @@ import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -27,14 +26,13 @@ public class JwtUtil {
     }
     // Generate JWT token
     public String generateToken(String username, Long userId) {
-        String token = Jwts.builder()
-                .setSubject(username)
+        return Jwts.builder()
+                .subject(username)
                 .claim("userId", userId)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date((new Date()).getTime() + jwtExpirationMs))
+                .issuedAt(new Date())
+                .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-        return token;
     }
     // Get username from JWT token
     public String getUsernameFromToken(String token) {
@@ -52,7 +50,7 @@ public class JwtUtil {
                 .getBody().get("userId", Long.class);
     }
 
-    public String getJwtFromheader(String headerString){
+    public String getJwtFromHeader(String headerString){
         String jwt = "";
         if (headerString != null && headerString.startsWith("Bearer ")) {
             jwt = headerString.substring(7);

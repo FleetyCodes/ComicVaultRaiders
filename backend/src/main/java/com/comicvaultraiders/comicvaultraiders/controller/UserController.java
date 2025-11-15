@@ -115,7 +115,7 @@ public class UserController {
 
     @GetMapping("/comics")
     public ResponseEntity<?> getUserComics(@RequestHeader("Authorization") String authHeader) {
-        return ResponseEntity.ok(userService.getUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromheader(authHeader))));
+        return ResponseEntity.ok(userService.getUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromHeader(authHeader))));
     }
 
     @DeleteMapping("/comics/{comicId}")
@@ -126,7 +126,7 @@ public class UserController {
 
     @PostMapping("/comic/{comicId}")
     public ResponseEntity<?> addComic(@RequestHeader("Authorization") String authHeader, @RequestBody UserXComics userComic){
-        return ResponseEntity.ok(userService.addUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromheader(authHeader)),userComic.getComic(), userComic));
+        return ResponseEntity.ok(userService.addUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromHeader(authHeader)),userComic.getComic(), userComic));
     }
 
 }
