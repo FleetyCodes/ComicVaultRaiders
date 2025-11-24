@@ -30,7 +30,7 @@ export interface LoginResponse {
 export class UserService {
 
     //private apiUrl = 'http://localhost:8080/v1/user';
-    private apiUrl = 'www.comicvaultraiders.eu/v1/user';
+    private apiUrl = '/v1/user';
 
     constructor(private http: HttpClient, private cookieService: CookieService, private idleService: IdleService) { }
 

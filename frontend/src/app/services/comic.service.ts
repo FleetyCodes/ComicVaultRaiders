@@ -21,7 +21,7 @@ export class ComicService {
     constructor(private http: HttpClient, private userService: UserService) { }
 
     //private apiUrl = 'http://localhost:8080/v1/comic';
-    private apiUrl = 'www.comicvaultraiders.eu/v1/comic';
+    private apiUrl = '/v1/comic';
 
     getAllComicsExcludeUser(): Observable<Comic[]> {
         const token = this.userService.getToken();
