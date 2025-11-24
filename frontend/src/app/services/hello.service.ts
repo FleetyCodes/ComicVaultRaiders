@@ -34,10 +34,7 @@ export class HelloService {
       'Authorization': `Bearer ${token}`,
     });
 
-    return this.http.get('http://localhost:8080/api/hello', { responseType: 'text', headers });
+    return this.http.get('www.comicvaultraiders.eu/api/hello', { responseType: 'text', headers });
   }
 
-  getAllComics(): Observable<string> {
-    return this.http.get('http://localhost:8080/v1/comic', { responseType: 'text' });
-  }
 }
