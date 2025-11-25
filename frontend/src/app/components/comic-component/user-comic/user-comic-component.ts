@@ -38,7 +38,6 @@ export class UserComicComponent {
         this.userComicService.removeComicObject(this.userComic);
       },
       error: (err) => {
-        console.error('Error removing comic:', err);
       }
     });
   }

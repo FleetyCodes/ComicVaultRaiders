@@ -55,7 +55,6 @@ export class MyComicsPageComponent implements OnInit {
                 this.helloService.setHelloTestMessage(response);
             },
             error: (err) => {
-                console.error('Error:', err);
                 this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
             }
         });
@@ -71,7 +70,6 @@ export class MyComicsPageComponent implements OnInit {
                 }
             },
             error: (err) => {
-                console.error('Error:', err);
             }
         });
 
@@ -80,7 +78,6 @@ export class MyComicsPageComponent implements OnInit {
                 this.allComicsExcludeUser.set(response);
             },
             error: (err) => {
-                console.error('Error:', err);
             }
         });
     }

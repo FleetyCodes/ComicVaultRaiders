@@ -64,7 +64,6 @@ export class addComicComponent implements OnInit {
         this.dialogRef.close();
       },
       error: (err) => {
-        console.error('Error adding comic:', err);
       }
     });
   }
@@ -91,7 +90,6 @@ export class addComicComponent implements OnInit {
           this.dialogRef.close();
         },
         error: (err) => {
-          console.error('Error adding comic:', err);
         }
       });
     }
@@ -111,7 +109,6 @@ export class addComicComponent implements OnInit {
           this.stepState.update(step => step + 1);
         },
         error: (err: any) => {
-          console.error(err);
         }
       });
     } else {
