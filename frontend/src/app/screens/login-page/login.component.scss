@@ -18,11 +18,15 @@
 }
 
 #login-button {
-    bottom: 8px;
     height: 57px;
     left: 2px;
 }
 
+@media (min-width: 375px) {
+    #login-button {
+        bottom: 8px;
+    }
+}
 
 #login-button:disabled {
     background-color: #999999;
