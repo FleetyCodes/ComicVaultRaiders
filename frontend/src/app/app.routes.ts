@@ -7,6 +7,7 @@ import { NoAuthGuard } from './no.auth.guard';
 import { AuthGuard } from './auth.guard';
 import { MyComicsPageComponent } from './screens/my-comics/my-comics';
 import { temporaryUnavailableComponent } from './screens/wip-page/temporary-unavailable';
+import { WishlistedComicsPageComponent } from './screens/wishlist-page/wishlist.component';
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, canActivate: [NoAuthGuard] },
@@ -15,5 +16,6 @@ export const routes: Routes = [
   { path: 'logged-in', component: LoggedInPageComponent, canActivate: [AuthGuard] }, 
   { path: 'my-comics', component: MyComicsPageComponent, canActivate: [AuthGuard] },
   { path: 'app-work-in-progress', component: temporaryUnavailableComponent,},
+  { path: 'wishlist-page', component: WishlistedComicsPageComponent, canActivate: [AuthGuard]}
   //{ path: '**', redirectTo: '', pathMatch: 'full' }   // fallback
 ];

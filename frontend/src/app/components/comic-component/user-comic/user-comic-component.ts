@@ -15,7 +15,7 @@ import { UserComicsService } from '../../../services/user.comic.service';
 })
 export class UserComicComponent {
 
-  constructor(private userComicsService: UserComicsService, private userComicService: UserComicsService) { }
+  constructor(private userComicsService: UserComicsService) { }
 
   @Input() userComic!: UserComic;
   
@@ -35,10 +35,9 @@ export class UserComicComponent {
   confirmRemove(): any {
     this.userComicsService.removeUserComicApi(String(this.userComic.id)).subscribe({
       next: () => {
-        this.userComicService.removeComicObject(this.userComic);
+        this.userComicsService.removeComicObject(this.userComic);
+        this.userComicsService.removeWishlistedComicObject(this.userComic);
       },
-      error: (err) => {
-      }
     });
   }
 

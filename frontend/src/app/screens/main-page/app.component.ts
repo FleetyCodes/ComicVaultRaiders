@@ -42,7 +42,7 @@ export class AppComponent implements OnInit {
       next: (response) => {
         this.helloService.setHelloTestMessage(response);
       },
-      error: (err) => {
+      error: () => {
         this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
       }
     });

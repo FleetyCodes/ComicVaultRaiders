@@ -52,7 +52,6 @@ export class UserService {
                 router.navigate(['/logged-in']);
             },
             error: (err: any) => {
-                console.error(err);
                 const dialogRef = dialog.open(basicDialog, {
                     data: {
                         title: 'Login failed',

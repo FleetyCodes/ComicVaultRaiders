@@ -1,0 +1,14 @@
+<main class="main">
+  <div class="content">
+    <div class="content">
+      <div id="">
+        <br />
+        <h1 [ngClass]="[userComicService.getWishlistedComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{ userComicService.getWishlistedComicObjectCount() > 0 ? 'Your Wishlisted Comics' : 'You haven\'t added any comics to your wishlist yet' }}</h1>
+        <br />
+        <div *ngIf="userComicService.getWishlistedComicObjectCount()" class="comics-container">
+          <app-user-comic *ngFor="let comic of userComicService.getWishlistedComicsObject()" [userComic]="comic"></app-user-comic>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
