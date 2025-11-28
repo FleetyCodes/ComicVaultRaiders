@@ -35,8 +35,6 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
 
-
-
     this.helloService.getHello().subscribe({
       //this.helloService.getAllComics().subscribe({
       next: (response) => {
@@ -60,6 +58,10 @@ export class AppComponent implements OnInit {
   setLeftSideNav(isLeft: boolean){ 
     this.userService.setLeftSidedNavbar(isLeft);
     this.isLeftSideNav.set(isLeft);
+  }
+
+  public isMobile(): boolean {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
 }
 

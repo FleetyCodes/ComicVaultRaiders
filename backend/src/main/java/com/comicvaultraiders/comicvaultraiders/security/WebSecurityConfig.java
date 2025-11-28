@@ -16,6 +16,13 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
+
+
 import java.util.List;
 
 @Configuration
@@ -34,6 +41,17 @@ public class WebSecurityConfig {
     @Bean
     public AuthTokenFilter authenticationJwtTokenFilter() {
         return new AuthTokenFilter(jwtUtils, userService);
+    }
+
+    @Bean
+    public OpenAPI customOpenAPI() {
+        return new OpenAPI().components(
+                new Components()
+                        .addSecuritySchemes("BearerAuth", new SecurityScheme()
+                        .type(SecurityScheme.Type.HTTP).scheme("bearer")
+                        .bearerFormat("JWT")))
+                .addSecurityItem(new SecurityRequirement()
+                        .addList("BearerAuth"));
     }
 
     @Bean
@@ -78,7 +96,7 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200", "https://comicvaultraiders.eu","https://www.comicvaultraiders.eu"));
+        configuration.setAllowedOrigins(List.of("https://localhost:4200","http://localhost:4200", "https://comicvaultraiders.eu","https://www.comicvaultraiders.eu"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

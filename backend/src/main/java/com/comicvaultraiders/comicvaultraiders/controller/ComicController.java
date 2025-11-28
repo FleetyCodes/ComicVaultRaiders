@@ -3,6 +3,7 @@ package com.comicvaultraiders.comicvaultraiders.controller;
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
+import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -21,10 +22,12 @@ import java.util.Optional;
 public class ComicController {
 
     private final ComicService comicService;
+    private final GoogleAPIService googleAPIService;
     private final JwtUtil jwtUtils;
 
-    public ComicController(ComicService comicService, JwtUtil jwtUtils) {
+    public ComicController(ComicService comicService, GoogleAPIService googleAPIService, JwtUtil jwtUtils) {
         this.comicService = comicService;
+        this.googleAPIService = googleAPIService;
         this.jwtUtils = jwtUtils;
     }
 
@@ -80,6 +83,11 @@ public class ComicController {
 
         Page<ComicDto> comics = comicService.getFilteredComics(pageable, searchBy);
         return ResponseEntity.ok(comics);
+    }
+
+    @GetMapping("/info/")
+    public ResponseEntity<?>  getComicInfo(@RequestHeader("Authorization") String authHeader, @RequestParam() String barcode){
+        return ResponseEntity.ok(googleAPIService.getComicInfo(barcode));
     }
 
 }

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comic } from '../models/comic';
@@ -20,7 +20,7 @@ export class ComicService {
 
     constructor(private http: HttpClient, private userService: UserService) { }
 
-    //private apiUrl = 'http://localhost:8080/v1/comic';
+//    private apiUrl = 'http://localhost:8080/v1/comic';
     private apiUrl = '/v1/comic';
 
     getAllComicsExcludeUser(): Observable<Comic[]> {
@@ -51,6 +51,17 @@ export class ComicService {
         });
         return this.http.post(`${this.apiUrl}`, comic, { headers });
     }
-    
 
+    getComicInfoByBarcode(barcode: string): Observable<any> {
+        const token = this.userService.getToken();
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+
+        let params = new HttpParams()
+            .set('barcode', barcode)
+
+        return this.http.get<PageResponse<Comic>>(`${this.apiUrl}/info/`, { params, headers });
+    }
+    
 }

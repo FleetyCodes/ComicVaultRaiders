@@ -11,8 +11,8 @@ export class UserComicsService {
 
     constructor(private http: HttpClient, private userService: UserService) { }
 
-    //private userBaseApipiUrl = 'http://localhost:8080/v1/user';
-    private userBaseApipiUrl = '/v1/user';
+    private userBaseApipiUrl = 'http://localhost:8080/v1/user';
+    //private userBaseApipiUrl = '/v1/user';
 
     removeUserComicApi(comicId: String): Observable<any> {
         const token = this.userService.getToken();

@@ -2,7 +2,6 @@ import { CommonModule } from "@angular/common";
 import { Component, inject, OnInit, signal } from "@angular/core";
 import { RouterModule } from "@angular/router";
 import { HelloService } from "../../services/hello.service";
-import { UserService } from "../../services/user.service";
 import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -15,6 +14,8 @@ import { ComicComponent } from "../../components/comic-component/comic-component
 import { UserComicsService } from "../../services/user.comic.service";
 import { MatDialog } from "@angular/material/dialog";
 import { addComicComponent } from "../../components/add-comic-dialog/add-comic.component";
+import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
+import { AppComponent } from "../main-page/app.component";
 
 
 @Component({
@@ -32,7 +33,7 @@ import { addComicComponent } from "../../components/add-comic-dialog/add-comic.c
 
 export class MyComicsPageComponent implements OnInit {
 
-    constructor(private helloService: HelloService, private userService: UserService, private comicService: ComicService, protected userComicService: UserComicsService) { }
+    constructor(private helloService: HelloService, private appComp: AppComponent, private comicService: ComicService, protected userComicService: UserComicsService) { }
 
     protected allComicsExcludeUser = signal<Comic[]>([]);
     protected hasComics = signal<boolean>(false);
@@ -48,6 +49,8 @@ export class MyComicsPageComponent implements OnInit {
     protected opacity = signal<number>(0);
 
     private dialog = inject(MatDialog);
+
+    ComicCreationStepEnum = ComicCreationStepEnum;
 
     ngOnInit() {
         this.helloService.getHello().subscribe({
@@ -137,13 +140,12 @@ export class MyComicsPageComponent implements OnInit {
         }
     }
 
-
     createComic() {
-        const dialogRef = this.dialog.open(addComicComponent, {
+        this.dialog.open(addComicComponent, {
             disableClose: true,
             autoFocus: false,
              data: {
-                step: 1,
+                step: this.appComp.isMobile() ?  this.ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG : this.ComicCreationStepEnum.MANUAL_CREATE_STEP,
             },
         });
     }

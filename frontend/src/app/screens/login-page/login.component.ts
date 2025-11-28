@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, signal } from '@angular/core';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -7,8 +7,6 @@ import { MatIconModule } from "@angular/material/icon";
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { CommonModule } from '@angular/common';
-import { HelloService } from '../../services/hello.service';
-import { basicDialog } from '../../components/basic-dialog/basic-dialog';
 import { MatDialog } from '@angular/material/dialog';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
@@ -17,12 +15,12 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
     standalone: true,
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss'],
-    imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatProgressSpinnerModule,],
+    imports: [CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatProgressSpinnerModule],
 })
 
 export class LoginComponent {
     
-    constructor(private router: Router, private userService: UserService, private helloService: HelloService, private dialog: MatDialog) { }
+    constructor(private router: Router, private userService: UserService, private dialog: MatDialog) { }
     
     protected isLoading = signal<boolean>(false);
 

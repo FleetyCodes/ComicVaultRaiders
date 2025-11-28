@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
 import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
 import { loginDialog } from '../components/login-dialog/login-dialog';
 
@@ -9,7 +8,7 @@ import { loginDialog } from '../components/login-dialog/login-dialog';
 export class IdleService {  
   private dialog = inject(MatDialog);
 
-  constructor(private idle: Idle, private router: Router) {
+  constructor(private idle: Idle) {
     // available inactivity time before timeout
     // this should around 1800 sec
     this.idle.setIdle(1800);
@@ -23,8 +22,6 @@ export class IdleService {
     this.idle.onTimeout.subscribe(() => {
       this.IdleTimeOver();
     });
-
-    
   }
 
   private IdleTimeOver() {
