@@ -3,6 +3,8 @@
     #scanner
     [formats]="allowedFormats"
     [tryHarder]="true"
+    width="640"
+    height="480"
     [torch]="torchOn"
     (scanSuccess)="onScan($event)"
     (scanFailure)="onFail($event)">
