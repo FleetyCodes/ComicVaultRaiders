@@ -12,8 +12,8 @@
         </div>
         <div id="add-wishlist-btn-container">
           <p>Manual mode creation</p>
-          <button mat-icon-button color="primary" (click)="(ComicCreationStepEnum.MANUAL_CREATE_STEP)">
-            <mat-icon>checkbook</mat-icon>
+          <button mat-icon-button color="primary" (click)="setStepState(ComicCreationStepEnum.MANUAL_CREATE_STEP)">
+            <mat-icon>post_add</mat-icon>
           </button>
         </div>
       </div>
@@ -23,11 +23,12 @@
     </div>
     <!-- scan comic -->
     <div id="step2-form" *ngIf="this.stepState() === ComicCreationStepEnum.BARCODE_SCAN_STEP">
+      <p>Scan the barcode of the comic</p>
       <div id="add-comic-container">
-        <p>Scan the barcode of the comic</p>
         <app-qr-scanner (scanned)="onBarcodeScanned($event)"></app-qr-scanner>
       </div>
       <div mat-dialog-content id="btn-div">
+        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)">Back</button>
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
       </div>
     </div>
@@ -111,12 +112,13 @@
       </mat-form-field>
       <div mat-dialog-content id="btn-div">
         <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
-        <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
+        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)">Back</button>
         <button mat-button id="next-btn" type="submit" [disabled]="form.invalid">Next</button>
+        <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
       </div>
     </form>
     <!-- add to collection or wishlist -->
-    <div id="step2-form" *ngIf="this.stepState() === 2">
+    <div id="step2-form" *ngIf="this.stepState() === ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST">
       <div id="add-comic-container">
         <div id="add-comic-btn-container">
           <p>Add To Collection</p>

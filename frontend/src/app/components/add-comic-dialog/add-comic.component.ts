@@ -13,9 +13,7 @@ import { ComicPublishersEnum } from "../../models/comic.publishers.enum";
 import { ComicFormatsEnum } from "../../models/comic.formats.enum";
 import { MatSelectModule } from '@angular/material/select';
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
-import { QrScannerComponent } from "../../qr-scanner/qr-scanner.component";
-import { format } from "path";
-import { release } from "os";
+import { QrScannerComponent } from "../qr-scanner/qr-scanner.component";
 
 
 @Component({
@@ -149,6 +147,7 @@ export class addComicComponent implements OnInit {
   });
 
   onBarcodeScanned(scannedBarcode: string) {
+    console.log("onBarcodeScanned");
     this.comicService.getComicInfoByBarcode(scannedBarcode).subscribe({
       next: (res: Comic) => {
         if (res.title) {

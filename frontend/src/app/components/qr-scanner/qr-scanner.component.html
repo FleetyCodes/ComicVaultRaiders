@@ -1,0 +1,12 @@
+<div class="scanner-wrapper">
+<zxing-scanner
+    #scanner
+    [formats]="allowedFormats"
+    [tryHarder]="true"
+    [torch]="torchOn"
+    (scanSuccess)="onScan($event)"
+    (scanFailure)="onFail($event)">
+</zxing-scanner>
+</div>
+
+
