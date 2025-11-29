@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { MatDialog } from '@angular/material/dialog';
 import { basicDialog } from '../components/basic-dialog/basic-dialog';
 import { IdleService } from './idle.service';
+import { environment } from '../../environments/environment';
 
 
 export interface RegisterRequest {
@@ -29,8 +30,7 @@ export interface LoginResponse {
 })
 export class UserService {
 
-//    private apiUrl = 'http://localhost:8080/v1/user';
-    private apiUrl = '/v1/user';
+    private apiUrl = environment.apiUrl;
 
     constructor(private http: HttpClient, private cookieService: CookieService, private idleService: IdleService) { }
 

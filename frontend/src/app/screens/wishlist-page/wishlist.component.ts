@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, OnInit, signal } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { HelloService } from "../../services/hello.service";
 import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -26,21 +25,12 @@ import { UserComicsService } from "../../services/user.comic.service";
 
 export class WishlistedComicsPageComponent implements OnInit {
 
-    constructor(private helloService: HelloService, protected userComicService: UserComicsService) { }
+    constructor(protected userComicService: UserComicsService) { }
 
     
     protected hasComics = signal<boolean>(false);
 
     ngOnInit() {
-        this.helloService.getHello().subscribe({
-            next: (response) => {
-                this.helloService.setHelloTestMessage(response);
-            },
-            error: () => {
-                this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
-            }
-        });
-
         this.userComicService.getUserComicsApi().subscribe({
             next: (response: UserComic[]) => {
                 const filteredWishlistedComics = response.filter( uc => uc.wishlisted);

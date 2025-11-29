@@ -13,7 +13,7 @@ import { ComicPublishersEnum } from "../../models/comic.publishers.enum";
 import { ComicFormatsEnum } from "../../models/comic.formats.enum";
 import { MatSelectModule } from '@angular/material/select';
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
-import { QrScannerComponent } from "../qr-scanner/qr-scanner.component";
+import { QrScannerQuaggaComponent } from "../qr-scanner-quagga/qr-scanner-quagga.component";
 
 
 @Component({
@@ -21,7 +21,7 @@ import { QrScannerComponent } from "../qr-scanner/qr-scanner.component";
   standalone: true,
   templateUrl: './add-comic.component.html',
   styleUrls: ['./add-comic.component.scss'],
-  imports: [ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatSelectModule, QrScannerComponent]
+  imports: [ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatSelectModule, QrScannerQuaggaComponent]
 })
 export class addComicComponent implements OnInit {
 
@@ -37,6 +37,12 @@ export class addComicComponent implements OnInit {
   selectedFormat?: string;
   ComicCreationStepEnum = ComicCreationStepEnum;
   private maxValue = Math.max(...Object.values(this.ComicCreationStepEnum).filter(v => typeof v === 'number')) as number;
+
+  protected scannedBarcode = signal<string>("");
+  manualBarcodeInput: string = "";
+  protected showError = signal<boolean>(false);
+  protected errMg = signal<string>("");
+  protected opacity = signal<number>(0);
 
 
   ngOnInit() {
@@ -74,7 +80,7 @@ export class addComicComponent implements OnInit {
   }
 
   addComic() {
-    this.stepState.update(this.ComicCreationStepEnum.ADD_TO_COLLECTION.valueOf);
+    this.stepState.set(this.ComicCreationStepEnum.ADD_TO_COLLECTION);
     this.message.set('Share your thoughts about this comic in your collection!');
   }
 
@@ -107,6 +113,8 @@ export class addComicComponent implements OnInit {
   onSubmitForm1() {
     if (this.form.valid) {
       const dateValue = this.form.value.releaseDate;
+      const newDate = toZonedDateTimeString(dateValue!);
+
       const comic = {
         ...this.form.value,
         id: null,
@@ -116,14 +124,14 @@ export class addComicComponent implements OnInit {
         format: this.form.value.format!,
         issueNumber: this.form.value.issueNumber!,
         publisher: this.form.value.publisher!,
-        releaseDate: new Date(dateValue!).toISOString(),
+        releaseDate: newDate!,
         coverImgUrl: this.form.value.coverImgUrl!,
       };
 
       this.comicService.addComic(comic).subscribe({
         next: (res: any) => {
           this.newComic.set(res);
-          this.stepState.update(this.ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST.valueOf);
+          this.stepState.set(this.ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST);
         },
         error: (err: any) => {
           //TODO: if err, show error message popup
@@ -140,42 +148,91 @@ export class addComicComponent implements OnInit {
     author: new FormControl<string>('', { validators: [Validators.required] }),
     illustrator: new FormControl<string>('', { validators: [Validators.required] }),
     format: new FormControl<string>('', { validators: [Validators.required] }),
-    issueNumber: new FormControl<number>(1, {validators: [Validators.min(1), Validators.required]}),
+    issueNumber: new FormControl<number>(1, { validators: [Validators.min(1), Validators.required] }),
     publisher: new FormControl<string>('', { validators: [Validators.required] }),
-    releaseDate: new FormControl<Date | null>(null, Validators.required),
+    releaseDate: new FormControl<string | null>(null, Validators.required),
     coverImgUrl: new FormControl<string>('', { validators: [Validators.required] }),
   });
 
-  onBarcodeScanned(scannedBarcode: string) {
-    console.log("onBarcodeScanned");
-    this.comicService.getComicInfoByBarcode(scannedBarcode).subscribe({
+
+  checkComicInfo() {
+    if ((!this.manualBarcodeInput || this.manualBarcodeInput.trim() === "") && (this.scannedBarcode() === "" || !this.scannedBarcode())) {
+      this.errMg.set("Scan or type a barcode to proceed");
+      this.showError.set(true);
+      this.opacity.set(1);
+
+      let step = 4.0;
+      const interval = setInterval(() => {
+        step -= 0.05;
+        this.opacity.set(Math.max(step, 0));
+        if (this.opacity() <= 0) {
+          clearInterval(interval);
+          this.showError.set(false);
+        }
+      }, 50);
+      return;
+    }
+
+    let barcodeString: string;
+    if (this.manualBarcodeInput && this.manualBarcodeInput.trim() !== "") {
+      barcodeString = this.manualBarcodeInput.trim();
+    } else {
+      barcodeString = this.scannedBarcode();
+    }
+    this.comicService.getComicInfoByBarcode(barcodeString).subscribe({
       next: (res: Comic) => {
         if (res.title) {
           this.form.patchValue({
             title: res.title,
             author: res.author,
             illustrator: res.illustrator,
-            //format: res.format,
+            format: res.format,
             issueNumber: res.issueNumber,
-            //publisher: res.publisher,
-            releaseDate: new Date(res.releaseDate),
+            publisher: res.publisher,
             coverImgUrl: res.coverImgUrl,
           });
-
-          this.stepState.update(this.ComicCreationStepEnum.MANUAL_CREATE_STEP.valueOf);
-        } else {
-          //TODO: comic not found handling
-        }
+          if (res.releaseDate) {
+            const releaseDateStr = res.releaseDate.split('T')[0]; // '2013-01-01'
+            this.form.patchValue({
+              releaseDate: releaseDateStr,
+            });
+          }
+        } 
+        this.stepState.set(this.ComicCreationStepEnum.MANUAL_CREATE_STEP);
       },
       error: (err: any) => {
-        //TODO: api error handling
+        this.errMg.set("Error - please try again later");
+        this.showError.set(true);
+        this.opacity.set(1);
+
+        let step = 4.0;
+        const interval = setInterval(() => {
+          step -= 0.05;
+          this.opacity.set(Math.max(step, 0));
+          if (this.opacity() <= 0) {
+            clearInterval(interval);
+            this.showError.set(false);
+          }
+        }, 50);
       }
     });
   }
 
+  onBarcodeScanned(code: string) {
+    this.scannedBarcode.set(code);
+  }
 
-  
+}
 
 
+function toZonedDateTimeString(dateStr: string | null): string | null {
+  if (!dateStr) return null;
+
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+  if (!datePattern.test(dateStr)) return null;
+
+  const date = new Date(dateStr);
+
+  return date.toISOString();
 }
 

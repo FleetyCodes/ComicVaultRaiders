@@ -25,11 +25,18 @@
     <div id="step2-form" *ngIf="this.stepState() === ComicCreationStepEnum.BARCODE_SCAN_STEP">
       <p>Scan the barcode of the comic</p>
       <div id="add-comic-container">
-        <app-qr-scanner (scanned)="onBarcodeScanned($event)"></app-qr-scanner>
+        <app-qr-scanner-quagga (scanned)="onBarcodeScanned($event)"></app-qr-scanner-quagga>
       </div>
+      <p>or give barcode manually: </p>
+      <mat-form-field appearance="fill">
+        <mat-label>Barcode</mat-label>
+        <input matInput type="text" [(ngModel)]="manualBarcodeInput" /> 
+      </mat-form-field>
+      <H3 id = "err-msg" *ngIf="showError()" [style.opacity]="opacity()" class="err-msg">{{errMg()}}</H3>
       <div mat-dialog-content id="btn-div">
         <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)">Back</button>
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
+        <button mat-button id="cancel-btn" (click)="checkComicInfo()">Next</button>
       </div>
     </div>
     <!-- create comic with manual proccess -->

@@ -3,6 +3,9 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comic } from '../models/comic';
 import { UserService } from './user.service';
+import { environment } from '../../environments/environment';
+
+
 
 export interface PageResponse<T> {
   content: Comic[];
@@ -20,8 +23,7 @@ export class ComicService {
 
     constructor(private http: HttpClient, private userService: UserService) { }
 
-//    private apiUrl = 'http://localhost:8080/v1/comic';
-    private apiUrl = '/v1/comic';
+    private apiUrl = environment.apiUrl;
 
     getAllComicsExcludeUser(): Observable<Comic[]> {
         const token = this.userService.getToken();

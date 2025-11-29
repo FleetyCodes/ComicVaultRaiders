@@ -1,6 +1,5 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { Router, RouterModule, RouterOutlet } from '@angular/router';
-import { HelloService } from '../../services/hello.service';
 import { NoAuthGuard } from '../../no.auth.guard';
 import { AuthGuard } from '../../auth.guard';
 import { CommonModule } from '@angular/common';
@@ -24,7 +23,7 @@ import { UserService } from '../../services/user.service';
 
 export class AppComponent implements OnInit {
 
-  constructor(public helloService: HelloService, private idleService: IdleService, public userService: UserService, private router: Router) { }
+  constructor(private idleService: IdleService, public userService: UserService, private router: Router) { }
 
   
   title = 'Comic Vault Raiders';
@@ -34,16 +33,6 @@ export class AppComponent implements OnInit {
   
 
   ngOnInit() {
-
-    this.helloService.getHello().subscribe({
-      //this.helloService.getAllComics().subscribe({
-      next: (response) => {
-        this.helloService.setHelloTestMessage(response);
-      },
-      error: () => {
-        this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
-      }
-    });
     this.isLeftSideNav.set(this.userService.isLeftSidedNavbar());
   }
 

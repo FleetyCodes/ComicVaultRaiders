@@ -1,7 +1,6 @@
 import { CommonModule } from "@angular/common";
 import { Component, inject, OnInit, signal } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { HelloService } from "../../services/hello.service";
 import { FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
@@ -33,7 +32,7 @@ import { AppComponent } from "../main-page/app.component";
 
 export class MyComicsPageComponent implements OnInit {
 
-    constructor(private helloService: HelloService, private appComp: AppComponent, private comicService: ComicService, protected userComicService: UserComicsService) { }
+    constructor(private appComp: AppComponent, private comicService: ComicService, protected userComicService: UserComicsService) { }
 
     protected allComicsExcludeUser = signal<Comic[]>([]);
     protected hasComics = signal<boolean>(false);
@@ -53,15 +52,6 @@ export class MyComicsPageComponent implements OnInit {
     ComicCreationStepEnum = ComicCreationStepEnum;
 
     ngOnInit() {
-        this.helloService.getHello().subscribe({
-            next: (response) => {
-                this.helloService.setHelloTestMessage(response);
-            },
-            error: (err) => {
-                this.helloService.setHelloTestMessage('Could not load data, please try again later. ');
-            }
-        });
-
         this.userComicService.getUserComicsApi().subscribe({
             next: (response: UserComic[]) => {
                 const filteredComicsWithoutWishlisted = response.filter( uc => !uc.wishlisted);

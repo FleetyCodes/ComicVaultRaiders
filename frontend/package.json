@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build --configuration production",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:library-of-solitude": "node dist/library-of-solitude/server/server.mjs"
@@ -23,13 +23,17 @@
     "@angular/platform-server": "^19.2.0",
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.11",
+    "@ericblade/quagga2": "^1.10.2",
     "@ng-idle/core": "^16.0.0",
     "@ng-idle/keepalive": "^16.0.0",
-    "@zxing/browser": "^0.1.5",
-    "@zxing/ngx-scanner": "^20.0.0",
     "express": "^4.18.2",
+    "get-pixels": "^3.3.3",
+    "mime-types": "^3.0.2",
+    "ndarray": "^1.0.19",
+    "ndarray-pixels": "^5.0.1",
     "ngx-cookie-service": "^19.1.2",
     "ngx-webstorage": "^19.0.1",
+    "quagga": "^0.12.1",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"

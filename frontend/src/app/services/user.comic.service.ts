@@ -3,6 +3,7 @@ import { UserComic } from "../models/user-comic";
 import { UserService } from "./user.service";
 import { HttpClient, HttpHeaders } from "@angular/common/http";
 import { Observable } from "rxjs";
+import { environment } from "../../environments/environment";
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +12,7 @@ export class UserComicsService {
 
     constructor(private http: HttpClient, private userService: UserService) { }
 
-//    private userBaseApipiUrl = 'http://localhost:8080/v1/user';
-    private userBaseApipiUrl = '/v1/user';
+    private userBaseApipiUrl = environment.apiUrl;
 
     removeUserComicApi(comicId: String): Observable<any> {
         const token = this.userService.getToken();
