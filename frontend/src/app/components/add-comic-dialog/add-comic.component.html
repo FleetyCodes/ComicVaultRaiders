@@ -23,8 +23,10 @@
     </div>
     <!-- scan comic -->
     <div id="step2-form" *ngIf="this.stepState() === ComicCreationStepEnum.BARCODE_SCAN_STEP">
-      <p *ngif="isMobile()">Scan the barcode of the comic</p>
-      <div id="add-comic-container" *ngif="isMobile()">
+      <div *ngIf="this.isMobile()">
+        <p>Scan the barcode of the comic</p>
+        <div id="add-comic-container">
+        </div>
         <app-qr-scanner-quagga (scanned)="onBarcodeScanned($event)"></app-qr-scanner-quagga>
       </div>
       <p>Enter barcode manually: </p>
