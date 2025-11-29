@@ -23,7 +23,7 @@ export class ComicService {
 
     constructor(private http: HttpClient, private userService: UserService) { }
 
-    private apiUrl = environment.apiUrl;
+    private apiUrl = environment.apiUrl + "v1/comic";
 
     getAllComicsExcludeUser(): Observable<Comic[]> {
         const token = this.userService.getToken();

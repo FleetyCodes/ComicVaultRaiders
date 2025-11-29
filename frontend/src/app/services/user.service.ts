@@ -30,7 +30,7 @@ export interface LoginResponse {
 })
 export class UserService {
 
-    private apiUrl = environment.apiUrl;
+    private apiUrl = environment.apiUrl + "v1/user";
 
     constructor(private http: HttpClient, private cookieService: CookieService, private idleService: IdleService) { }
 

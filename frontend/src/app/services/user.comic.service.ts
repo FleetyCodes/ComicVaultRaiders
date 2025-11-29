@@ -12,7 +12,7 @@ export class UserComicsService {
 
     constructor(private http: HttpClient, private userService: UserService) { }
 
-    private userBaseApipiUrl = environment.apiUrl;
+    private userBaseApipiUrl = environment.apiUrl + "v1/user";
 
     removeUserComicApi(comicId: String): Observable<any> {
         const token = this.userService.getToken();
