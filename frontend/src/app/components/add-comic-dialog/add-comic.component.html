@@ -23,11 +23,11 @@
     </div>
     <!-- scan comic -->
     <div id="step2-form" *ngIf="this.stepState() === ComicCreationStepEnum.BARCODE_SCAN_STEP">
-      <p>Scan the barcode of the comic</p>
-      <div id="add-comic-container">
+      <p *ngif="isMobile()">Scan the barcode of the comic</p>
+      <div id="add-comic-container" *ngif="isMobile()">
         <app-qr-scanner-quagga (scanned)="onBarcodeScanned($event)"></app-qr-scanner-quagga>
       </div>
-      <p>or give barcode manually: </p>
+      <p>Enter barcode manually: </p>
       <mat-form-field appearance="fill">
         <mat-label>Barcode</mat-label>
         <input matInput type="text" [(ngModel)]="manualBarcodeInput" /> 
@@ -119,7 +119,7 @@
       </mat-form-field>
       <div mat-dialog-content id="btn-div">
         <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
-        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)" *ngif="isMobile()">Back</button>
+        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.BARCODE_SCAN_STEP)">Back</button>
         <button mat-button id="next-btn" type="submit" [disabled]="form.invalid">Next</button>
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
       </div>

@@ -135,7 +135,7 @@ export class MyComicsPageComponent implements OnInit {
             disableClose: true,
             autoFocus: false,
              data: {
-                step: this.appComp.isMobile() ?  this.ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG : this.ComicCreationStepEnum.MANUAL_CREATE_STEP,
+                step: this.ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG,
             },
         });
     }
