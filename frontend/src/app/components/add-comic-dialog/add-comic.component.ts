@@ -15,7 +15,6 @@ import { MatSelectModule } from '@angular/material/select';
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
 import { QrScannerQuaggaComponent } from "../qr-scanner-quagga/qr-scanner-quagga.component";
 
-
 @Component({
   selector: 'setup-wizard',
   standalone: true,
@@ -222,6 +221,10 @@ export class addComicComponent implements OnInit {
     this.scannedBarcode.set(code);
   }
 
+    public isMobile(): boolean {
+    return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+  }
+
 }
 
 
@@ -235,4 +238,5 @@ function toZonedDateTimeString(dateStr: string | null): string | null {
 
   return date.toISOString();
 }
+
 

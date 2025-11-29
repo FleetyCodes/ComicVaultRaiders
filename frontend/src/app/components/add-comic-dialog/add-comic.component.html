@@ -119,7 +119,7 @@
       </mat-form-field>
       <div mat-dialog-content id="btn-div">
         <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
-        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)">Back</button>
+        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)" *ngif="isMobile()">Back</button>
         <button mat-button id="next-btn" type="submit" [disabled]="form.invalid">Next</button>
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
       </div>
