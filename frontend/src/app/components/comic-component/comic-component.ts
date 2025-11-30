@@ -29,7 +29,7 @@ export class ComicComponent {
       disableClose: true,
       autoFocus: false,
       data: {
-        step: this.ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG,
+        step: this.ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST,
         comicParam: this.comic,
         onAddComic: () => this.setComicAdded(true),
       },
