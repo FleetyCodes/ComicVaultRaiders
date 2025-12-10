@@ -1,15 +1,18 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
+import com.comicvaultraiders.comicvaultraiders.dto.UserXComicsDto;
+import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
 import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsException;
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
-import com.comicvaultraiders.comicvaultraiders.modell.User;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComicsDto;
+import com.comicvaultraiders.comicvaultraiders.modell.*;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
+import com.comicvaultraiders.comicvaultraiders.specification.UserComicSpecs;
 import com.comicvaultraiders.comicvaultraiders.util.EncryptionUtil;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -160,5 +163,10 @@ public class UserService implements UserDetailsService {
 
     public Optional<User> getUserById(Long id) {
         return userRepository.findById(id);
+    }
+
+    public Page<UserXComicsDto> getUserFilteredComics(UserComicFilter filter, Pageable pageable) {
+        Specification<UserXComics> spec = UserComicSpecs.withFilters(filter);
+        return  userXComicsRepo.findAll(spec, pageable).map(UserXComicsDto::new);
     }
 }

@@ -1,11 +1,17 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
+import com.comicvaultraiders.comicvaultraiders.dto.UserXComicsDto;
+import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
 import com.comicvaultraiders.comicvaultraiders.modell.*;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
@@ -13,8 +19,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -116,6 +124,38 @@ public class UserController {
     @GetMapping("/comics")
     public ResponseEntity<?> getUserComics(@RequestHeader("Authorization") String authHeader) {
         return ResponseEntity.ok(userService.getUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromHeader(authHeader))));
+    }
+
+    @GetMapping(path = "/filteredComics")
+    public ResponseEntity<?> getUserFilteredComics(
+            @RequestHeader("Authorization") String authHeader,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) String format,
+            @RequestParam(required = false) String fromDate,
+            @RequestParam(required = false) String toDate,
+            @RequestParam(required = false) Boolean wishlisted,
+            @RequestParam(required = false) List<String> sort
+        ){
+
+        UserComicFilter filter = new UserComicFilter();
+        filter.setUserId(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromHeader(authHeader)));
+        filter.setPublisher(publisher);
+        filter.setFormat(format);
+        filter.setFromDate(fromDate != null ? LocalDate.parse(fromDate) : null);
+        filter.setToDate(toDate != null ? LocalDate.parse(toDate) : null);
+        filter.setWishlisted(wishlisted);
+
+        Sort sortObj = (sort != null && !sort.isEmpty())
+                ? Sort.by(sort.stream().map(Sort.Order::asc).toList())
+                : Sort.by("id");
+        Pageable pageable = PageRequest.of(page, size, sortObj);
+
+        Page<UserXComicsDto> userComics = userService.getUserFilteredComics(
+                filter,
+                pageable);
+        return ResponseEntity.ok(userComics);
     }
 
     @DeleteMapping("/comics/{comicId}")

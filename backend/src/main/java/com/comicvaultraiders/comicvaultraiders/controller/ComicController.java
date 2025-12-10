@@ -1,7 +1,7 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
-import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
+import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;

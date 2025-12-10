@@ -1,5 +1,8 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
+import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
+import com.comicvaultraiders.comicvaultraiders.integration.google.Bookmodel;
+import com.comicvaultraiders.comicvaultraiders.integration.google.Item;
 import com.comicvaultraiders.comicvaultraiders.modell.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

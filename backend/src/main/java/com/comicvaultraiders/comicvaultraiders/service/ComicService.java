@@ -1,7 +1,7 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
 
-import com.comicvaultraiders.comicvaultraiders.modell.ComicDto;
+import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
 import com.comicvaultraiders.comicvaultraiders.modell.Comic;
 import jakarta.persistence.EntityNotFoundException;
@@ -56,6 +56,6 @@ public class ComicService {
 
     public Page<ComicDto> getFilteredComics(Pageable pageable, String searchBy) {
         searchBy = "%" + searchBy +"%";
-        return  comicRepository.getFilteredComics(searchBy, searchBy, pageable).map(ComicDto::new);
+        return comicRepository.getFilteredComics(searchBy, searchBy, pageable).map(ComicDto::new);
     }
 }

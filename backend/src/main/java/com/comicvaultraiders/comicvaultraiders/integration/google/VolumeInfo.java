@@ -1,7 +1,6 @@
-package com.comicvaultraiders.comicvaultraiders.modell;
+package com.comicvaultraiders.comicvaultraiders.integration.google;
 
 import com.fasterxml.jackson.annotation.*;
-import java.time.LocalDate;
 
 @lombok.Data
 @JsonIgnoreProperties(ignoreUnknown = true)
