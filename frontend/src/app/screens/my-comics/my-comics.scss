@@ -1,7 +1,11 @@
 .comics-container {
     display: flex;
-    flex-wrap: wrap;
     justify-content: flex-start;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 5px;
+    background: rgba(30, 30, 30, 0.15);
+    border-radius: 12px;
 }
 
 .your-comics-title{
