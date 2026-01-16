@@ -73,8 +73,6 @@ export class addComicComponent implements OnInit {
         }
         this.dialogRef.close();
       },
-      error: (err) => {
-      }
     });
   }
 
@@ -99,8 +97,6 @@ export class addComicComponent implements OnInit {
           }
           this.dialogRef.close();
         },
-        error: (err) => {
-        }
       });
     }
   }
@@ -132,12 +128,9 @@ export class addComicComponent implements OnInit {
           this.newComic.set(res);
           this.stepState.set(this.ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST);
         },
-        error: (err: any) => {
-          //TODO: if err, show error message popup
-        }
       });
     } else {
-      console.warn('Form is invalid!');
+      //console.warn('Form is invalid!');
     }
   }
 
@@ -145,12 +138,12 @@ export class addComicComponent implements OnInit {
   form = new FormGroup({
     title: new FormControl<string>('', { validators: [Validators.required] }),
     author: new FormControl<string>('', { validators: [Validators.required] }),
-    illustrator: new FormControl<string>('', { validators: [Validators.required] }),
+    illustrator: new FormControl<string>('', { validators: [] }),
     format: new FormControl<string>('', { validators: [Validators.required] }),
     issueNumber: new FormControl<number>(1, { validators: [Validators.min(1), Validators.required] }),
     publisher: new FormControl<string>('', { validators: [Validators.required] }),
-    releaseDate: new FormControl<string | null>(null, Validators.required),
-    coverImgUrl: new FormControl<string>('', { validators: [Validators.required] }),
+    releaseDate: new FormControl<string>('', {validators: []}),
+    coverImgUrl: new FormControl<string>('', { validators: [] }),
   });
 
 

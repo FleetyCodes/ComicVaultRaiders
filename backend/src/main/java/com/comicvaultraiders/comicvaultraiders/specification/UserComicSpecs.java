@@ -1,7 +1,7 @@
 package com.comicvaultraiders.comicvaultraiders.specification;
 
 import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
+import com.comicvaultraiders.comicvaultraiders.model.UserXComics;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -18,12 +18,20 @@ public class UserComicSpecs {
             if(filter.getUserId() != null){
                 predicates.add(cb.equal(root.get("user").get("id"), filter.getUserId()));
             }
-
-            if (filter.getPublisher() != null) {
-                predicates.add(cb.equal(root.get("comic").get("publisher"), filter.getPublisher()));
+            if (filter.getTitle() != null) {
+                predicates.add(cb.like(cb.lower(root.get("comic").get("title")),"%" + filter.getTitle().toLowerCase() + "%"));
             }
-            if (filter.getFormat() != null) {
-                predicates.add(cb.equal(root.get("comic").get("format"), filter.getFormat()));
+            if (filter.getAuthor() != null) {
+                predicates.add(cb.like(cb.lower(root.get("comic").get("author")),"%" + filter.getAuthor().toLowerCase() + "%"));
+            }
+            if (filter.getIllustrator() != null) {
+                predicates.add(cb.like(cb.lower(root.get("comic").get("illustrator")),"%" + filter.getIllustrator().toLowerCase() + "%"));
+            }
+            if (filter.getPublisher() != null && !filter.getPublisher().isEmpty()) {
+                predicates.add(root.get("comic").get("publisher").in(filter.getPublisher()));
+            }
+            if (filter.getFormat() != null && !filter.getFormat().isEmpty()) {
+                predicates.add(root.get("comic").get("format").in(filter.getFormat()));
             }
             if (filter.getFromDate() != null) {
                 predicates.add(cb.greaterThanOrEqualTo(root.get("comic").get("releaseDate"), filter.getFromDate()));

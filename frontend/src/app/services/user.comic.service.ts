@@ -1,9 +1,11 @@
 import { Injectable, signal } from "@angular/core";
 import { UserComic } from "../models/user-comic";
 import { UserService } from "./user.service";
-import { HttpClient, HttpHeaders } from "@angular/common/http";
+import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { environment } from "../../environments/environment";
+import { SpringPageResponse } from "../models/page.model";
+
 
 @Injectable({
     providedIn: 'root'
@@ -30,7 +32,54 @@ export class UserComicsService {
         return this.http.post(`${this.userBaseApipiUrl}/comic/${comicId}`, usercomic, { headers });
     }
 
-    
+    getFilteredUserComicsApi(page: number, size: number, sort: string, title: string, publisher: string[], format: string[], author: string, illustrator: string): Observable<SpringPageResponse<UserComic>> {
+        const token = this.userService.getToken();
+        const headers = new HttpHeaders({
+            'Authorization': `Bearer ${token}`,
+        });
+
+        let params = new HttpParams()
+        .set('page', page)
+        .set('size', size);
+
+        let url = `${this.userBaseApipiUrl}/filteredComics?page=${page}&size=${size}`;
+        if(sort!==undefined && sort!==null && sort != 'undefined,'){
+            //url += `&sort=${sort}`;
+        }else{
+            sort = 'comic.title,asc';
+            //url += `&sort=id`;
+        }
+        params = params.set('sort', sort);
+
+        if(title!==undefined && title!==null && title.trim().length>0){
+            //url += `&filter=${filter}`;
+            params = params.set('title', title);
+        }
+
+        if(author!==undefined && author!==null && author.trim().length>0){
+            //url += `&filter=${filter}`;
+            params = params.set('author', author);
+        }
+
+        if(illustrator!==undefined && illustrator!==null && illustrator.trim().length>0){
+            //url += `&filter=${filter}`;
+            params = params.set('illustrator', illustrator);
+        }
+
+        if (publisher !== undefined && publisher !== null) {
+            //url += `&filter=${filter}`;
+            publisher.forEach(p => {
+                params = params.append('publisher', p);
+            });
+        }
+        if(format!==undefined && format!==null){
+            //url += `&filter=${filter}`;
+            format.forEach(p => {
+                params = params.append('format', p);
+            });
+        }
+        return this.http.get<SpringPageResponse<UserComic>>(url, { headers, params });
+    }
 
     getUserComicsApi(): Observable<UserComic[]> {
         const token = this.userService.getToken();

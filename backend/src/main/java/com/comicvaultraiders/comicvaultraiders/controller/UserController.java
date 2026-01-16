@@ -2,7 +2,7 @@ package com.comicvaultraiders.comicvaultraiders.controller;
 
 import com.comicvaultraiders.comicvaultraiders.dto.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
-import com.comicvaultraiders.comicvaultraiders.modell.*;
+import com.comicvaultraiders.comicvaultraiders.model.*;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
@@ -19,7 +19,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.List;
@@ -131,25 +130,46 @@ public class UserController {
             @RequestHeader("Authorization") String authHeader,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
-            @RequestParam(required = false) String publisher,
-            @RequestParam(required = false) String format,
-            @RequestParam(required = false) String fromDate,
-            @RequestParam(required = false) String toDate,
-            @RequestParam(required = false) Boolean wishlisted,
+            @RequestParam(required = false) String title,
+            @RequestParam(required = false) String author,
+            @RequestParam(required = false) String illustrator,
+            @RequestParam(required = false) List<String> publisher,
+            @RequestParam(required = false) List<String> format,
+            //@RequestParam(required = false) String fromDate,
+            //@RequestParam(required = false) String toDate,
+            //@RequestParam(required = false) Boolean wishlisted,
             @RequestParam(required = false) List<String> sort
         ){
 
         UserComicFilter filter = new UserComicFilter();
         filter.setUserId(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromHeader(authHeader)));
+        filter.setTitle(title);
+        filter.setAuthor(author);
+        filter.setIllustrator(illustrator);
         filter.setPublisher(publisher);
         filter.setFormat(format);
-        filter.setFromDate(fromDate != null ? LocalDate.parse(fromDate) : null);
-        filter.setToDate(toDate != null ? LocalDate.parse(toDate) : null);
-        filter.setWishlisted(wishlisted);
 
-        Sort sortObj = (sort != null && !sort.isEmpty())
-                ? Sort.by(sort.stream().map(Sort.Order::asc).toList())
-                : Sort.by("id");
+        //filter.setFromDate(fromDate != null ? LocalDate.parse(fromDate) : null);
+        //filter.setToDate(toDate != null ? LocalDate.parse(toDate) : null);
+        //filter.setWishlisted(wishlisted);
+
+        Sort sortObj;
+        if(sort != null && !sort.isEmpty()){
+            String sortDirection = sort.get(sort.size() -1);
+            if(sortDirection!=null && !sortDirection.isEmpty()){
+                sort.remove(sort.size() -1);
+                if("asc".equals(sortDirection)){
+                    sortObj = Sort.by(sort.stream().map(Sort.Order::asc).toList());
+                }else{
+                    sortObj = Sort.by(sort.stream().map(Sort.Order::desc).toList());
+                }
+            }else {
+                sortObj= Sort.by("comic.title");
+            }
+        }else{
+            sortObj= Sort.by("comic.title");
+        }
+
         Pageable pageable = PageRequest.of(page, size, sortObj);
 
         Page<UserXComicsDto> userComics = userService.getUserFilteredComics(

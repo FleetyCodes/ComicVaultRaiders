@@ -3,13 +3,14 @@ package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
+import com.comicvaultraiders.comicvaultraiders.model.Comic;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.*;
 
 @Service
@@ -25,6 +26,8 @@ public class ComicService {
 
     @Transactional
     public Optional<Comic> createComic(Comic comic) {
+        comic.setCrd(ZonedDateTime.now());
+        comic.setIsCheckedByRepairJob(false);
         return Optional.of(comicRepository.save(comic));
     }
 
@@ -37,6 +40,7 @@ public class ComicService {
                     comic.setCoverImgUrl(comicDetails.getCoverImgUrl());
                     comic.setIssueNumber(comicDetails.getIssueNumber());
                     comic.setReleaseDate(comicDetails.getReleaseDate());
+                    comic.setIsCheckedByRepairJob(comicDetails.getIsCheckedByRepairJob());
                     return comicRepository.save(comic);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Comic not found with id " + id));
@@ -57,5 +61,10 @@ public class ComicService {
     public Page<ComicDto> getFilteredComics(Pageable pageable, String searchBy) {
         searchBy = "%" + searchBy +"%";
         return comicRepository.getFilteredComics(searchBy, searchBy, pageable).map(ComicDto::new);
+    }
+
+
+    public List<Comic> getAllComicsWithCorruptedData(ZonedDateTime fromDate, ZonedDateTime toDate){
+        return comicRepository.getAllComicsWithCorruptedData(fromDate, toDate);
     }
 }

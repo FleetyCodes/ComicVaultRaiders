@@ -8,9 +8,50 @@
     text-align: center;
 }
 
+.grid-div {
+    background: rgba(30, 30, 30, 0.15);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 15px;
+    .table-toolbar{
+        //background-color: #101414;
+        display: flex;
+        background-color: #050707;
+        padding-top: 15px;
+        padding-left: 10px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+    }
+    & mat-form-field{
+        padding-right: 10px;
+    }
+}
+
+.grid-wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.8);
+
+    & table {
+        height: 550px;
+
+        & tr {
+            height: 50px;
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+    }
+}
+
 @media (min-width: 1440px) {
     #add-container {
         width: 50%;
+        background: rgba(30, 30, 30, 0.15);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 15px;
     }
 }
 
@@ -51,3 +92,18 @@
 #err-msg{
     color:red;
 }
+
+#clear-filter-btn{
+    height: 60px;
+    right: 20px;
+    margin-left: auto;
+}
+
+.comic-title-column{
+    width: 250px;
+}
+
+
+
+
+

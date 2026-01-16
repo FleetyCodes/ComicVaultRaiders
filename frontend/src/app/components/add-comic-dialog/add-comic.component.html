@@ -37,12 +37,12 @@
       <H3 id = "err-msg" *ngIf="showError()" [style.opacity]="opacity()" class="err-msg">{{errMg()}}</H3>
       <div mat-dialog-content id="btn-div">
         <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)">Back</button>
+        <button mat-button id="next-btn" (click)="checkComicInfo()">Next</button>
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
-        <button mat-button id="cancel-btn" (click)="checkComicInfo()">Next</button>
       </div>
     </div>
     <!-- create comic with manual proccess -->
-    <form [formGroup]="form" (ngSubmit)="onSubmitForm1()" novalidate *ngIf="this.stepState() === ComicCreationStepEnum.MANUAL_CREATE_STEP">
+    <form [formGroup]="form" (ngSubmit)="onSubmitForm1()" validate *ngIf="this.stepState() === ComicCreationStepEnum.MANUAL_CREATE_STEP">
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
         <input matInput type="text" formControlName="title" />
@@ -121,8 +121,8 @@
       </mat-form-field>
       <div mat-dialog-content id="btn-div">
         <!-- <button mat-button id="next-btn" (click)="onBackClick()">Back</button> -->
-        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.BARCODE_SCAN_STEP)">Back</button>
-        <button mat-button id="next-btn" type="submit" [disabled]="form.invalid">Next</button>
+        <button mat-button id="cancel-btn" (click)="setStepState(ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG)">Back</button>
+        <button mat-button id="next-btn" type="submit" >Next</button>
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
       </div>
     </form>

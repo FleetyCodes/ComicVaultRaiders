@@ -1,7 +1,7 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
-import com.comicvaultraiders.comicvaultraiders.modell.RefreshToken;
-import com.comicvaultraiders.comicvaultraiders.modell.User;
+import com.comicvaultraiders.comicvaultraiders.model.RefreshToken;
+import com.comicvaultraiders.comicvaultraiders.model.User;
 import com.comicvaultraiders.comicvaultraiders.repository.RefreshTokenRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Value;

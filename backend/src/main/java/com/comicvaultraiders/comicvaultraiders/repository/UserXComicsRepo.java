@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.repository;
 
-import com.comicvaultraiders.comicvaultraiders.modell.UserXComics;
+import com.comicvaultraiders.comicvaultraiders.model.UserXComics;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;

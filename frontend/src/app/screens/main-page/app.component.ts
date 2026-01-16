@@ -27,15 +27,11 @@ export class AppComponent implements OnInit {
 
   
   title = 'Comic Vault Raiders';
-  
-
-  protected isLeftSideNav = signal<boolean>(false); 
-  
+  protected isLeftSideNav = signal<boolean>(false);
 
   ngOnInit() {
     this.isLeftSideNav.set(this.userService.isLeftSidedNavbar());
   }
-
 
   logout() {
     this.userService.logOut().subscribe();
@@ -52,5 +48,12 @@ export class AppComponent implements OnInit {
   public isMobile(): boolean {
     return /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   }
+
+  public isOnMainPage(): boolean {
+    return this.router.url === '/logged-in' || this.router.url === '/' || this.router.url === '' || this.router.url === '/register' || this.router.url === '/login';
+  }
+
 }
+
+
 

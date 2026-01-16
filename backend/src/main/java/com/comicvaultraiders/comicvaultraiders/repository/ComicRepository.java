@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.repository;
 
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
+import com.comicvaultraiders.comicvaultraiders.model.Comic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Repository
@@ -19,4 +20,6 @@ public interface ComicRepository extends JpaRepository<Comic, Long> {
     @Query(name = "Comic.findAllWithoutUser")
     List<Comic> getAllComicsWithoutUser(@Param("userId") Long userId);
 
+    @Query(name = "Comic.findCorruptDataComics")
+    List<Comic> getAllComicsWithCorruptedData(@Param("fromDate") ZonedDateTime fromDate, @Param("toDate") ZonedDateTime toDate);
 }

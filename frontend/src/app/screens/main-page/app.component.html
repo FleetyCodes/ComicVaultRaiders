@@ -1,54 +1,60 @@
 <main class="main">
-  <div class="nav" [ngClass]="[isLeftSideNav() ? 'left-side-nav' : '']">
-    <button *ngIf="isLeftSideNav()" id="position-left-button" mat-raised-button
-      color="primary" (click)="setLeftSideNav(false)"></button>
+  <div class="background-layer">
+    <div class="nav" [ngClass]="[isLeftSideNav() ? 'left-side-nav' : '']">
+      <button *ngIf="isLeftSideNav()" id="position-left-button" mat-raised-button
+        color="primary" (click)="setLeftSideNav(false)"></button>
 
-    <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
-      <button class="nav_button" mat-raised-button color="primary"
-        [routerLink]="['/']">
-        Main Page
-      </button>
+      <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
+        <button class="nav_button" mat-raised-button color="primary"
+          [routerLink]="['/']">
+          Main Page
+        </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
-        [routerLink]="['/my-comics']">
-        My Comics
-      </button>
+        <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+          [routerLink]="['/my-comics']">
+          My Comics
+        </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
-        [routerLink]="['/app-work-in-progress']">
-        Friends
-      </button>
+        <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+          [routerLink]="['/app-work-in-progress']">
+          Friends
+        </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
-      [routerLink]="['/wishlist-page']">
-        Wishlist
-      </button>
+        <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+        [routerLink]="['/wishlist-page']">
+          Wishlist
+        </button>
 
-      <button class="nav_button" class="nav_button" mat-raised-button color="primary"
-        [routerLink]="['/app-work-in-progress']">
-        How to Use
-      </button>
+        <button class="nav_button" class="nav_button" mat-raised-button color="primary"
+          [routerLink]="['/app-work-in-progress']">
+          How to Use
+        </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
-        [routerLink]="['/app-work-in-progress']">
-        Settings
-      </button>
+        <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary"
+          [routerLink]="['/app-work-in-progress']">
+          Settings
+        </button>
 
-      <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary" (click)="logout()">
-        Logout
-      </button>
+        <button *ngIf="userService.isLoggedIn()" class="nav_button" mat-raised-button color="primary" (click)="logout()">
+          Logout
+        </button>
+      </div>
+      <button *ngIf="!isLeftSideNav()" id="position-right-button" mat-raised-button
+        color="primary" (click)="setLeftSideNav(true)"></button>
     </div>
-    <button *ngIf="!isLeftSideNav()" id="position-right-button" mat-raised-button
-      color="primary" (click)="setLeftSideNav(true)"></button>
+
+  
+    <div class="main-content">
+      <div *ngIf="isOnMainPage()">
+        <!--<h1>{{ helloService.helloMessage() }}</h1>-->
+        <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
+        <p>
+          Comic Vault Raiders - The website where you can catalog your books and
+          recommend them to your friends !
+        </p>
+      </div>
+      <router-outlet></router-outlet>
+    </div>
   </div>
 
-  <div class="content">
-    <!--<h1>{{ helloService.helloMessage() }}</h1>-->
-    <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
-    <p>
-      Comic Vault Raiders - The website where you can catalog your books and
-      recommend them to your friends !
-    </p>
-    <router-outlet></router-outlet>
-  </div>
 </main>

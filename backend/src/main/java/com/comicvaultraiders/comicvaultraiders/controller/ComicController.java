@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
+import com.comicvaultraiders.comicvaultraiders.model.Comic;
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
@@ -87,7 +87,7 @@ public class ComicController {
 
     @GetMapping("/info/")
     public ResponseEntity<?>  getComicInfo(@RequestHeader("Authorization") String authHeader, @RequestParam() String barcode){
-        return ResponseEntity.ok(googleAPIService.getComicInfo(barcode));
+        return ResponseEntity.ok(googleAPIService.getComicInfoByBarcode(barcode));
     }
 
 }

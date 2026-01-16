@@ -1,4 +1,4 @@
-package com.comicvaultraiders.comicvaultraiders.modell;
+package com.comicvaultraiders.comicvaultraiders.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;

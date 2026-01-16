@@ -1,10 +1,10 @@
 package com.comicvaultraiders.comicvaultraiders.dto;
 
-import com.comicvaultraiders.comicvaultraiders.modell.Comic;
+import com.comicvaultraiders.comicvaultraiders.model.Comic;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
@@ -15,7 +15,7 @@ public class ComicDto {
     private String author;
     private String illustrator;
     private Long issueNumber;
-    private ZonedDateTime releaseDate;
+    private LocalDate releaseDate;
     private String coverImgUrl;
     private String publisher;
     private String format;

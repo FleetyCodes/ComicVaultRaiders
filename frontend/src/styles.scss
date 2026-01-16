@@ -6,9 +6,35 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 
-
 :root {
   @include mat.progress-spinner-overrides((
     active-indicator-color: #00dddd,
   ));
+}
+
+
+/* Firefox */
+.mat-mdc-select-panel {
+  scrollbar-width: thin;
+  scrollbar-color: #4dd0e1 #040621;
+}
+
+/* Chrome, Edge, Safari */
+.mat-mdc-select-panel::-webkit-scrollbar {
+  width: 8px;
+}
+
+.mat-mdc-select-panel::-webkit-scrollbar-track {
+  background: #040621;
+}
+
+.mat-mdc-select-panel::-webkit-scrollbar-thumb {
+  background-color: #4dd0e1;
+  border-radius: 4px;
+  border: 2px solid #040621;
+}
+
+
+:root {
+  --mat-sys-error: #b40a0a;
 }

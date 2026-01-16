@@ -1,7 +1,7 @@
 import { CommonModule } from "@angular/common";
-import { Component, inject, OnInit, signal } from "@angular/core";
+import { Component, inject, OnInit, signal, ViewChild } from "@angular/core";
 import { RouterModule } from "@angular/router";
-import { FormsModule } from "@angular/forms";
+import { FormControl, FormGroup, FormsModule } from "@angular/forms";
 import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { MatButtonModule } from "@angular/material/button";
@@ -15,6 +15,16 @@ import { MatDialog } from "@angular/material/dialog";
 import { addComicComponent } from "../../components/add-comic-dialog/add-comic.component";
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
 import { AppComponent } from "../main-page/app.component";
+import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
+import { MatSort, MatSortModule } from '@angular/material/sort';
+import { ReactiveFormsModule } from '@angular/forms';
+import { merge, debounceTime, startWith, switchMap } from "rxjs";
+import { MatOption } from "@angular/material/select";
+import { MatSelectModule } from '@angular/material/select';
+import { ComicPublishersEnum } from "../../models/comic.publishers.enum";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { ComicFormatsEnum } from "../../models/comic.formats.enum";
 
 
 @Component({
@@ -23,11 +33,14 @@ import { AppComponent } from "../main-page/app.component";
     styleUrls: ['./my-comics.scss'],
     standalone: true,
     imports: [
-        FormsModule, MatFormFieldModule, MatInputModule,
-        CommonModule,
-        RouterModule, MatButtonModule,
-        UserComicComponent, ComicComponent
-    ],
+    FormsModule, MatFormFieldModule, MatInputModule,
+    CommonModule,
+    RouterModule, MatButtonModule,
+    UserComicComponent, ComicComponent,
+    MatTableModule, MatPaginatorModule, MatSortModule, MatFormFieldModule, MatInputModule, ReactiveFormsModule,
+    MatOption, MatSelectModule,
+    MatProgressSpinnerModule
+],
 })
 
 export class MyComicsPageComponent implements OnInit {
@@ -48,6 +61,25 @@ export class MyComicsPageComponent implements OnInit {
     protected opacity = signal<number>(0);
 
     private dialog = inject(MatDialog);
+    protected gridComics = signal<UserComic[]>([]);
+
+    dataSource = new MatTableDataSource<UserComic>([]);
+    displayedColumns = ['comic.title', 'comic.author', 'comic.illustrator', 'comic.publisher', 'comic.format', 'comic.releaseDate', 'comic.issueNumber', 'artRate', 'storyRate', 'panelRate', 'wishlisted'];
+    
+    publishers = Object.values(ComicPublishersEnum);
+    comicFormats = Object.values(ComicFormatsEnum);
+
+    filterForm = new FormGroup({
+        title : new FormControl(''),
+        author : new FormControl(''),
+        illustrator : new FormControl(''),
+        publisher: new FormControl<string[]>([]),
+        format: new FormControl<string[]>([]),
+    });
+
+    
+    @ViewChild(MatPaginator) paginator!: MatPaginator;
+    @ViewChild(MatSort) sort!: MatSort;
 
     ComicCreationStepEnum = ComicCreationStepEnum;
 
@@ -56,23 +88,58 @@ export class MyComicsPageComponent implements OnInit {
             next: (response: UserComic[]) => {
                 const filteredComicsWithoutWishlisted = response.filter( uc => !uc.wishlisted);
                 const filteredWishlistedComics = response.filter( uc => uc.wishlisted);
+                this.gridComics.set(filteredComicsWithoutWishlisted.filter(uc => uc.comic.coverImgUrl && uc.comic.coverImgUrl!==null && uc.comic.coverImgUrl.trim().length > 0));
                 this.userComicService.setComicsObject(filteredComicsWithoutWishlisted);
                 this.userComicService.setWishlistedComicsObject(filteredWishlistedComics);
                 if (this.userComicService.getComicObjectCount() > 0) {
                     this.hasComics.set(true);
                 }
             },
-            error: (err) => {
-            }
         });
 
         this.comicService.getAllComicsExcludeUser().subscribe({
             next: (response: Comic[]) => {
                 this.allComicsExcludeUser.set(response);
             },
-            error: (err) => {
-            }
         });
+    }
+
+    ngAfterViewInit() {
+        Promise.resolve().then(() => {
+            this.sort.active = 'comic.title';
+            this.sort.direction = 'asc';
+        });
+
+        merge(
+            this.paginator.page,
+            this.sort.sortChange,
+            this.filterForm.valueChanges.pipe(debounceTime(300)),
+        )
+            .pipe(
+                startWith({
+                    pageIndex: 0,
+                    pageSize: 10
+                }),
+                switchMap(() => {
+                    const f = this.filterForm.value;
+
+                    return this.userComicService.getFilteredUserComicsApi(
+                        this.paginator.pageIndex,
+                        this.paginator.pageSize,
+                        `${this.sort.active},${this.sort.direction}`,
+                        f.title ?? '',
+                        f.publisher ?? [],
+                        f.format ?? [],
+                        f.author ?? '',
+                        f.illustrator ?? '',
+                    )
+                })
+            )
+            .subscribe(resp => {
+                this.dataSource.data = resp.content;
+                //this.dataSource.paginator = this.paginator;
+                this.paginator.length = resp.page.totalElements;
+            });
     }
 
 
@@ -139,4 +206,15 @@ export class MyComicsPageComponent implements OnInit {
             },
         });
     }
+
+    resetFilters() {
+        this.filterForm.reset({
+            title: '',
+            author: '',
+            illustrator: '',
+            publisher: [],
+            format: [],
+        });
+    }
+
 }

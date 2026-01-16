@@ -3,16 +3,120 @@
     <div class="content">
       <div id="">
         <br />
-        <h1 [ngClass]="[userComicService.getComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{ userComicService.getComicObjectCount() > 0 ? 'Your Comics' : 'You haven\'t added any comics yet' }}</h1>
+        <h1 [ngClass]="[userComicService.getComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{
+          userComicService.getComicObjectCount() > 0 ? 'My Comics' : 'You haven\'t added any comics yet' }}</h1>
         <br />
         <div *ngIf="userComicService.getComicObjectCount() > 0" class="comics-container">
-          <app-user-comic *ngFor="let comic of userComicService.getComicsObject()" [userComic]="comic"></app-user-comic>
+          <app-user-comic *ngFor="let comic of gridComics()" [userComic]="comic"></app-user-comic>
         </div>
         <br />
-        <h1>Your shelfies</h1>
+
+        <div class="grid-div">
+          <!-- grid filter section -->
+          <div [formGroup]="filterForm">
+            <div class="table-toolbar">
+
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Title</mat-label>
+                <input matInput formControlName="title" placeholder="Title">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Author</mat-label>
+                <input matInput formControlName="author" placeholder="Author">
+              </mat-form-field>
+              
+              <mat-form-field appearance="outline" floatLabel="always">
+                <mat-label>Illustrator</mat-label>
+                <input matInput formControlName="illustrator" placeholder="Illustrator">
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Publisher</mat-label>
+                <mat-select formControlName="publisher" multiple>
+                  <mat-option *ngFor="let p of publishers" [value]="p">{{ p }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+
+              <mat-form-field appearance="outline">
+                <mat-label>Format</mat-label>
+                <mat-select formControlName="format" multiple>
+                  <mat-option *ngFor="let format of comicFormats" [value]="format">{{ format }}</mat-option>
+                </mat-select>
+              </mat-form-field>
+              
+              <button mat-raised-button id="clear-filter-btn" color="primary" (click)="resetFilters()">Clear Filters</button>
+            </div>
+          </div>
+
+          <div class="grid-wrapper">
+            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+              <!-- table columns -->
+              <ng-container matColumnDef="comic.title">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header class="comic-title-column">  Title </th>
+                <td mat-cell *matCellDef="let row" class="comic-title-column"> {{row.comic.title}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="comic.publisher">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Publisher </th>
+                <td mat-cell *matCellDef="let row"> {{row.comic.publisher}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="comic.author">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Author </th>
+                <td mat-cell *matCellDef="let row"> {{row.comic.author}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="comic.illustrator">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Illustrator </th>
+                <td mat-cell *matCellDef="let row"> {{row.comic.illustrator}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="comic.issueNumber">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Issue Number </th>
+                <td mat-cell *matCellDef="let row"> {{row.comic.issueNumber}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="comic.format">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Format </th>
+                <td mat-cell *matCellDef="let row"> {{row.comic.format}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="comic.releaseDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Release Date </th>
+                <td mat-cell *matCellDef="let row"> {{row.comic.releaseDate}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="artRate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> My Art Rate </th>
+                <td mat-cell *matCellDef="let row"> {{row.artRate === 0 ? 'Not Rated Yet' : row.artRate + '/5'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="storyRate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> My Story Rate </th>
+                <td mat-cell *matCellDef="let row"> {{row.storyRate === 0 ? 'Not Rated Yet' : row.storyRate + '/5'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="panelRate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> My Panel Rate </th>
+                <td mat-cell *matCellDef="let row"> {{row.panelRate === 0 ? 'Not Rated Yet' : row.panelRate + '/5'}} </td>
+              </ng-container>
+
+              <ng-container matColumnDef="wishlisted">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Wishlisted </th>
+                <td mat-cell *matCellDef="let row"> {{row.wishlisted ? 'Yes' : 'No'}} </td>
+              </ng-container>
+
+              <!-- Header and rows -->
+              <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-id]="row.id"></tr>
+            </table>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10]" showFirstLastButtons></mat-paginator>
+          </div>
+        </div>
+
         <div id="add-container">
           <h1>Add new titles to your collection</h1>
-          <p>add a horizontal scrolling thing here</p>
 
           <p>Search if you can find that the comic already added by someone. You can use a single keyword to find
             comics,
@@ -23,18 +127,18 @@
               <mat-label>Search Comic</mat-label>
               <input matInput placeholder="" value="" (input)="searchKeyword.set($any($event.target).value)" />
             </mat-form-field>
-            
+
             <button mat-raised-button color="primary" (click)="searchComics()">Search</button>
           </form>
           <div *ngIf="searchedComics().length > 0" class="comics-container">
             <app-comic *ngFor="let comic of searchedComics()" [comic]="comic"></app-comic>
           </div>
-          <H3 id = "err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}</H3>
+          <H3 id="err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}
+          </H3>
 
           <p>If you can't find it, you can be the first who uploads this comic to the app, Woohoo!</p>
           <button mat-raised-button id="add-new-btn" color="primary" (click)="createComic()">Add New Comic</button>
         </div>
-        <h1>Upload your shelfies</h1>
       </div>
     </div>
   </div>

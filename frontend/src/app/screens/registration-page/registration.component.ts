@@ -53,7 +53,7 @@ export class RegisterComponent {
                 }
             });
         } else {
-            console.warn('Form is invalid!');
+            //console.warn('Form is invalid!');
         }
     }
 }

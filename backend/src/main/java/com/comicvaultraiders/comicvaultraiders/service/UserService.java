@@ -3,7 +3,7 @@ package com.comicvaultraiders.comicvaultraiders.service;
 import com.comicvaultraiders.comicvaultraiders.dto.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
 import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsException;
-import com.comicvaultraiders.comicvaultraiders.modell.*;
+import com.comicvaultraiders.comicvaultraiders.model.*;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 import com.comicvaultraiders.comicvaultraiders.specification.UserComicSpecs;

@@ -7,7 +7,6 @@
   margin: 8px;
   display: inline-block;
   vertical-align: top;
-  min-height: 420px;
   
   img {
     width: 100%;
@@ -17,7 +16,7 @@
 
   #close-icon {
     width: 30px;
-    float: right;
+    float: none;
     height: 30px;
     border: 2px solid black;
     color: darkred;

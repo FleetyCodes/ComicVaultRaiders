@@ -1,9 +1,10 @@
-package com.comicvaultraiders.comicvaultraiders.modell;
+package com.comicvaultraiders.comicvaultraiders.model;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +20,10 @@ import java.util.List;
         ),
         @NamedQuery(
                 name = "Comic.findAllWithoutUser",
-                query = "SELECT c FROM Comic c LEFT JOIN c.userXComics uc ON uc.user.id = :userId WHERE uc IS NULL")
+                query = "SELECT c FROM Comic c LEFT JOIN c.userXComics uc ON uc.user.id = :userId WHERE uc IS NULL"),
+        @NamedQuery(
+                name = "Comic.findCorruptDataComics",
+                query = "SELECT c FROM Comic c where crd between :fromDate AND :toDate AND (c.isCheckedByRepairJob = false OR c.isCheckedByRepairJob IS NULL) AND ((c.coverImgUrl is null or trim(c.coverImgUrl) = '' ) or c.releaseDate IS null )"),
 })
 public class Comic {
 
@@ -47,10 +51,16 @@ public class Comic {
     private String format;
 
     @Column(name = "release_date")
-    private ZonedDateTime releaseDate;
+    private LocalDate releaseDate;
 
     @Column(name = "cover_img_url")
     private String coverImgUrl;
+
+    @Column(name = "crd")
+    private ZonedDateTime crd;
+
+    @Column(name = "repair_job_checked")
+    private Boolean isCheckedByRepairJob;
 
     @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserXComics> userXComics = new ArrayList<>();

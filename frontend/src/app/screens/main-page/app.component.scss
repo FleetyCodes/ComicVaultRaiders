@@ -27,19 +27,38 @@
         }
     }
 
-    .content {
-        padding: 5px;
-        padding-left: 20px;
-        padding-right: 20px;
-        margin-top: 25px;
-        width: 80%;
-        margin-left: auto;
-        margin-right: auto;
-        
-        & p{
-            text-align: center;
+        .background-layer {
+            position: relative;
+            min-height: 100vh;
+            background-image: url("/assets/images/cvr_wallpaper.png");
+            background-size: cover;
+            background-position: center;
+
+            .main-content {
+                position: relative;
+                z-index: 2;
+                padding: 5px;
+                padding-left: 20px;
+                padding-right: 20px;
+                margin-top: 25px;
+                width: 80%;
+                margin-left: auto;
+                margin-right: auto;
+    
+                & p {
+                    text-align: center;
+                }
+            }
         }
-    }
+
+        .background-layer::before {
+          content: "";
+          position: absolute;
+          inset: 0;
+          background: rgba(255, 255, 255, 0.8);
+          z-index: 1;
+        }
+
 
     #mainTitle {
         display: flex;
