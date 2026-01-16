@@ -13,16 +13,29 @@
     border-radius: 12px;
     padding: 16px;
     margin-top: 15px;
-    .table-toolbar{
+
+    .table-toolbar {
         //background-color: #101414;
-        display: flex;
+        display: flow;
         background-color: #050707;
         padding-top: 15px;
         padding-left: 10px;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
+
+        .filter-field{
+            width: 200px;
+        }
+
+        #clear-filter-btn {
+            height: 50px;
+            right: 20px;
+            top: 5px;
+            float: inline-end;
+        }
     }
-    & mat-form-field{
+
+    & mat-form-field {
         padding-right: 10px;
     }
 }
@@ -35,6 +48,7 @@
 
     & table {
         height: 550px;
+        padding-right: 10px;
 
         & tr {
             height: 50px;
@@ -44,6 +58,14 @@
         }
     }
 }
+
+@media (max-width: 768px) {
+    .paginator {
+        width: fit-content;
+        padding-right: 17px;
+    }
+}
+
 
 @media (min-width: 1440px) {
     #add-container {
@@ -93,17 +115,6 @@
     color:red;
 }
 
-#clear-filter-btn{
-    height: 60px;
-    right: 20px;
-    margin-left: auto;
-}
-
 .comic-title-column{
     width: 250px;
 }
-
-
-
-
-

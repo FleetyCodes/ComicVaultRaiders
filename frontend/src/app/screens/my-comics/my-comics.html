@@ -16,29 +16,29 @@
           <div [formGroup]="filterForm">
             <div class="table-toolbar">
 
-              <mat-form-field appearance="outline" floatLabel="always">
+              <mat-form-field appearance="outline" floatLabel="always" class="filter-field">
                 <mat-label>Title</mat-label>
                 <input matInput formControlName="title" placeholder="Title">
               </mat-form-field>
 
-              <mat-form-field appearance="outline" floatLabel="always">
+              <mat-form-field appearance="outline" floatLabel="always" class="filter-field">
                 <mat-label>Author</mat-label>
                 <input matInput formControlName="author" placeholder="Author">
               </mat-form-field>
-              
-              <mat-form-field appearance="outline" floatLabel="always">
+
+              <mat-form-field appearance="outline" floatLabel="always" class="filter-field">
                 <mat-label>Illustrator</mat-label>
                 <input matInput formControlName="illustrator" placeholder="Illustrator">
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" class="filter-field">
                 <mat-label>Publisher</mat-label>
                 <mat-select formControlName="publisher" multiple>
                   <mat-option *ngFor="let p of publishers" [value]="p">{{ p }}</mat-option>
                 </mat-select>
               </mat-form-field>
 
-              <mat-form-field appearance="outline">
+              <mat-form-field appearance="outline" class="filter-field">
                 <mat-label>Format</mat-label>
                 <mat-select formControlName="format" multiple>
                   <mat-option *ngFor="let format of comicFormats" [value]="format">{{ format }}</mat-option>
@@ -111,7 +111,7 @@
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-id]="row.id"></tr>
             </table>
-            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10]" showFirstLastButtons></mat-paginator>
+            <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10]" showFirstLastButtons class="paginator"></mat-paginator>
           </div>
         </div>
 

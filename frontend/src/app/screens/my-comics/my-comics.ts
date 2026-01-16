@@ -105,21 +105,27 @@ export class MyComicsPageComponent implements OnInit {
     }
 
     ngAfterViewInit() {
-        Promise.resolve().then(() => {
-            this.sort.active = 'comic.title';
-            this.sort.direction = 'asc';
+        this.sort.active = 'comic.title';
+        this.sort.direction = 'asc';
+
+        this.sort.sortChange.subscribe(() => {
+            this.paginator.pageIndex = 0;
+        });
+
+        this.filterForm.valueChanges.subscribe(() => {
+            this.paginator.pageIndex = 0;
         });
 
         merge(
             this.paginator.page,
             this.sort.sortChange,
-            this.filterForm.valueChanges.pipe(debounceTime(300)),
+            this.filterForm.valueChanges.pipe(
+                debounceTime(300),
+                startWith(null),
+            ),
         )
             .pipe(
-                startWith({
-                    pageIndex: 0,
-                    pageSize: 10
-                }),
+                startWith(null),
                 switchMap(() => {
                     const f = this.filterForm.value;
 
