@@ -7,7 +7,7 @@
           userComicService.getComicObjectCount() > 0 ? 'My Comics' : 'You haven\'t added any comics yet' }}</h1>
         <br />
         <div *ngIf="userComicService.getComicObjectCount() > 0" class="comics-container">
-          <app-user-comic *ngFor="let comic of gridComics()" [userComic]="comic"></app-user-comic>
+          <app-user-comic *ngFor="let comic of userComicService.getComicsObject()" [userComic]="comic"></app-user-comic>
         </div>
         <br />
 
