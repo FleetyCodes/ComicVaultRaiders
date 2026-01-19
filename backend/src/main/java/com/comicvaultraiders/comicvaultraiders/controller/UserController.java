@@ -137,7 +137,7 @@ public class UserController {
             @RequestParam(required = false) List<String> format,
             //@RequestParam(required = false) String fromDate,
             //@RequestParam(required = false) String toDate,
-            //@RequestParam(required = false) Boolean wishlisted,
+            @RequestParam(required = false) Boolean wishlisted,
             @RequestParam(required = false) List<String> sort
         ){
 
@@ -148,6 +148,7 @@ public class UserController {
         filter.setIllustrator(illustrator);
         filter.setPublisher(publisher);
         filter.setFormat(format);
+        filter.setWishlisted(wishlisted);
 
         //filter.setFromDate(fromDate != null ? LocalDate.parse(fromDate) : null);
         //filter.setToDate(toDate != null ? LocalDate.parse(toDate) : null);

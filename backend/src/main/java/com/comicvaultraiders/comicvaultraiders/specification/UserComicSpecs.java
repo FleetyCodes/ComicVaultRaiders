@@ -40,7 +40,7 @@ public class UserComicSpecs {
                 predicates.add(cb.lessThanOrEqualTo(root.get("comic").get("releaseDate"), filter.getToDate()));
             }
             if (filter.getWishlisted() != null) {
-                predicates.add(cb.isTrue(root.get("wishlisted")));
+                predicates.add(cb.equal(root.get("wishlisted"), filter.getWishlisted()));
             }
 
             return cb.and(predicates.toArray(new Predicate[0]));

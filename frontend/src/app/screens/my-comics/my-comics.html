@@ -50,7 +50,7 @@
           </div>
 
           <div class="grid-wrapper">
-            <table mat-table [dataSource]="dataSource" matSort class="mat-elevation-z1">
+            <table mat-table [dataSource]="gridDataSource" matSort class="mat-elevation-z1">
               <!-- table columns -->
               <ng-container matColumnDef="comic.title">
                 <th mat-header-cell *matHeaderCellDef mat-sort-header class="comic-title-column">  Title </th>
@@ -101,12 +101,7 @@
                 <th mat-header-cell *matHeaderCellDef mat-sort-header> My Panel Rate </th>
                 <td mat-cell *matCellDef="let row"> {{row.panelRate === 0 ? 'Not Rated Yet' : row.panelRate + '/5'}} </td>
               </ng-container>
-
-              <ng-container matColumnDef="wishlisted">
-                <th mat-header-cell *matHeaderCellDef mat-sort-header> Wishlisted </th>
-                <td mat-cell *matCellDef="let row"> {{row.wishlisted ? 'Yes' : 'No'}} </td>
-              </ng-container>
-
+              
               <!-- Header and rows -->
               <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
               <tr mat-row *matRowDef="let row; columns: displayedColumns;" [attr.data-id]="row.id"></tr>

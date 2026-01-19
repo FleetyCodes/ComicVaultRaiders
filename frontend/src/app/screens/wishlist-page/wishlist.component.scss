@@ -18,3 +18,61 @@
     }
 }
 
+
+.grid-div {
+    background: rgba(30, 30, 30, 0.15);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 15px;
+
+    .table-toolbar {
+        //background-color: #101414;
+        display: flow;
+        background-color: #050707;
+        padding-top: 15px;
+        padding-left: 10px;
+        border-top-left-radius: 12px;
+        border-top-right-radius: 12px;
+
+        .filter-field{
+            width: 200px;
+        }
+
+        #clear-filter-btn {
+            height: 50px;
+            right: 20px;
+            top: 5px;
+            float: inline-end;
+        }
+    }
+
+    & mat-form-field {
+        padding-right: 10px;
+    }
+}
+
+.grid-wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    background-color: rgba(0, 0, 0, 0.8);
+
+    & table {
+        height: 550px;
+        padding-right: 10px;
+
+        & tr {
+            height: 50px;
+            display: table;
+            width: 100%;
+            table-layout: fixed;
+        }
+    }
+}
+
+@media (max-width: 768px) {
+    .paginator {
+        width: fit-content;
+        padding-right: 17px;
+    }
+}

@@ -63,8 +63,8 @@ export class MyComicsPageComponent implements OnInit {
     private dialog = inject(MatDialog);
     protected gridComics = signal<UserComic[]>([]);
 
-    dataSource = new MatTableDataSource<UserComic>([]);
-    displayedColumns = ['comic.title', 'comic.author', 'comic.illustrator', 'comic.publisher', 'comic.format', 'comic.releaseDate', 'comic.issueNumber', 'artRate', 'storyRate', 'panelRate', 'wishlisted'];
+    gridDataSource = new MatTableDataSource<UserComic>([]);
+    displayedColumns = ['comic.title', 'comic.author', 'comic.illustrator', 'comic.publisher', 'comic.format', 'comic.releaseDate', 'comic.issueNumber', 'artRate', 'storyRate', 'panelRate'];
     
     publishers = Object.values(ComicPublishersEnum);
     comicFormats = Object.values(ComicFormatsEnum);
@@ -138,12 +138,12 @@ export class MyComicsPageComponent implements OnInit {
                         f.format ?? [],
                         f.author ?? '',
                         f.illustrator ?? '',
+                        false
                     )
                 })
             )
             .subscribe(resp => {
-                this.dataSource.data = resp.content;
-                //this.dataSource.paginator = this.paginator;
+                this.gridDataSource.data = resp.content;
                 this.paginator.length = resp.page.totalElements;
             });
     }

@@ -32,7 +32,7 @@ export class UserComicsService {
         return this.http.post(`${this.userBaseApipiUrl}/comic/${comicId}`, usercomic, { headers });
     }
 
-    getFilteredUserComicsApi(page: number, size: number, sort: string, title: string, publisher: string[], format: string[], author: string, illustrator: string): Observable<SpringPageResponse<UserComic>> {
+    getFilteredUserComicsApi(page: number, size: number, sort: string, title: string, publisher: string[], format: string[], author: string, illustrator: string, wishlisted: boolean): Observable<SpringPageResponse<UserComic>> {
         const token = this.userService.getToken();
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`,
@@ -78,6 +78,7 @@ export class UserComicsService {
                 params = params.append('format', p);
             });
         }
+        params = params.set('wishlisted', wishlisted);
         return this.http.get<SpringPageResponse<UserComic>>(url, { headers, params });
     }
 
