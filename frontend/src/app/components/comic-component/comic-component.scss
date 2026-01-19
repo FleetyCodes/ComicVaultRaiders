@@ -44,6 +44,8 @@
   button[mat-icon-button] mat-icon:active {
     color: #072552;
   }
+}
 
-
+.comic-card:hover{
+  cursor: pointer;
 }

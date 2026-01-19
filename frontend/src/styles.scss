@@ -34,6 +34,23 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border: 2px solid #040621;
 }
 
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--mdc-protected-button-container-color, var(--mat-sys-surface));
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4dd0e1;
+  cursor: pointer;
+}
+
 
 :root {
   --mat-sys-error: #b40a0a;
