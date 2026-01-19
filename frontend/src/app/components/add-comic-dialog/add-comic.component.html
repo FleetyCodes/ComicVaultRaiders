@@ -147,7 +147,7 @@
       </div>
     </div>
     <!--add to personal collection form-->
-    <form #addComicForm3="ngForm" (ngSubmit)="onSubmitForm3(addComicForm3)" novalidate *ngIf="this.stepState() === ComicCreationStepEnum.ADD_TO_COLLECTION">
+    <form #addComicForm3="ngForm" (ngSubmit)="onSubmitForm3(addComicForm3)" validate *ngIf="this.stepState() === ComicCreationStepEnum.ADD_TO_COLLECTION">
       <p>How do you rate this comic on a scale of five?</p>
       <mat-form-field appearance="fill">
         <mat-label>Art rate</mat-label>
