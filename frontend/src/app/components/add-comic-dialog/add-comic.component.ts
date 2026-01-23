@@ -15,6 +15,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
 import { QrScannerQuaggaComponent } from "../qr-scanner-quagga/qr-scanner-quagga.component";
 import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
+import { Subject, switchMap, interval, map, takeWhile, tap, finalize } from "rxjs";
 
 @Component({
   selector: 'setup-wizard',
@@ -45,6 +46,8 @@ export class addComicComponent implements OnInit {
   protected opacity = signal<number>(0);
 
   protected isLoading = signal<boolean>(false);
+  
+  private errorTrigger$ = new Subject<void>();
 
   ngOnInit() {
     if (this.data.comicParam) {
@@ -52,6 +55,22 @@ export class addComicComponent implements OnInit {
     }
     this.stepState.set(this.data.step);
     this.message.set('Next, you will add the Comic to the system.');
+
+    this.errorTrigger$
+            .pipe(
+                switchMap(() => {
+                    this.showError.set(true);
+                    this.opacity.set(1);
+
+                    return interval(50).pipe(
+                        map(i => 1 - i * 0.02),
+                        takeWhile(v => v >= 0),
+                        tap(v => this.opacity.set(v)),
+                        finalize(() => this.showError.set(false))
+                    );
+                })
+            )
+            .subscribe();
   }
 
   onCancelClick() {
@@ -135,8 +154,6 @@ export class addComicComponent implements OnInit {
           this.isLoading.set(false);
         },
       });
-    } else {
-      //console.warn('Form is invalid!');
     }
   }
 
@@ -156,18 +173,7 @@ export class addComicComponent implements OnInit {
   checkComicInfo() {
     if ((!this.manualBarcodeInput || this.manualBarcodeInput.trim() === "") && (this.scannedBarcode() === "" || !this.scannedBarcode())) {
       this.errMg.set("Scan or type a barcode to proceed");
-      this.showError.set(true);
-      this.opacity.set(1);
-
-      let step = 4.0;
-      const interval = setInterval(() => {
-        step -= 0.05;
-        this.opacity.set(Math.max(step, 0));
-        if (this.opacity() <= 0) {
-          clearInterval(interval);
-          this.showError.set(false);
-        }
-      }, 50);
+      this.errorTrigger$.next();
       return;
     }
 
@@ -200,18 +206,7 @@ export class addComicComponent implements OnInit {
       },
       error: (err: any) => {
         this.errMg.set("Error - please try again later");
-        this.showError.set(true);
-        this.opacity.set(1);
-
-        let step = 4.0;
-        const interval = setInterval(() => {
-          step -= 0.05;
-          this.opacity.set(Math.max(step, 0));
-          if (this.opacity() <= 0) {
-            clearInterval(interval);
-            this.showError.set(false);
-          }
-        }, 50);
+        this.errorTrigger$.next();
       }
     });
   }

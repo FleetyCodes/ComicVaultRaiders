@@ -128,8 +128,7 @@
           <div *ngIf="searchedComics().length > 0" class="comics-container">
             <app-comic *ngFor="let comic of searchedComics()" [comic]="comic"></app-comic>
           </div>
-          <H3 id="err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}
-          </H3>
+          <H4 id="err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}</H4>
 
           <p>If you can't find it, you can be the first who uploads this comic to the app, Woohoo!</p>
           <button mat-raised-button id="add-new-btn" color="primary" (click)="createComic()">Add New Comic</button>

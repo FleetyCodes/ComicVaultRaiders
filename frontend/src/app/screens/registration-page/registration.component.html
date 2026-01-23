@@ -68,6 +68,6 @@
         Register
       </button>
     </form>
+    <H3 id = "err-msg" *ngIf="showUserAlreadyExistError()" [style.opacity]="opacity()" class="err-msg">{{errMg()}}</H3>
   </div>
-  <H3 id = "err-msg" *ngIf="showUserAlreadyExistError()" [style.opacity]="opacity()" class="err-msg">{{errMg()}}</H3>
 </main>

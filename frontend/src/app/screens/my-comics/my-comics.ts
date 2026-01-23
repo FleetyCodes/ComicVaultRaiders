@@ -19,7 +19,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { ReactiveFormsModule } from '@angular/forms';
-import { merge, debounceTime, startWith, switchMap } from "rxjs";
+import { merge, debounceTime, startWith, switchMap, Subject, finalize, interval, map, takeWhile, tap } from "rxjs";
 import { MatOption } from "@angular/material/select";
 import { MatSelectModule } from '@angular/material/select';
 import { ComicPublishersEnum } from "../../models/comic.publishers.enum";
@@ -58,10 +58,13 @@ export class MyComicsPageComponent implements OnInit {
 
     protected showNotFoundError = signal<boolean>(false);
     protected searchErrMg = signal<string>("");
-    protected opacity = signal<number>(0);
 
     private dialog = inject(MatDialog);
     protected gridComics = signal<UserComic[]>([]);
+
+    private errorTrigger$ = new Subject<void>();
+    protected opacity = signal<number>(0);
+
 
     gridDataSource = new MatTableDataSource<UserComic>([]);
     displayedColumns = ['comic.title', 'comic.author', 'comic.illustrator', 'comic.publisher', 'comic.format', 'comic.releaseDate', 'comic.issueNumber', 'artRate', 'storyRate', 'panelRate'];
@@ -102,6 +105,22 @@ export class MyComicsPageComponent implements OnInit {
                 this.allComicsExcludeUser.set(response);
             },
         });
+
+        this.errorTrigger$
+            .pipe(
+                switchMap(() => {
+                    this.showNotFoundError.set(true);
+                    this.opacity.set(1);
+
+                    return interval(50).pipe(
+                        map(i => 1 - i * 0.02),
+                        takeWhile(v => v >= 0),
+                        tap(v => this.opacity.set(v)),
+                        finalize(() => this.showNotFoundError.set(false))
+                    );
+                })
+            )
+            .subscribe();
     }
 
     ngAfterViewInit() {
@@ -158,17 +177,7 @@ export class MyComicsPageComponent implements OnInit {
                 if (this.searchedComics().length === 0) {
                     this.searchErrMg.set("Haven't found any comics with this parameter");
                     this.showNotFoundError.set(true);
-                    this.opacity.set(1);
-
-                    let step = 4.0;
-                    const interval = setInterval(() => {
-                        step -= 0.05;
-                        this.opacity.set(Math.max(step, 0));
-                        if (this.opacity() <= 0) {
-                            clearInterval(interval);
-                            this.showNotFoundError.set(false);
-                        }
-                    }, 50);
+                    this.errorTrigger$.next();
                 }
                 this.totalElements.set(response.totalElements);
                 this.pageSize.set(response.size);
@@ -177,17 +186,7 @@ export class MyComicsPageComponent implements OnInit {
             this.searchedComics.set([]);
             this.searchErrMg.set("Please enter at least 3 characters");
             this.showNotFoundError.set(true);
-            this.opacity.set(1);
-
-            let step = 4.0;
-            const interval = setInterval(() => {
-                step -= 0.05;
-                this.opacity.set(Math.max(step, 0));
-                if (this.opacity() <= 0) {
-                    clearInterval(interval);
-                    this.showNotFoundError.set(false);
-                }
-            }, 50);
+            this.errorTrigger$.next();
         }
     }
 
