@@ -6,8 +6,8 @@
         <h1 [ngClass]="[userComicService.getComicObjectCount() > 0 ? '' : 'your-comics-title'] ">{{
           userComicService.getComicObjectCount() > 0 ? 'My Comics' : 'You haven\'t added any comics yet' }}</h1>
         <br />
-        <div *ngIf="userComicService.getComicObjectCount() > 0" class="comics-container">
-          <app-user-comic *ngFor="let comic of userComicService.getComicsObject()" [userComic]="comic"></app-user-comic>
+        <div *ngIf="userComicService.getComicsObjectWithCovers().length > 0" class="comics-container">
+          <app-user-comic *ngFor="let comic of userComicService.getComicsObjectWithCovers()" [userComic]="comic"></app-user-comic>
         </div>
         <br />
 

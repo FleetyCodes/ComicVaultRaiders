@@ -110,6 +110,10 @@ export class UserComicsService {
         return this.userComics();
     }
 
+    getComicsObjectWithCovers() {
+        return this.userComics().filter(uc => uc.comic.coverImgUrl !== null && uc.comic.coverImgUrl !== undefined && uc.comic.coverImgUrl.trim().length > 0);
+    }
+
     getComicObjectCount() {
         return this.userComics().length;
     }
@@ -129,6 +133,10 @@ export class UserComicsService {
 
     getWishlistedComicsObject() {
         return this.userWishlistedComics();
+    }
+
+    getWishlistedComicsWithCoverImgUrlObject() {
+        return this.userWishlistedComics().filter(uc => uc.comic.coverImgUrl !== null && uc.comic.coverImgUrl !== undefined && uc.comic.coverImgUrl.trim().length > 0);
     }
 
     getWishlistedComicObjectCount() {
