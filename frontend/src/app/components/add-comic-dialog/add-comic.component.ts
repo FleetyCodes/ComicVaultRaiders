@@ -14,13 +14,14 @@ import { ComicFormatsEnum } from "../../models/comic.formats.enum";
 import { MatSelectModule } from '@angular/material/select';
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
 import { QrScannerQuaggaComponent } from "../qr-scanner-quagga/qr-scanner-quagga.component";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'setup-wizard',
   standalone: true,
   templateUrl: './add-comic.component.html',
   styleUrls: ['./add-comic.component.scss'],
-  imports: [ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatSelectModule, QrScannerQuaggaComponent]
+  imports: [ReactiveFormsModule, CommonModule, MatFormFieldModule, MatInputModule, MatButtonModule, FormsModule, MatIconModule, MatSelectModule, QrScannerQuaggaComponent, MatProgressSpinnerModule]
 })
 export class addComicComponent implements OnInit {
 
@@ -28,7 +29,7 @@ export class addComicComponent implements OnInit {
 
   protected stepState = signal<number>(1);
   protected newComic = signal<Comic | null>(null);
-  protected title = computed(() => `Add New Comic - Step ${this.stepState()}/${this.maxValue}`); // Dynamic title based on current step and max ste`);
+  protected title = computed(() => `Add New Comic - Step ${this.stepState()}/${this.maxValue}`);
   protected message = signal<string>('');
   publishers = Object.values(ComicPublishersEnum);
   comicFormats = Object.values(ComicFormatsEnum);
@@ -43,6 +44,7 @@ export class addComicComponent implements OnInit {
   protected errMg = signal<string>("");
   protected opacity = signal<number>(0);
 
+  protected isLoading = signal<boolean>(false);
 
   ngOnInit() {
     if (this.data.comicParam) {
@@ -82,19 +84,21 @@ export class addComicComponent implements OnInit {
   }
 
 
-  onSubmitForm3(form: NgForm) {
+  addUserComicApiCall(form: NgForm) {
     const comic = {
       ...form.value,
       wishlisted: false,
       comic: this.newComic()!,
     };
     if (comic && this.newComic()) {
+      this.isLoading.set(true);
       this.userComicsService.addUserComicApi(String(this.newComic()?.id), comic).subscribe({
         next: (response) => {
           this.userComicsService.addComicObject(response);
           if (this.data.onAddComic) {
             this.data.onAddComic();
           }
+          this.isLoading.set(false);
           this.dialogRef.close();
         },
       });
@@ -105,8 +109,9 @@ export class addComicComponent implements OnInit {
     this.stepState.set(newState);
   }
 
-  onSubmitForm1() {
+  createComicApiCall() {
     if (this.form.valid) {
+      this.isLoading.set(true);
       const dateValue = this.form.value.releaseDate;
       const newDate = toZonedDateTimeString(dateValue!);
 
@@ -127,6 +132,7 @@ export class addComicComponent implements OnInit {
         next: (res: any) => {
           this.newComic.set(res);
           this.stepState.set(this.ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST);
+          this.isLoading.set(false);
         },
       });
     } else {

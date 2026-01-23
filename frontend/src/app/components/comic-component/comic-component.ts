@@ -7,6 +7,7 @@ import { MatDialog } from "@angular/material/dialog";
 import { addComicComponent } from "../add-comic-dialog/add-comic.component";
 import { AppComponent } from "../../screens/main-page/app.component";
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
+import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-comic',
@@ -31,7 +32,9 @@ export class ComicComponent {
       data: {
         step: this.ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST,
         comicParam: this.comic,
-        onAddComic: () => this.setComicAdded(true),
+        onAddComic: () => {
+          this.setComicAdded(true);
+        }
       },
     });
   }

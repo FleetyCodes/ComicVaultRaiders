@@ -42,7 +42,7 @@
       </div>
     </div>
     <!-- create comic with manual proccess -->
-    <form [formGroup]="form" (ngSubmit)="onSubmitForm1()" validate *ngIf="this.stepState() === ComicCreationStepEnum.MANUAL_CREATE_STEP">
+    <form [formGroup]="form" (ngSubmit)="createComicApiCall()" validate *ngIf="this.stepState() === ComicCreationStepEnum.MANUAL_CREATE_STEP && !isLoading()">
       <mat-form-field appearance="fill">
         <mat-label>Title</mat-label>
         <input matInput type="text" formControlName="title" />
@@ -126,6 +126,7 @@
         <button mat-button id="cancel-btn" (click)="onCancelClick()">Cancel</button>
       </div>
     </form>
+    <div id="spinner-div"><mat-spinner *ngIf="isLoading()"></mat-spinner></div>
     <!-- add to collection or wishlist -->
     <div id="step2-form" *ngIf="this.stepState() === ComicCreationStepEnum.ADD_TO_COLLECTION_OR_WISHLIST">
       <div id="add-comic-container">
@@ -147,7 +148,7 @@
       </div>
     </div>
     <!--add to personal collection form-->
-    <form #addComicForm3="ngForm" (ngSubmit)="onSubmitForm3(addComicForm3)" validate *ngIf="this.stepState() === ComicCreationStepEnum.ADD_TO_COLLECTION">
+    <form #addComicForm3="ngForm" (ngSubmit)="addUserComicApiCall(addComicForm3)" validate *ngIf="this.stepState() === ComicCreationStepEnum.ADD_TO_COLLECTION && !isLoading()">
       <p>How do you rate this comic on a scale of five?</p>
       <mat-form-field appearance="fill">
         <mat-label>Art rate</mat-label>
