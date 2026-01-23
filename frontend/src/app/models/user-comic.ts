@@ -1,7 +1,7 @@
 import { Comic } from './comic';
 
 export interface UserComic{
-  id: number;
+  id?: number | null;
   comic: Comic;
   positiveDescription?: string | null;
   negativeDescription?: string | null;

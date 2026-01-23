@@ -49,6 +49,27 @@ export class addComicComponent implements OnInit {
   
   private errorTrigger$ = new Subject<void>();
 
+
+  form = new FormGroup({
+    title: new FormControl<string>('', { validators: [Validators.required] }),
+    author: new FormControl<string>('', { validators: [Validators.required] }),
+    illustrator: new FormControl<string>('', { validators: [] }),
+    format: new FormControl<string>('', { validators: [Validators.required] }),
+    issueNumber: new FormControl<number>(1, { validators: [Validators.min(1), Validators.required] }),
+    publisher: new FormControl<string>('', { validators: [Validators.required] }),
+    releaseDate: new FormControl<string>('', {validators: []}),
+    coverImgUrl: new FormControl<string>('', { validators: [] }),
+  });
+
+  userComicForm = new FormGroup({
+    artRate: new FormControl<number>(0, { validators: [Validators.min(0), Validators.max(5), Validators.required] }),
+    storyRate: new FormControl<number>(0, { validators: [Validators.min(0), Validators.max(5), Validators.required] }),
+    panelRate: new FormControl<number>(0, { validators: [Validators.min(0), Validators.max(5), Validators.required] }),
+    positiveDescription: new FormControl<string>('', { validators: [Validators.maxLength(1000)] }),
+    negativeDescription: new FormControl<string>('', { validators: [Validators.maxLength(1000)] }),
+  });
+
+
   ngOnInit() {
     if (this.data.comicParam) {
       this.newComic.set(this.data.comicParam);
@@ -57,20 +78,20 @@ export class addComicComponent implements OnInit {
     this.message.set('Next, you will add the Comic to the system.');
 
     this.errorTrigger$
-            .pipe(
-                switchMap(() => {
-                    this.showError.set(true);
-                    this.opacity.set(1);
+      .pipe(
+        switchMap(() => {
+          this.showError.set(true);
+          this.opacity.set(1);
 
-                    return interval(50).pipe(
-                        map(i => 1 - i * 0.02),
-                        takeWhile(v => v >= 0),
-                        tap(v => this.opacity.set(v)),
-                        finalize(() => this.showError.set(false))
-                    );
-                })
-            )
-            .subscribe();
+          return interval(50).pipe(
+            map(i => 1 - i * 0.02),
+            takeWhile(v => v >= 0),
+            tap(v => this.opacity.set(v)),
+            finalize(() => this.showError.set(false))
+          );
+        })
+      )
+      .subscribe();
   }
 
   onCancelClick() {
@@ -102,30 +123,37 @@ export class addComicComponent implements OnInit {
     this.message.set('Share your thoughts about this comic in your collection!');
   }
 
-
-  addUserComicApiCall(form: NgForm) {
-    const comic = {
-      ...form.value,
-      wishlisted: false,
-      comic: this.newComic()!,
-    };
-    if (comic && this.newComic()) {
-      this.isLoading.set(true);
-      this.userComicsService.addUserComicApi(String(this.newComic()?.id), comic).subscribe({
-        next: (response) => {
-          this.userComicsService.addComicObject(response);
-          if (this.data.onAddComic) {
-            this.data.onAddComic();
-          }
-          this.isLoading.set(false);
-          this.dialogRef.close();
-        },
-      });
-    }
-  }
-
   setStepState(newState: number) {
     this.stepState.set(newState);
+  }
+
+  addUserComicApiCall() {
+    if (this.userComicForm.valid) {
+      const userComic = {
+        ...this.userComicForm.value,
+        id: null,
+        artRate: this.userComicForm.value.artRate!,
+        storyRate: this.userComicForm.value.storyRate!,
+        panelRate: this.userComicForm.value.panelRate!,
+        positiveDescription: this.userComicForm.value.positiveDescription!,
+        negativeDescription: this.userComicForm.value.negativeDescription!,
+        wishlisted: false,
+        comic: this.newComic()!,
+      };
+      if (userComic && this.newComic()) {
+        this.isLoading.set(true);
+        this.userComicsService.addUserComicApi(String(this.newComic()?.id), userComic).subscribe({
+          next: (response) => {
+            this.userComicsService.addComicObject(response);
+            if (this.data.onAddComic) {
+              this.data.onAddComic();
+            }
+            this.isLoading.set(false);
+            this.dialogRef.close();
+          },
+        });
+      }
+    }
   }
 
   createComicApiCall() {
@@ -156,19 +184,6 @@ export class addComicComponent implements OnInit {
       });
     }
   }
-
-
-  form = new FormGroup({
-    title: new FormControl<string>('', { validators: [Validators.required] }),
-    author: new FormControl<string>('', { validators: [Validators.required] }),
-    illustrator: new FormControl<string>('', { validators: [] }),
-    format: new FormControl<string>('', { validators: [Validators.required] }),
-    issueNumber: new FormControl<number>(1, { validators: [Validators.min(1), Validators.required] }),
-    publisher: new FormControl<string>('', { validators: [Validators.required] }),
-    releaseDate: new FormControl<string>('', {validators: []}),
-    coverImgUrl: new FormControl<string>('', { validators: [] }),
-  });
-
 
   checkComicInfo() {
     if ((!this.manualBarcodeInput || this.manualBarcodeInput.trim() === "") && (this.scannedBarcode() === "" || !this.scannedBarcode())) {
