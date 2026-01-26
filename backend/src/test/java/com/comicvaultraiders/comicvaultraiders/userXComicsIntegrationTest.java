@@ -2,6 +2,7 @@ package com.comicvaultraiders.comicvaultraiders;
 
 import com.comicvaultraiders.comicvaultraiders.model.Comic;
 import com.comicvaultraiders.comicvaultraiders.model.User;
+import com.comicvaultraiders.comicvaultraiders.model.UserRole;
 import com.comicvaultraiders.comicvaultraiders.model.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
@@ -71,7 +72,15 @@ public class userXComicsIntegrationTest {
 
     @Test
     public void testFilteredComics() throws Exception {
-        String jwt = jwtUtil.generateToken("testuser", 1L);
+
+        User loggedInMock = new User();
+        UserRole appUserRole = new UserRole();
+        appUserRole.setId(1L);
+        appUserRole.setName("APP_USER");
+        loggedInMock.setUserRole(appUserRole);
+        loggedInMock.setUsername("testuser");
+        loggedInMock.setId(1L);
+        String jwt = jwtUtil.generateToken(loggedInMock);
 
         mockMvc.perform(get("/v1/user/filteredComics")
                         .header("Authorization", "Bearer "+ jwt)

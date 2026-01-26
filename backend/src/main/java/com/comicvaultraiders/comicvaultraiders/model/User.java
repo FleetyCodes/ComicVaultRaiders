@@ -56,5 +56,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserXComics> userXComics = new ArrayList<>();
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_role_id", referencedColumnName = "id")
+    private UserRole userRole;
+
 }
 

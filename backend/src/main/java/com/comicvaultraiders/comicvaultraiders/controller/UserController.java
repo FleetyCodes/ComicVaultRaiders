@@ -54,7 +54,7 @@ public class UserController {
                     .maxAge(Duration.ofDays(15))
                     .build();
             response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-            return ResponseEntity.ok(Map.of("token", jwtUtils.generateToken(loggedIn.getUsername(), loggedIn.getId())));
+            return ResponseEntity.ok(Map.of("token", jwtUtils.generateToken(loggedIn)));
         } else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
         }
@@ -80,7 +80,7 @@ public class UserController {
                         refreshTokenService.delete(token);
                         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh token expired. Please login again.");
                     }
-                    String newJwt = jwtUtils.generateToken(token.getUser().getUsername(), token.getUser().getId());
+                    String newJwt = jwtUtils.generateToken(token.getUser());
                     if(token.getExpiryDate().isBefore(ZonedDateTime.now(ZoneId.of("UTC")).plusHours(1).toInstant())){
                         refreshTokenService.delete(token);
                         RefreshToken newRefreshToken = refreshTokenService.createRefreshToken(token.getUser().getId());

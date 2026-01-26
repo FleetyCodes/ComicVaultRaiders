@@ -1,5 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.util;
 
+import com.comicvaultraiders.comicvaultraiders.model.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
@@ -25,10 +26,11 @@ public class JwtUtil {
         this.key = Keys.hmacShaKeyFor(jwtSecret.getBytes(StandardCharsets.UTF_8));
     }
     // Generate JWT token
-    public String generateToken(String username, Long userId) {
+    public String generateToken(User loggedInUser) {
         return Jwts.builder()
-                .subject(username)
-                .claim("userId", userId)
+                .subject(loggedInUser.getUsername())
+                .claim("userId", loggedInUser.getId())
+                .claim("userRole", loggedInUser.getUserRole().getName())
                 .issuedAt(new Date())
                 .expiration(new Date((new Date()).getTime() + jwtExpirationMs))
                 .signWith(key, SignatureAlgorithm.HS256)

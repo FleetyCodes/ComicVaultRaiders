@@ -61,7 +61,11 @@ public class UserService implements UserDetailsService {
             user.setConfirmed(false);
             user.setDeleted(false);
             user.setRegDate(ZonedDateTime.now(ZoneId.of("UTC")));
-        }catch (GeneralSecurityException e) {
+            UserRole appUserRole = new UserRole();
+            appUserRole.setId(1L);
+            appUserRole.setName("APP_USER");
+            user.setUserRole(appUserRole);
+        } catch (GeneralSecurityException e) {
             throw new RuntimeException("Encryption failed", e);
         } catch (UserAlreadyExistsException e) {
             throw new RuntimeException(e);

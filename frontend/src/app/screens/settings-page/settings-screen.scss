@@ -1,0 +1,58 @@
+.content {
+    display: flex;
+    margin-top: 28px;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+
+    background: rgb(171 153 89 / 15%);
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 15px;
+}
+
+#add-container {
+    gap: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    display: grid;
+    padding-bottom: 15px;
+
+    & h1 {
+        text-align: center;
+    }
+
+    & form {
+        align-items: center;
+        display: flex;
+        gap: 5px;
+
+        & mat-form-field {
+            margin-top: 15px;
+        }
+
+        & button {
+            height: 55px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+        }
+    }
+
+    & #add-new-btn {
+        width: 40%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+
+#spinner-div {
+    justify-content: center;
+    display: flex;
+}
+
+#err-msg {
+    color: red;
+    margin-top: -10px;
+    margin-bottom: -10px;
+}

@@ -23,6 +23,7 @@
     "@angular/platform-server": "^19.2.0",
     "@angular/router": "^19.2.18",
     "@angular/ssr": "^19.2.11",
+    "@auth0/angular-jwt": "^5.2.0",
     "@ericblade/quagga2": "^1.10.2",
     "@ng-idle/core": "^16.0.0",
     "@ng-idle/keepalive": "^16.0.0",

@@ -1,0 +1,20 @@
+<main class="main">
+    <div class="content" *ngIf="this.isAdmin()">
+        <div id="add-container">
+            <h1>Comic Scraper</h1>
+            <p>Scrape to fill the database (comic bulk upload) with keywords</p>
+            <div *ngIf="!isLoading()">
+                <form>
+                    <mat-form-field>
+                        <mat-label>Search Comic</mat-label>
+                        <input matInput placeholder="" value=""
+                            (input)="scraperKeyword.set($any($event.target).value)" />
+                    </mat-form-field>
+                    <button mat-raised-button color="primary" (click)="searchComics()">Search</button>
+                </form>   
+            </div>
+            <H4 id="err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}</H4>
+            <div id="spinner-div"><mat-spinner *ngIf="isLoading()"></mat-spinner></div>    
+        </div>
+    </div>
+</main>
