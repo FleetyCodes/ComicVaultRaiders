@@ -10,7 +10,7 @@
                         <input matInput placeholder="" value=""
                             (input)="scraperKeyword.set($any($event.target).value)" />
                     </mat-form-field>
-                    <button mat-raised-button color="primary" (click)="searchComics()">Search</button>
+                    <button mat-raised-button color="primary" (click)="searchComics()">Run Scrape</button>
                 </form>   
             </div>
             <H4 id="err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}</H4>

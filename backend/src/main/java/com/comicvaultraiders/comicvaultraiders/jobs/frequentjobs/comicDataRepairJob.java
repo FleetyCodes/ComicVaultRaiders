@@ -1,4 +1,4 @@
-package com.comicvaultraiders.comicvaultraiders.jobs.quarterHour;
+package com.comicvaultraiders.comicvaultraiders.jobs.frequentjobs;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.model.Comic;
@@ -27,11 +27,13 @@ public class comicDataRepairJob {
 
     @Scheduled(cron = "0 */15 * * * *")
     public void fixCorruptedComicData() {
+        ////second  minute  hour  day-of-month  month  day-of-week
         //quarter-hour period job:
         //@Scheduled(cron = "0 */15 * * * *")
 
         //run at specified time:
         //@Scheduled(cron = "0 30 15 * * *")
+
         logger.info("fixCorruptedComicData start: " + LocalDateTime.now());
         List<Comic> corruptedComics = comicService.getAllComicsWithCorruptedData(ZonedDateTime.now().minusDays(1L), ZonedDateTime.now().plusHours(2L));
         logger.info("num of corrupted comics: " + corruptedComics.size());

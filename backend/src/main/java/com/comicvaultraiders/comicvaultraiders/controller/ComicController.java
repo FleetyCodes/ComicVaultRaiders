@@ -53,7 +53,7 @@ public class ComicController {
 
     @PostMapping
     public ResponseEntity<ComicDto> createComic(@Valid  @RequestBody Comic comic) {
-        Optional<Comic> newComic = comicService.createComic(comic);
+        Optional<Comic> newComic = comicService.createComic(comic, false);
         return newComic.map(item -> ResponseEntity.ok(new ComicDto (item)))
                 .orElse(ResponseEntity.notFound().build());
     }

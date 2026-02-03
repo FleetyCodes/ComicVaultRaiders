@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -27,6 +28,7 @@ import io.swagger.v3.oas.models.security.SecurityScheme;
 import java.util.List;
 
 @Configuration
+@EnableMethodSecurity
 @Profile("!test")
 public class WebSecurityConfig {
 
@@ -89,6 +91,7 @@ public class WebSecurityConfig {
                                         //,"/v3/api-docs.yaml"
                                 ).permitAll()
                                 .requestMatchers("/v1/comic/**", "/v1/user/**").authenticated()
+                                .requestMatchers("/v1/admin/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
         // Add the JWT Token filter before the UsernamePasswordAuthenticationFilter

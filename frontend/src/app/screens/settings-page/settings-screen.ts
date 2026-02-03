@@ -44,7 +44,7 @@ export class SettingsScreenComponent implements OnInit {
         console.log("Settings Screen Loaded");
         let token = this.userService.getToken();
 
-        if (this.jwtHelper.decodeToken(token!).userRole === 'ADMIN') {
+        if (this.jwtHelper.decodeToken(token!).userRole === 'ROLE_ADMIN') {
             this.isAdmin.set(true);
         } else {
             this.isAdmin.set(false);
@@ -73,15 +73,20 @@ export class SettingsScreenComponent implements OnInit {
             this.isLoading.set(true);
 
             this.adminService.scrapeComics(this.scraperKeyword()).subscribe({
-                next: (res: any) => {
+                next: (res: number) => {
+                    if(res===0){
+                        this.searchErrMg.set("Keyword is already in queue");
+                    }else{
+                        this.searchErrMg.set("Scrape set in queue");
+                    }
+                    this.scraperKeyword.set("");
                     this.isLoading.set(false);
-                    this.searchErrMg.set("Scraping completed successfully:" + res);
                     this.errorTrigger$.next();
                 },
                 error: (err: any) => {
                     this.scraperKeyword.set("");
                     this.isLoading.set(false);
-                    this.searchErrMg.set("Error during scraping:" + err);
+                    this.searchErrMg.set("Error during scraping");
                     this.errorTrigger$.next();
                 }
             });

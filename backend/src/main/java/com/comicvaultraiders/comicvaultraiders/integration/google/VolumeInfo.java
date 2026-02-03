@@ -20,4 +20,7 @@ public class VolumeInfo {
     @lombok.Getter(onMethod_ = {@JsonProperty("imageLinks")})
     @lombok.Setter(onMethod_ = {@JsonProperty("imageLinks")})
     private ImageLinks imageLinks;
+    @lombok.Getter(onMethod_ = {@JsonProperty("subtitle")})
+    @lombok.Setter(onMethod_ = {@JsonProperty("subtitle")})
+    private String subtitle;
 }

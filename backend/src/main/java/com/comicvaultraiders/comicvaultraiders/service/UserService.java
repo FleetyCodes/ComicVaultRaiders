@@ -13,6 +13,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -20,11 +21,11 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
 import java.security.GeneralSecurityException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,11 +103,13 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username){
         Optional<User> user = userRepository.findByUsername(username);
         if(user.isPresent()){
+            String role = user.get().getUserRole().getName();
+            List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(role));
+
             return new org.springframework.security.core.userdetails.User(
                     user.get().getUsername(),
                     user.get().getPassword(),
-                    Collections.emptyList()
-            );
+                    authorities);
         }else{
             throw new UsernameNotFoundException("User Not Found with username: " + username);
         }
