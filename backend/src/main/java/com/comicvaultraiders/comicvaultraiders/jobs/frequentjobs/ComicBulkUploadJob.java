@@ -7,6 +7,7 @@ import com.comicvaultraiders.comicvaultraiders.service.ComicBulkCreateQueueServi
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
 import com.comicvaultraiders.comicvaultraiders.service.RateLimitService;
+import org.apache.log4j.Logger;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +16,7 @@ import java.util.List;
 @Service
 public class ComicBulkUploadJob {
 
-    //private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = Logger.getLogger(this.getClass());
 
     private final ComicBulkCreateQueueService comicBulkCreateQueueService;
 
@@ -46,10 +47,17 @@ public class ComicBulkUploadJob {
                 Long startindex = queueRow.getStartIndex();
 
                 do{
-                    newComics = googleAPIService.comicBulkUpload(queueRow.getKeyword(), startindex);
-                    numOfAPICall++;
-                    startindex++;
-
+                    newComics = null;
+                    try{
+                        newComics = googleAPIService.comicBulkUpload(queueRow.getKeyword(), startindex);
+                        numOfAPICall++;
+                        startindex++;
+                    }catch(Exception e){
+                        logger.error("error during api call: " + e.getMessage());
+                        queueRow.setStartIndex(startindex);
+                        comicBulkCreateQueueService.updateRowInQueue(queueRow);
+                        break;
+                    }
                     if(newComics!=null && !newComics.isEmpty()){
                         comicService.createBulkComics(newComics);
                     }

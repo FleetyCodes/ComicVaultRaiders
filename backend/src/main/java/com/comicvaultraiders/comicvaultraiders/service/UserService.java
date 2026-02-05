@@ -64,7 +64,7 @@ public class UserService implements UserDetailsService {
             user.setRegDate(ZonedDateTime.now(ZoneId.of("UTC")));
             UserRole appUserRole = new UserRole();
             appUserRole.setId(1L);
-            appUserRole.setName("APP_USER");
+            appUserRole.setName("ROLE_APP_USER");
             user.setUserRole(appUserRole);
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Encryption failed", e);
