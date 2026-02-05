@@ -6,7 +6,7 @@
             <div *ngIf="!isLoading()">
                 <form>
                     <mat-form-field>
-                        <mat-label>Search Comic</mat-label>
+                        <mat-label>Scrape Keyword</mat-label>
                         <input matInput placeholder="" value=""
                             (input)="scraperKeyword.set($any($event.target).value)" />
                     </mat-form-field>
