@@ -179,8 +179,6 @@ public class GoogleAPIService {
             }
         } catch(JsonProcessingException jsonExp){
             System.out.println(jsonExp.getMessage());
-        } catch(IOException ioException){
-            System.out.println(ioException.getMessage());
         }
         return newComic;
     }
