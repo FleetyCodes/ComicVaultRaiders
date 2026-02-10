@@ -1,6 +1,6 @@
 #popup-window {
     width: 500px;
-    height: 400px;
+    height: 432px;
     display: grid;
     background-color: #040621;
     color: #e0e0e0;
@@ -72,16 +72,20 @@
 
 #add-comic-container {
     text-align: center;
-    gap: 6px;
+    gap: 18px;
 
     #add-comic-btn-container {
         min-height: 150px;
         min-width: 150px;
+        box-shadow: 0px 0px 2px 2px rgb(255 255 255 / 50%);
+        padding: 5px;
     }
 
     #add-wishlist-btn-container {
         min-height: 150px;
-        min-width: 150px;
+        min-width: 189px;
+        box-shadow: 0px 0px 2px 2px rgb(255 255 255 / 50%);
+        padding: 5px;
     }
 
     button[mat-icon-button] {

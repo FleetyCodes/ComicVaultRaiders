@@ -5,7 +5,7 @@
     <div id="step1-form" *ngIf="this.stepState() === ComicCreationStepEnum.SCAN_OR_MANUAL_CREATE_DIALOG">
       <div id="add-comic-container">
         <div id="add-comic-btn-container">
-          <p>Scan mode creation</p>
+          <p>Scan/ISBN mode creation</p>
           <button mat-icon-button color="primary" (click)="setStepState(ComicCreationStepEnum.BARCODE_SCAN_STEP)">
             <mat-icon>barcode_reader</mat-icon>
           </button>
