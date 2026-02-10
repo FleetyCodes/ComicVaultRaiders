@@ -85,3 +85,55 @@
 .comic-title-column{
     width: 250px;
 }
+
+
+
+@media (min-width: 1440px) {
+    #add-container {
+        width: 50%;
+        background: rgba(30, 30, 30, 0.15);
+        border-radius: 12px;
+        padding: 16px;
+        margin-top: 15px;
+    }
+}
+
+#add-container {
+    gap: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8px;
+    display: grid;
+    padding-bottom: 15px;
+
+    & h1 {
+        text-align: center;
+    }
+
+    & form {
+        align-items: center;
+        display: flex;
+        gap: 5px;
+
+        & mat-form-field {
+            margin-top: 15px;
+        }
+
+        & button {
+            height: 55px;
+            margin-bottom: 5px;
+            border-radius: 8px;
+        }
+    }
+
+    & #add-new-btn {
+        width: 40%;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+#err-msg {
+    color: red;
+    margin-top: -10px;
+    margin-bottom: -10px;
+}

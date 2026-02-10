@@ -108,6 +108,30 @@
             <mat-paginator [pageSize]="10" [pageSizeOptions]="[5,10]" showFirstLastButtons class="paginator"></mat-paginator>
           </div>
         </div>
+
+                <div id="add-container">
+          <h1>Add new titles to your collection</h1>
+
+          <p>Search if you can find that the comic already added by someone. You can use a single keyword to find
+            comics,
+            don't have to use the full title:</p>
+
+          <form>
+            <mat-form-field>
+              <mat-label>Search Comic</mat-label>
+              <input matInput placeholder="" value="" (input)="searchKeyword.set($any($event.target).value)" />
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" (click)="searchComics()">Search</button>
+          </form>
+          <div *ngIf="searchedComics().length > 0" class="comics-container">
+            <app-comic *ngFor="let comic of searchedComics()" [comic]="comic"></app-comic>
+          </div>
+          <H4 id="err-msg" *ngIf="showNotFoundError()" [style.opacity]="opacity()" class="err-msg">{{searchErrMg()}}</H4>
+
+          <p>If you can't find it, you can be the first who uploads this comic to the app, Woohoo! <br>For a bulk upload, please contact the admin.</p>
+          <button mat-raised-button id="add-new-btn" color="primary" (click)="createComic()">Add New Comic</button>
+        </div>
       </div>
     </div>
   </div>
