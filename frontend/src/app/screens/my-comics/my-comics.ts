@@ -14,7 +14,6 @@ import { UserComicsService } from "../../services/user.comic.service";
 import { MatDialog } from "@angular/material/dialog";
 import { addComicComponent } from "../../components/add-comic-dialog/add-comic.component";
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
-import { AppComponent } from "../main-page/app.component";
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from "@angular/material/paginator";
 import { MatSort, MatSortModule } from '@angular/material/sort';
@@ -45,7 +44,7 @@ import { ComicFormatsEnum } from "../../models/comic.formats.enum";
 
 export class MyComicsPageComponent implements OnInit {
 
-    constructor(private appComp: AppComponent, private comicService: ComicService, protected userComicService: UserComicsService) { }
+    constructor(private comicService: ComicService, protected userComicService: UserComicsService) { }
 
     protected allComicsExcludeUser = signal<Comic[]>([]);
     protected hasComics = signal<boolean>(false);
@@ -64,9 +63,6 @@ export class MyComicsPageComponent implements OnInit {
 
     private errorTrigger$ = new Subject<void>();
     protected opacity = signal<number>(0);
-
-
-
 
     gridDataSource = new MatTableDataSource<UserComic>([]);
     displayedColumns = ['comic.title', 'comic.author', 'comic.illustrator', 'comic.publisher', 'comic.format', 'comic.releaseDate', 'comic.issueNumber', 'artRate', 'storyRate', 'panelRate'];

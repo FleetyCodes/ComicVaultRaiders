@@ -54,6 +54,8 @@
 
     & table {
         height: 550px;
+        overflow-y: auto;
+        display: block;
         padding-right: 10px;
 
         & tr {

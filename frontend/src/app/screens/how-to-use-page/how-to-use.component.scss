@@ -8,7 +8,7 @@
     padding-left: 15px;
     padding-right: 15px;
     width: 50%;
-    background: rgb(197 185 98 / 15%);
+    background: rgb(197 185 98 / 35%);
     border-radius: 12px;
     box-shadow: 0 5px 9px rgba(0, 0, 0, 1);
 
@@ -27,11 +27,11 @@
     margin-right: auto;
     position: absolute;
     content: "";
-    top: 0px;
-    height: 10px;
+    top: -2px;
+    height: 15px;
     width: 48%;
-    background-size: 9px 12px;
-    background-image: radial-gradient(circle at 5% 40%, transparent 70%, #555 20%);
+    background-size: 11px 16px;
+    background-image: radial-gradient(circle at 10% 45%, transparent 70%, #555 20%);
 }
 
 @media (max-width: 768px) {
