@@ -31,7 +31,7 @@
       </div>
       <p>Enter barcode manually: </p>
       <mat-form-field appearance="fill">
-        <mat-label>Barcode</mat-label>
+        <mat-label>ISBN (Barcode number)</mat-label>
         <input matInput type="text" [(ngModel)]="manualBarcodeInput" /> 
       </mat-form-field>
       <H3 id = "err-msg" *ngIf="showError()" [style.opacity]="opacity()" class="err-msg">{{errMg()}}</H3>
