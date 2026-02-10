@@ -37,9 +37,8 @@ public class ComicBulkUploadJob {
     public void comicBulkUploadProcess(){
         RateLimit googleApiRateLimit = rateLimitService.findByApiName("GOOGLE_BOOKS");
 
-        if(googleApiRateLimit.getDailyLimit()-100-googleApiRateLimit.getTraffic() > 0){
+        if(googleApiRateLimit.getDailyLimit()-googleApiRateLimit.getTraffic() > 0){
             List<ComicBulkCreateQueue> bulkUploadQueue = comicBulkCreateQueueService.findAll();
-
             int numOfAPICall = 0;
 
             for(ComicBulkCreateQueue queueRow:bulkUploadQueue){
@@ -50,13 +49,17 @@ public class ComicBulkUploadJob {
                     newComics = null;
                     try{
                         newComics = googleAPIService.comicBulkUpload(queueRow.getKeyword(), startindex);
-                        numOfAPICall++;
-                        startindex++;
+
                     }catch(Exception e){
-                        logger.error("error during api call: " + e.getMessage());
+                        logger.error("error during google books api call: " + e.getMessage());
+
+                        rateLimitService.updateRateLimit(googleApiRateLimit);
                         queueRow.setStartIndex(startindex);
                         comicBulkCreateQueueService.updateRowInQueue(queueRow);
                         break;
+                    }finally{
+                        numOfAPICall++;
+                        startindex++;
                     }
                     if(newComics!=null && !newComics.isEmpty()){
                         comicService.createBulkComics(newComics);

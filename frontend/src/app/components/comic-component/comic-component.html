@@ -1,5 +1,8 @@
 <div class="comic-card">
-    <h3>{{ comic.title }}</h3>
+    <div class="title-container">
+        <h3>{{ comic.title }}</h3>
+    </div>
+    
     <img [src]="comic.coverImgUrl" alt="{{ comic.title }}" />
     <button mat-icon-button color="primary" (click)="addComic()" *ngIf="!comicAdded()">
         <mat-icon>add</mat-icon>

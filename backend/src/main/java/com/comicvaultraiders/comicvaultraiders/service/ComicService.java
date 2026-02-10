@@ -54,7 +54,7 @@ public class ComicService {
                 }
             }catch(DataIntegrityViolationException e){
                 //duplicated exists, skip create
-                logger.error(e.getMessage());
+                logger.info("comic already exists: " + scrapedComics.get(i).getAuthor() + " - " + scrapedComics.get(i).getTitle());
             }
         }
         return numofCreatedComics;

@@ -66,6 +66,8 @@ export class MyComicsPageComponent implements OnInit {
     protected opacity = signal<number>(0);
 
 
+
+
     gridDataSource = new MatTableDataSource<UserComic>([]);
     displayedColumns = ['comic.title', 'comic.author', 'comic.illustrator', 'comic.publisher', 'comic.format', 'comic.releaseDate', 'comic.issueNumber', 'artRate', 'storyRate', 'panelRate'];
     
@@ -221,5 +223,4 @@ export class MyComicsPageComponent implements OnInit {
             format: [],
         });
     }
-
 }
