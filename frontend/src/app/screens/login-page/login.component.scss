@@ -53,5 +53,13 @@
 
 #spinner-div {
     justify-content: center;
-    display: flex;
+    display: flex;   
+    height: 185px;
+    width: 500px;
+    align-items: center;
+}
+
+.title{
+    font-family: none;
+    text-shadow: none;
 }

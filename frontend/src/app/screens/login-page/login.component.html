@@ -4,7 +4,7 @@
       <button mat-icon-button id="back-button" (click)="goBack()">
         <mat-icon>arrow_back</mat-icon>
       </button>
-      <h2>Login</h2>
+      <h2 class="title">Login</h2>
     </div>
     <form #loginForm="ngForm" (ngSubmit)="onSubmit(loginForm)" novalidate *ngIf="!isLoading()">
       <mat-form-field appearance="fill">
@@ -49,6 +49,6 @@
         Login
       </button>
     </form>
-    <div id="spinner-div"><mat-spinner *ngIf="isLoading()"></mat-spinner></div>    
+    <div id="spinner-div" *ngIf="isLoading()"><mat-spinner></mat-spinner></div>    
   </div>
 </main>

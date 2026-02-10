@@ -1,0 +1,60 @@
+<main class="main">
+    <div class="content">
+        <h1>Manual to use the website</h1>
+
+        <p>Welcome to Comic Vault Raiders! This website is designed to help you
+            catalog your comic book collection and share recommendations with your
+            friends. Here's a quick guide on how to use the website.</p>
+
+        <h2>Getting Started</h2>
+
+        <p>To get started, simply create an account by clicking on the "Register"
+            button on the Main Page. Once you have an account, you can log in and
+            start adding your comic books to your collection.</p>
+
+        <h2>My Comics page</h2>
+
+        <p>Once you're logged in, you can navigate to the "My Comics" page to view and manage your collection.
+            In the first section you can see the comics you already have in your collection. This is filtered by having
+            a cover image in the system. With the X button you can remove comics from your collection.
+            Under it, you can see a filterable grid. This is your full collection of comics that you have added to your
+            account.
+        </p>
+
+        <p> The last section is comic management component. Here you can search comics in the system, and add them to
+            your collection, or to your wishlist. You can search here by title (keywords are enought too), or
+            author.<br>
+            The component also has a simple "Add New Comic" function with the button on the bottom of the compoent. This
+            allows you to add a new comic to the system. This has a scan mode that helps you pre-fill data by it's ISBN.
+            On the form there are required and optional fields. The best thing to do is to fill in as much data as you
+            can, but the system has a frequent running process which checks the new comics in the system, and it tries
+            to fill in the missing data by itself. So if you only add the title and author, the system will try to find
+            the rest of the data for you. This process is not perfect, but it can save you some time.
+            Once the comic is added to the system, you can choose to add it to your collection, or to your wishlist.
+        </p>
+
+        <h2>Wishlist page</h2>
+
+        <p>On the "Wishlist" page you can see the comics that you have added to your wishlist. You can remove comics
+            from
+            your wishlist with the X button, or you can add them to your collection with the "Add to Collection" button.
+            <br>
+            The logic and structure here is similar to the "My Comics" page, but it only shows comics that are in your
+            wishlist.</p>
+
+        <h2>Friends page</h2>
+        <p>This sections is currently work in progress, please check back later.</p>
+
+        <h2>Settings page</h2>
+        <p>If you are a user, this sections is currently work in progress, please check back later. <br><br>
+            In case if you are an administrator, you can see the Comic Scraper Component here. This component allows you
+            to run the comic scraper process manually. This process is responsible for scraping comic book data from
+            various sources and adding it to the system. You can put keywords here which will be used by the scraper to find comics. 
+            Once you push the Run Scrape button, the given keyword(s) will be added to a queue, and the scraper will start working on them. 
+            The scraper is designed to run in the background, so you can continue using the website while it's running. 
+            The scraped data will be added to the system automatically once it's ready. If the keyword is already in the queue, the scraper will not add it again.
+            The process run in every 5 minutes, but it stops if the daily quote is reached, and it starts again at the next day.
+        </p>
+
+    </div>
+</main>

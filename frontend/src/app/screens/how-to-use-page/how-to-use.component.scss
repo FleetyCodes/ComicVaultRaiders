@@ -1,0 +1,40 @@
+.content {
+    gap: 5px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 8px;
+    display: grid;
+    padding-bottom: 15px;
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 50%;
+    background: rgb(197 185 98 / 15%);
+    border-radius: 12px;
+    box-shadow: 0 5px 9px rgba(0, 0, 0, 1);
+
+    & h1 {
+        text-align: center;
+    }
+}
+
+.content:before{
+    margin-left: auto;
+    margin-right: auto;
+    position: absolute;
+    content: "";
+    top: 0px;
+    height: 10px;
+    width: 48%;
+    background-size: 9px 12px;
+    background-image: radial-gradient(circle at 5% 40%, transparent 70%, #555 20%);
+}
+
+@media (max-width: 768px) {
+    .content {
+        width: 90%;
+    }
+    .content:before{
+        width: 79%;
+    }
+}
+

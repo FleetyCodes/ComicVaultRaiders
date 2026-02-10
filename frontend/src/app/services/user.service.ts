@@ -2,10 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { Router } from '@angular/router';
-import { MatDialog } from '@angular/material/dialog';
-import { basicDialog } from '../components/basic-dialog/basic-dialog';
-import { IdleService } from './idle.service';
 import { environment } from '../../environments/environment';
 
 
@@ -32,7 +28,7 @@ export class UserService {
 
     private apiUrl = environment.apiUrl + "v1/user";
 
-    constructor(private http: HttpClient, private cookieService: CookieService, private idleService: IdleService) { }
+    constructor(private http: HttpClient, private cookieService: CookieService) { }
 
     
     register(data: RegisterRequest): Observable<any> {
@@ -43,26 +39,6 @@ export class UserService {
     loginApi(data: LoginRequest): Observable<LoginResponse> {
         return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data, {withCredentials: true});
     }
-
-    login(data: LoginRequest, router: Router, dialog: MatDialog): void {
-        this.loginApi(data).subscribe({
-            next: (res: any) => {
-                this.setToken(res.token);
-                this.idleService.startIdleTimer();
-                router.navigate(['/logged-in']);
-            },
-            error: (err: any) => {
-                const dialogRef = dialog.open(basicDialog, {
-                    data: {
-                        title: 'Login failed',
-                        message: 'User not found or incorrect password. Please try again.',
-                        isWarningPopup: false
-                    },
-                });
-            }
-        });
-    }
-
 
     logOut(): Observable<any> {
         const token = this.getToken();

@@ -1,7 +1,7 @@
 import { Component, inject, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { UserService } from '../../services/user.service';
+import { LoginRequest, UserService } from '../../services/user.service';
 import { IdleService } from '../../services/idle.service';
 import { Router } from '@angular/router';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -10,6 +10,7 @@ import { FormsModule, NgForm } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { basicDialog } from '../basic-dialog/basic-dialog';
 
 
 @Component({
@@ -45,15 +46,34 @@ export class loginDialog {
       //TODO: add loading spinner
       //TODO: open login popup, after 2 unsuccessful tries redirect to login page
       //var loginAttempts = 0;
-      this.userService.login(form.value, this.router, this.dialog);
+
+
+      this.login(form.value, this.router, this.dialog);
       this.dialogRef?.close();
     } else {
       //handle invalid auth
     }
   }
 
-
-
+   login(data: LoginRequest, router: Router, dialog: MatDialog): void {
+          this.userService.loginApi(data).subscribe({
+              next: (res: any) => {
+                  this.userService.setToken(res.token);
+                  this.isLoading.set(false);
+                  this.idleService.startIdleTimer();
+                  router.navigate(['/logged-in']);
+              },
+              error: (err: any) => {
+                  this.isLoading.set(false);
+                  const dialogRef = dialog.open(basicDialog, {
+                      data: {
+                          title: 'Login failed',
+                          message: 'User not found or incorrect password. Please try again.',
+                          isWarningPopup: false
+                      },
+                  });
+              }
+          });
+      }
+  
 }
-
-
