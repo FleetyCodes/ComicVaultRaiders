@@ -3,7 +3,10 @@
         <h3>{{ comic.title }}</h3>
     </div>
     
-    <img [src]="comic.coverImgUrl" alt="{{ comic.title }}" />
+    <div class="img-container">
+        <img [src]="comic.coverImgUrl" alt="{{ comic.title }}" />
+    </div>
+    
     <button mat-icon-button color="primary" (click)="addComic()" *ngIf="!comicAdded()">
         <mat-icon>add</mat-icon>
     </button>
