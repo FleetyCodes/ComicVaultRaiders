@@ -5,6 +5,7 @@
     background-color: #1a1a1a;
     color: #e0e0e0;
     justify-items: center;
+    overflow-y: auto;
 }
 
 @media (min-width: 1024px) {
@@ -17,6 +18,7 @@
     text-align: center;
     color: #4dd0e1;
     padding-top: 27px;
+    width: 80%;
 }
 
 #content-div{
@@ -29,6 +31,7 @@
     display: flex;
     gap: 6px;
     padding-top: 16px;
+    padding-bottom: 15px;
 }
 
 #ok-btn {
