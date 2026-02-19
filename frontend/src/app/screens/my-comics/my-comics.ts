@@ -137,7 +137,7 @@ export class MyComicsPageComponent implements OnInit {
             this.paginator.page,
             this.sort.sortChange,
             this.filterForm.valueChanges.pipe(
-                debounceTime(300),
+                debounceTime(1500),
                 startWith(null),
             ),
         )
