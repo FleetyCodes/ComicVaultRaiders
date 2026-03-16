@@ -2,7 +2,6 @@
 
 ## Live Demo
 🌐 **Online:** https://comicvaultraiders.eu/
-Try logging in or register to explore the comic collection features!
 
 ## Description
 A hobby web application to track and manage comic book collections.  
@@ -12,7 +11,7 @@ This is a study project with practical usage.
 ## Tech Stack
 - **Backend:** Java 17, Spring Boot 3.4.5, Spring Data JPA, Spring Security, OpenAPI (Swagger UI), JUnit, log4j, Maven, PostgreSQL
 - **Frontend:** Angular
-- **Authentication:** JWT
+- **Authentication and Authorization:** JWT
 - **Database for testing:** H2 (test profile)
 - **Deployment:** Hosted at [comicvaultraiders.eu](https://comicvaultraiders.eu/)
 
@@ -25,13 +24,14 @@ This is a study project with practical usage.
 - Pagination
 - Role-based access
 - Local API documentation via Swagger UI
+- Logout on inactivity
+- Dynamic design on user interaction
 
 ## Architecture Notes
 - Layered architecture (Controller → Service → Repository)
 - REST API
 - DTO usage to separate API and persistence models
 - JWT-based security and role management
-- Unit tests with JUnit
 
 ## Environment Variables
 The following environment variables should be set before running the application:
@@ -55,3 +55,4 @@ The following environment variables should be set before running the application
 
 ## API Documentation
 Accessible at `/swagger-ui.htm
+
