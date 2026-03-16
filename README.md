@@ -27,6 +27,39 @@ This is a study project with practical usage.
 - Logout on inactivity
 - Dynamic design on user interaction
 
+## Planned
+- Refact
+- openapi with yaml structures and generated classes
+- cross entity logic implementation
+- REST API config
+- statistics with aggregations
+- unit tests, more integration tests
+- sonarqube integration
+- spring ai
+- caching
+- aws integration
+- oauth2
+- email function (with GDPR)
+- deploy pipeline
+- webflux (?)
+- functions using datetime
+- validations
+- mapstruct
+- global exception handling
+- more http status
+- docker, kubernetes
+- statistics at the end of the year -> recap / monthly too
+- UTC zone usage everywhere
+- http 401 -> 5xx
+- add original release date in grid
+- finish wip pages
+- modify existing comics
+- create and config a demo user
+- favourite comics -> notify anniversaries
+- my comics & wishlist -> add more btn which shows more and more comics in the list (desktop view)
+- finish this list from the local documentation :)
+
+
 ## Architecture Notes
 - Layered architecture (Controller → Service → Repository)
 - REST API
