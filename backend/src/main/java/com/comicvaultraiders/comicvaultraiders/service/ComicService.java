@@ -61,8 +61,8 @@ public class ComicService {
     }
 
     @Transactional
-    public Comic updateComic(Long id, Comic comicDetails) {
-        return comicRepository.findById(id)
+    public Comic updateComic(Comic comicDetails) {
+        return comicRepository.findById(comicDetails.getId())
                 .map(comic -> {
                     comic.setTitle(comicDetails.getTitle());
                     comic.setAuthor(comicDetails.getAuthor());
@@ -72,7 +72,7 @@ public class ComicService {
                     comic.setIsCheckedByRepairJob(comicDetails.getIsCheckedByRepairJob());
                     return comicRepository.save(comic);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Comic not found with id " + id));
+                .orElseThrow(() -> new EntityNotFoundException("Comic not found with id " + comicDetails.getId()));
     }
     public Optional<Comic> getComicById(Long id) {
         return comicRepository.findById(id);

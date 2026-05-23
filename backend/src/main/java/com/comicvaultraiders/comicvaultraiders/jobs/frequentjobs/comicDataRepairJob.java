@@ -39,21 +39,22 @@ public class comicDataRepairJob {
 
         //run at specified time:
         //@Scheduled(cron = "0 30 15 * * *")
-        RateLimit rl = rateLimitService.findByApiName("GOOGLE_BOOKS");
-        List<Comic> corruptedComics = new ArrayList<>();
+        RateLimit rateLimitl = rateLimitService.findByApiName("GOOGLE_BOOKS_REPAIR");
+        Long availAbleAPICalls = rateLimitl.getDailyLimit()-rateLimitl.getTraffic();
 
-        if(rl.getDailyLimit()-rl.getTraffic() > 0){
-            corruptedComics = comicService.getAllComicsWithCorruptedData(ZonedDateTime.now().minusDays(1L), ZonedDateTime.now().plusHours(2L));
+        List<Comic> corruptedComics = new ArrayList<>();
+        if(availAbleAPICalls > 0){
+                corruptedComics = comicService.getAllComicsWithCorruptedData(ZonedDateTime.now().minusDays(7L), ZonedDateTime.now());
         }
         logger.info("fixCorruptedComicData job start: " + LocalDateTime.now());
         logger.info("num of corrupted comics: " + corruptedComics.size());
 
-        corruptedComics.stream().forEach(comic -> {
-            if(rl.getDailyLimit()-rl.getTraffic() > 0){
+        for(Comic comic:corruptedComics){
+            if(availAbleAPICalls > 0){
                 Optional<ComicDto> tmpComic = googleAPIService.getComicsByObj(comic);
-
-                rl.setTraffic(rl.getTraffic()+1);
-                rateLimitService.updateRateLimit(rl);
+                availAbleAPICalls--;
+                rateLimitl.setTraffic(rateLimitl.getTraffic()+1);
+                rateLimitService.updateRateLimit(rateLimitl);
                 if(tmpComic.isPresent()){
                     if(tmpComic.get().getCoverImgUrl()!=null){
                         String imgUrl = tmpComic.get().getCoverImgUrl();
@@ -72,12 +73,14 @@ public class comicDataRepairJob {
                     if(tmpComic.get().getReleaseDate()!=null){
                         comic.setReleaseDate(tmpComic.get().getReleaseDate());
                     }
-                    comic.setIsCheckedByRepairJob(true);
-                    comicService.updateComic(comic.getId() ,comic);
-                    logger.info("Comic Updated: " + comic.getId() + "th. id:  " + comic.getTitle());
                 }
+                comic.setIsCheckedByRepairJob(true);
+                comicService.updateComic(comic);
+                logger.info("Comic Updated: " + comic.getId() + "th. id:  " + comic.getTitle());
+            }else{
+                break;
             }
-        });
+        };
         logger.info("fixCorruptedComicData job completed at: " + LocalDateTime.now());
     }
 }

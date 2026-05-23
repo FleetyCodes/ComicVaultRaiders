@@ -63,7 +63,7 @@ public class ComicController {
             @PathVariable Long id,
             @RequestBody Comic comicDetails) {
         try {
-            Comic updated = comicService.updateComic(id, comicDetails);
+            Comic updated = comicService.updateComic(comicDetails);
             return ResponseEntity.ok(updated);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();

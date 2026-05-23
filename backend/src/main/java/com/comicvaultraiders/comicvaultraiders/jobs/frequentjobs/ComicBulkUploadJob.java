@@ -35,9 +35,10 @@ public class ComicBulkUploadJob {
 
     @Scheduled(cron = "0 */5 * * * *")
     public void comicBulkUploadProcess(){
-        RateLimit googleApiRateLimit = rateLimitService.findByApiName("GOOGLE_BOOKS");
+        RateLimit googleApiRateLimit = rateLimitService.findByApiName("GOOGLE_BOOKS_CREATE");
+        Long availAbleAPICalls = googleApiRateLimit.getDailyLimit()-googleApiRateLimit.getTraffic();
 
-        if(googleApiRateLimit.getDailyLimit()-googleApiRateLimit.getTraffic() > 0){
+        if(availAbleAPICalls > 0){
             List<ComicBulkCreateQueue> bulkUploadQueue = comicBulkCreateQueueService.findAll();
             int numOfAPICall = 0;
 
@@ -49,31 +50,34 @@ public class ComicBulkUploadJob {
                     newComics = null;
                     try{
                         newComics = googleAPIService.comicBulkUpload(queueRow.getKeyword(), startindex);
-
                     }catch(Exception e){
                         logger.error("error during google books api call: " + e.getMessage());
-
-                        rateLimitService.updateRateLimit(googleApiRateLimit);
-                        queueRow.setStartIndex(startindex);
-                        comicBulkCreateQueueService.updateRowInQueue(queueRow);
-                        break;
-                    }finally{
-                        numOfAPICall++;
-                        startindex++;
+                        //rateLimitService.updateRateLimit(googleApiRateLimit);
+                        //queueRow.setStartIndex(startindex);
+                        //comicBulkCreateQueueService.updateRowInQueue(queueRow);
+                        //break;
                     }
+                    numOfAPICall++;
+                    availAbleAPICalls--;
+                    startindex++;
+
                     if(newComics!=null && !newComics.isEmpty()){
                         comicService.createBulkComics(newComics);
                     }
-                }while(newComics!=null && !newComics.isEmpty() && numOfAPICall<50);
-
+                }while(newComics!=null && !newComics.isEmpty() && availAbleAPICalls > 0);
                 googleApiRateLimit.setTraffic(googleApiRateLimit.getTraffic()+numOfAPICall);
                 rateLimitService.updateRateLimit(googleApiRateLimit);
+
                 if(newComics!=null && !newComics.isEmpty()){
                     queueRow.setStartIndex(startindex);
                     comicBulkCreateQueueService.updateRowInQueue(queueRow);
-                    break; //stop the bulk upload before it exceeds the limit
+                    //break;
+                }else{
+                    comicBulkCreateQueueService.removeFromQueue(queueRow.getId());
                 }
-                comicBulkCreateQueueService.removeFromQueue(queueRow.getId());
+                if(availAbleAPICalls==0){
+                    break;
+                }
             }
         }
     }

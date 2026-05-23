@@ -15,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
@@ -52,7 +51,9 @@ public class GoogleAPIService {
         HttpHeaders headers = new HttpHeaders();
         HttpEntity<String> entity = new HttpEntity<>(headers);
         Map<String, String> uriVariables = new HashMap<>();
+
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class, uriVariables);
+        logger.info("api call " + apiUrl + " - http status: " + response.getStatusCode());
 
         try{
             Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
