@@ -41,7 +41,7 @@ export class ComicService {
 
         let params = new HttpParams()
             .set('page', pageNmbr)
-            .set('size', '100')
+            .set('size', '0')
             .set('searchBy', searchKeyword);
 
         return this.http.get<PageResponse<Comic[]>>(this.apiUrl,{ params, headers });

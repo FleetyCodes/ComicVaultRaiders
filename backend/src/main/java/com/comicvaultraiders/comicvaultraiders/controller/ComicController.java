@@ -76,10 +76,16 @@ public class ComicController {
             @RequestParam(required = false, defaultValue = "6") int size,
             @RequestParam() String searchBy) {
 
-        Pageable pageable = PageRequest.of(
-                page,
-                size,
-                Sort.by("title").ascending());
+        Pageable pageable = null;
+
+        if(size==0){
+            pageable = Pageable.unpaged();
+        }else{
+            pageable = PageRequest.of(
+                    page,
+                    size,
+                    Sort.by("title").ascending());
+        }
 
         Page<ComicDto> comics = comicService.getFilteredComics(pageable, searchBy);
         return ResponseEntity.ok(comics);
