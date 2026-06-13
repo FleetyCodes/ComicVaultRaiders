@@ -1,5 +1,7 @@
-package com.comicvaultraiders.comicvaultraiders.security;
+package com.comicvaultraiders.comicvaultraiders.config;
 
+import com.comicvaultraiders.comicvaultraiders.security.AuthEntryPointJwt;
+import com.comicvaultraiders.comicvaultraiders.security.AuthTokenFilter;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;
 import org.springframework.context.annotation.Bean;
