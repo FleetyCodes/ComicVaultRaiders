@@ -8,6 +8,7 @@ import { Keepalive } from '@ng-idle/keepalive';
 import { IdleService } from '../../services/idle.service';
 import { MatButtonModule } from '@angular/material/button';
 import { UserService } from '../../services/user.service';
+import { ChatWidgetComponent } from "../../components/chat-widget/chat-widget.component";
 
 
 
@@ -17,7 +18,7 @@ import { UserService } from '../../services/user.service';
   providers: [AuthGuard, NoAuthGuard, Idle, Keepalive, ],
   styleUrls: ['./app.component.scss'],
   standalone: true,
-  imports: [CommonModule, RouterOutlet, MatButtonModule, RouterModule],
+  imports: [CommonModule, RouterOutlet, MatButtonModule, RouterModule, ChatWidgetComponent],
 })
 
 

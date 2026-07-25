@@ -5,9 +5,8 @@ import { MatButtonModule } from "@angular/material/button";
 import { CommonModule } from "@angular/common";
 import { MatDialog } from "@angular/material/dialog";
 import { addComicComponent } from "../add-comic-dialog/add-comic.component";
-import { AppComponent } from "../../screens/main-page/app.component";
+import { AppComponent } from "../../pages/main-page/app.component";
 import { ComicCreationStepEnum } from "../../models/comic.creation.step.enum";
-import { MatProgressSpinnerModule } from "@angular/material/progress-spinner";
 
 @Component({
   selector: 'app-comic',

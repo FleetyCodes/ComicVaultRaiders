@@ -42,19 +42,25 @@
       <button *ngIf="!isLeftSideNav()" id="position-right-button" mat-raised-button
         color="primary" (click)="setLeftSideNav(true)"></button>
     </div>
-
-  
+ 
     <div class="main-content">
       <div *ngIf="isOnMainPage()">
-        <!--<h1>{{ helloService.helloMessage() }}</h1>-->
-        <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
+        @if(userService.isLoggedIn()) {
+           <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
+           <!--! itt majd lecserél profile.name-re -->
+        }@else{
+          <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
+        }
         <p>
           Comic Vault Raiders - The website where you can catalog your books and
           recommend them to your friends !
         </p>
+      <div *ngIf="userService.isLoggedIn()" && userService.isAdmin()>
+      <!--<div>-->
+        <app-chat-widget ></app-chat-widget>
+      </div>
       </div>
       <router-outlet></router-outlet>
     </div>
   </div>
-
 </main>

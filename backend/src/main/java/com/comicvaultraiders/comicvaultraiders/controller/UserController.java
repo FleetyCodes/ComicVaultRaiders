@@ -2,7 +2,9 @@ package com.comicvaultraiders.comicvaultraiders.controller;
 
 import com.comicvaultraiders.comicvaultraiders.dto.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
-import com.comicvaultraiders.comicvaultraiders.model.*;
+import com.comicvaultraiders.comicvaultraiders.entity.RefreshToken;
+import com.comicvaultraiders.comicvaultraiders.entity.User;
+import com.comicvaultraiders.comicvaultraiders.entity.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.service.RefreshTokenService;
 import com.comicvaultraiders.comicvaultraiders.service.UserService;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;

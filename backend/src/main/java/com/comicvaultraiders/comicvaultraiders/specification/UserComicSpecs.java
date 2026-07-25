@@ -1,7 +1,7 @@
 package com.comicvaultraiders.comicvaultraiders.specification;
 
 import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
-import com.comicvaultraiders.comicvaultraiders.model.UserXComics;
+import com.comicvaultraiders.comicvaultraiders.entity.UserXComics;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 

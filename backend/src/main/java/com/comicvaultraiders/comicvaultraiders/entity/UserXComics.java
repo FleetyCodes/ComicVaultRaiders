@@ -1,4 +1,4 @@
-package com.comicvaultraiders.comicvaultraiders.model;
+package com.comicvaultraiders.comicvaultraiders.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

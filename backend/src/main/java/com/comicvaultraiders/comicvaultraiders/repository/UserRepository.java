@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.repository;
 
-import com.comicvaultraiders.comicvaultraiders.model.User;
+import com.comicvaultraiders.comicvaultraiders.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

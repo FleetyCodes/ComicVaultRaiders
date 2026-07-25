@@ -13,6 +13,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         'v1/user/comics',
         'v1/user/filteredComics',
         'v1/admin/',
+        'v1/ai-agent/chat',
     ];
 
     const shouldIntercept = includeEndpoints.some(endpoint =>

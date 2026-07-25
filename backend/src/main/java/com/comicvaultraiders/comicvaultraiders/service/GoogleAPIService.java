@@ -1,12 +1,12 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
 import com.comicvaultraiders.comicvaultraiders.integration.google.Bookmodel;
 import com.comicvaultraiders.comicvaultraiders.integration.google.Item;
-import com.comicvaultraiders.comicvaultraiders.model.*;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -14,6 +14,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import tools.jackson.databind.ObjectMapper;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -35,7 +36,7 @@ public class GoogleAPIService {
     private String apiKey;
 
     private final ObjectMapper objectMapper;
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     public GoogleAPIService(ObjectMapper objectMapper) {
@@ -55,92 +56,88 @@ public class GoogleAPIService {
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class, uriVariables);
         logger.info("api call " + apiUrl + " - http status: " + response.getStatusCode());
 
-        try{
-            Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
+        Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
 
-            if(comicInfo.getItems()!=null){
-                for(int i = 0; i < Arrays.stream(comicInfo.getItems()).toList().size(); i++){
-                    Item respItem = Arrays.stream(comicInfo.getItems()).toList().get(i);
-                    Comic responseComicData = new Comic();
-                    if(respItem.getVolumeInfo().getTitle() != null ){
-                        responseComicData.setTitle(respItem.getVolumeInfo().getTitle());
-                        String comicTitle = respItem.getVolumeInfo().getTitle();
-                        if(comicTitle.toLowerCase().contains("deluxe")){
-                            responseComicData.setFormat("Deluxe Edition");
-                        }else if(comicTitle.toLowerCase().contains("paperback")){
-                            responseComicData.setFormat("Paperback");
-                        }else if(comicTitle.toLowerCase().contains("absolute")){
-                            responseComicData.setFormat("Absolute Edition");
-                        }else if(comicTitle.toLowerCase().contains("omnibus")){
-                            responseComicData.setFormat("Omnibus");
-                        }else if(comicTitle.toLowerCase().contains("compendium")){
-                            responseComicData.setFormat("Compendium");
-                        }else if(comicTitle.toLowerCase().contains("box set")){
-                            responseComicData.setFormat("Box Set");
-                        }else{
-                            responseComicData.setFormat("Single Issue");
-                        }
-                        if(respItem.getVolumeInfo().getSubtitle()!=null){
-                            responseComicData.setTitle(respItem.getVolumeInfo().getTitle() + " - " + respItem.getVolumeInfo().getSubtitle());
-                        }
-                        Long lastNumber = null;
-                        Matcher m = Pattern.compile("(\\d+)(?!.*\\d)").matcher(comicTitle);
-                        if (m.find()) {
-                            lastNumber = Long.parseLong(m.group(1));
-                        }else {
-                            lastNumber = 1L;
-                        }
-                        responseComicData.setIssueNumber(lastNumber);
+        if(comicInfo.getItems()!=null){
+            for(int i = 0; i < Arrays.stream(comicInfo.getItems()).toList().size(); i++){
+                Item respItem = Arrays.stream(comicInfo.getItems()).toList().get(i);
+                Comic responseComicData = new Comic();
+                if(respItem.getVolumeInfo().getTitle() != null ){
+                    responseComicData.setTitle(respItem.getVolumeInfo().getTitle());
+                    String comicTitle = respItem.getVolumeInfo().getTitle();
+                    if(comicTitle.toLowerCase().contains("deluxe")){
+                        responseComicData.setFormat("Deluxe Edition");
+                    }else if(comicTitle.toLowerCase().contains("paperback")){
+                        responseComicData.setFormat("Paperback");
+                    }else if(comicTitle.toLowerCase().contains("absolute")){
+                        responseComicData.setFormat("Absolute Edition");
+                    }else if(comicTitle.toLowerCase().contains("omnibus")){
+                        responseComicData.setFormat("Omnibus");
+                    }else if(comicTitle.toLowerCase().contains("compendium")){
+                        responseComicData.setFormat("Compendium");
+                    }else if(comicTitle.toLowerCase().contains("box set")){
+                        responseComicData.setFormat("Box Set");
                     }else{
-                        responseComicData.setTitle("");
+                        responseComicData.setFormat("Single Issue");
                     }
-                    if(respItem.getVolumeInfo().getPublisher()!=null){
-                        String publisher = respItem.getVolumeInfo().getPublisher();
-                        if(publisher.toLowerCase().contains("dc comics") || publisher.toLowerCase().contains("vertigo") || publisher.toLowerCase().contains("black label") || publisher.toLowerCase().contains("dc")){
-                            responseComicData.setPublisher("DC Comics");
-                        }else if(publisher.toLowerCase().contains("marvel")){
-                            responseComicData.setPublisher("Marvel Comics");
-                        }else if(publisher.toLowerCase().contains("image")){
-                            responseComicData.setPublisher("Image Comics");
-                        }else if(publisher.toLowerCase().contains("dark horse")){
-                            responseComicData.setPublisher("Dark Horse Comics");
-                        }else if(publisher.toLowerCase().contains("idw")){
-                            responseComicData.setPublisher("IDW Publishing");
-                        }else if(publisher.toLowerCase().contains("valiant")){
-                            responseComicData.setPublisher("Valiant Comics");
-                        }else if(publisher.toLowerCase().contains("boom")){
-                            responseComicData.setPublisher("BOOM! Studios");
-                        }else if(publisher.toLowerCase().contains("titan")){
-                            responseComicData.setPublisher("Titan Comics");
-                        }else{
-                            responseComicData.setPublisher("Other");
-                        }
+                    if(respItem.getVolumeInfo().getSubtitle()!=null){
+                        responseComicData.setTitle(respItem.getVolumeInfo().getTitle() + " - " + respItem.getVolumeInfo().getSubtitle());
+                    }
+                    Long lastNumber = null;
+                    Matcher m = Pattern.compile("(\\d+)(?!.*\\d)").matcher(comicTitle);
+                    if (m.find()) {
+                        lastNumber = Long.parseLong(m.group(1));
+                    }else {
+                        lastNumber = 1L;
+                    }
+                    responseComicData.setIssueNumber(lastNumber);
+                }else{
+                    responseComicData.setTitle("");
+                }
+                if(respItem.getVolumeInfo().getPublisher()!=null){
+                    String publisher = respItem.getVolumeInfo().getPublisher();
+                    if(publisher.toLowerCase().contains("dc comics") || publisher.toLowerCase().contains("vertigo") || publisher.toLowerCase().contains("black label") || publisher.toLowerCase().contains("dc")){
+                        responseComicData.setPublisher("DC Comics");
+                    }else if(publisher.toLowerCase().contains("marvel")){
+                        responseComicData.setPublisher("Marvel Comics");
+                    }else if(publisher.toLowerCase().contains("image")){
+                        responseComicData.setPublisher("Image Comics");
+                    }else if(publisher.toLowerCase().contains("dark horse")){
+                        responseComicData.setPublisher("Dark Horse Comics");
+                    }else if(publisher.toLowerCase().contains("idw")){
+                        responseComicData.setPublisher("IDW Publishing");
+                    }else if(publisher.toLowerCase().contains("valiant")){
+                        responseComicData.setPublisher("Valiant Comics");
+                    }else if(publisher.toLowerCase().contains("boom")){
+                        responseComicData.setPublisher("BOOM! Studios");
+                    }else if(publisher.toLowerCase().contains("titan")){
+                        responseComicData.setPublisher("Titan Comics");
                     }else{
                         responseComicData.setPublisher("Other");
                     }
-                    String authors = "";
-                    if(respItem.getVolumeInfo().getAuthors()!=null){
-                        for(String author: respItem.getVolumeInfo().getAuthors()){
-                            if(authors.isBlank()){
-                                authors = author;
-                            }else{
-                                authors+=";" + author;
-                            }
+                }else{
+                    responseComicData.setPublisher("Other");
+                }
+                String authors = "";
+                if(respItem.getVolumeInfo().getAuthors()!=null){
+                    for(String author: respItem.getVolumeInfo().getAuthors()){
+                        if(authors.isBlank()){
+                            authors = author;
+                        }else{
+                            authors+=";" + author;
                         }
                     }
-                    responseComicData.setAuthor(authors);
-                    if(respItem.getVolumeInfo().getImageLinks()!=null){
-                        responseComicData.setCoverImgUrl(respItem.getVolumeInfo().getImageLinks().getThumbnail() == null ? "" : respItem.getVolumeInfo().getImageLinks().getThumbnail());
-                    }
-                    if(respItem.getVolumeInfo().getPublishedDate() != null && parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate())!=null) {
-                        responseComicData.setReleaseDate(parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate()));
-                    }
-                    ComicDto newComic =  new ComicDto(responseComicData);
-                    retVal.add(newComic);
                 }
+                responseComicData.setAuthor(authors);
+                if(respItem.getVolumeInfo().getImageLinks()!=null){
+                    responseComicData.setCoverImgUrl(respItem.getVolumeInfo().getImageLinks().getThumbnail() == null ? "" : respItem.getVolumeInfo().getImageLinks().getThumbnail());
+                }
+                if(respItem.getVolumeInfo().getPublishedDate() != null && parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate())!=null) {
+                    responseComicData.setReleaseDate(parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate()));
+                }
+                ComicDto newComic =  new ComicDto(responseComicData);
+                retVal.add(newComic);
             }
-        } catch(JsonProcessingException jsonExp){
-            logger.info(jsonExp.getMessage());
         }
         return retVal;
     }
@@ -153,33 +150,29 @@ public class GoogleAPIService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         Map<String, String> uriVariables = new HashMap<>();
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class, uriVariables);
-        try{
-            Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
-            if(comicInfo.getTotalItems() > 0){
-                Item respItem = Arrays.stream(comicInfo.getItems()).toList().get(0);
+        Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
+        if(comicInfo.getTotalItems() > 0){
+            Item respItem = Arrays.stream(comicInfo.getItems()).toList().get(0);
 
-                Comic responseComicData = new Comic();
-                responseComicData.setTitle(respItem.getVolumeInfo().getTitle() == null ? "" : respItem.getVolumeInfo().getTitle());
-                String authors = "";
-                for(String author: respItem.getVolumeInfo().getAuthors()){
-                    if(authors.isBlank()){
-                        authors = author;
-                    }else{
-                        authors+=";" + author;
-                    }
+            Comic responseComicData = new Comic();
+            responseComicData.setTitle(respItem.getVolumeInfo().getTitle() == null ? "" : respItem.getVolumeInfo().getTitle());
+            String authors = "";
+            for(String author: respItem.getVolumeInfo().getAuthors()){
+                if(authors.isBlank()){
+                    authors = author;
+                }else{
+                    authors+=";" + author;
                 }
-                responseComicData.setAuthor(authors);
-                responseComicData.setPublisher(respItem.getVolumeInfo().getPublisher() == null ? "" : respItem.getVolumeInfo().getPublisher());
-                if(respItem.getVolumeInfo().getImageLinks()!=null){
-                    responseComicData.setCoverImgUrl(respItem.getVolumeInfo().getImageLinks().getThumbnail() == null ? "" : respItem.getVolumeInfo().getImageLinks().getThumbnail());
-                }
-                if(respItem.getVolumeInfo().getPublishedDate() != null && parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate())!=null) {
-                    responseComicData.setReleaseDate(parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate()));
-                }
-                newComic =  Optional.of(new ComicDto(responseComicData));
             }
-        } catch(JsonProcessingException jsonExp){
-            System.out.println(jsonExp.getMessage());
+            responseComicData.setAuthor(authors);
+            responseComicData.setPublisher(respItem.getVolumeInfo().getPublisher() == null ? "" : respItem.getVolumeInfo().getPublisher());
+            if(respItem.getVolumeInfo().getImageLinks()!=null){
+                responseComicData.setCoverImgUrl(respItem.getVolumeInfo().getImageLinks().getThumbnail() == null ? "" : respItem.getVolumeInfo().getImageLinks().getThumbnail());
+            }
+            if(respItem.getVolumeInfo().getPublishedDate() != null && parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate())!=null) {
+                responseComicData.setReleaseDate(parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate()));
+            }
+            newComic =  Optional.of(new ComicDto(responseComicData));
         }
         return newComic;
     }
@@ -193,33 +186,29 @@ public class GoogleAPIService {
         HttpEntity<String> entity = new HttpEntity<>(headers);
         Map<String, String> uriVariables = new HashMap<>();
         ResponseEntity<String> response = restTemplate.exchange(apiUrl, HttpMethod.GET, entity, String.class, uriVariables);
-        try{
-            Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
-            if(comicInfo.getTotalItems() > 0){
-                Item respItem = Arrays.stream(comicInfo.getItems()).toList().get(0);
+        Bookmodel comicInfo = objectMapper.readValue(response.getBody(), Bookmodel.class);
+        if(comicInfo.getTotalItems() > 0){
+            Item respItem = Arrays.stream(comicInfo.getItems()).toList().get(0);
 
-                Comic responseComicData = new Comic();
-                responseComicData.setTitle(respItem.getVolumeInfo().getTitle() == null ? "" : respItem.getVolumeInfo().getTitle());
-                String authors = "";
-                for(String author: respItem.getVolumeInfo().getAuthors()){
-                    if(authors.isBlank()){
-                        authors = author;
-                    }else{
-                        authors+=";" + author;
-                    }
+            Comic responseComicData = new Comic();
+            responseComicData.setTitle(respItem.getVolumeInfo().getTitle() == null ? "" : respItem.getVolumeInfo().getTitle());
+            String authors = "";
+            for(String author: respItem.getVolumeInfo().getAuthors()){
+                if(authors.isBlank()){
+                    authors = author;
+                }else{
+                    authors+=";" + author;
                 }
-                responseComicData.setAuthor(authors);
-                responseComicData.setPublisher(respItem.getVolumeInfo().getPublisher() == null ? "" : respItem.getVolumeInfo().getPublisher());
-                if(respItem.getVolumeInfo().getImageLinks()!=null){
-                    responseComicData.setCoverImgUrl(respItem.getVolumeInfo().getImageLinks().getThumbnail() == null ? "" : respItem.getVolumeInfo().getImageLinks().getThumbnail());
-                }
-                if(respItem.getVolumeInfo().getPublishedDate() != null && parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate())!=null) {
-                    responseComicData.setReleaseDate(parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate()));
-                }
-                newComic =  Optional.of(new ComicDto(responseComicData));
             }
-        } catch(JsonProcessingException jsonExp){
-            logger.info(jsonExp.getMessage());
+            responseComicData.setAuthor(authors);
+            responseComicData.setPublisher(respItem.getVolumeInfo().getPublisher() == null ? "" : respItem.getVolumeInfo().getPublisher());
+            if(respItem.getVolumeInfo().getImageLinks()!=null){
+                responseComicData.setCoverImgUrl(respItem.getVolumeInfo().getImageLinks().getThumbnail() == null ? "" : respItem.getVolumeInfo().getImageLinks().getThumbnail());
+            }
+            if(respItem.getVolumeInfo().getPublishedDate() != null && parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate())!=null) {
+                responseComicData.setReleaseDate(parseFlexibleDate(respItem.getVolumeInfo().getPublishedDate()));
+            }
+            newComic =  Optional.of(new ComicDto(responseComicData));
         }
         return newComic;
     }

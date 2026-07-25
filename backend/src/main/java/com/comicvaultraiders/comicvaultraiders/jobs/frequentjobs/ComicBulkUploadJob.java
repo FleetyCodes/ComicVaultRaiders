@@ -1,13 +1,14 @@
 package com.comicvaultraiders.comicvaultraiders.jobs.frequentjobs;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
-import com.comicvaultraiders.comicvaultraiders.model.ComicBulkCreateQueue;
-import com.comicvaultraiders.comicvaultraiders.model.RateLimit;
+import com.comicvaultraiders.comicvaultraiders.entity.ComicBulkCreateQueue;
+import com.comicvaultraiders.comicvaultraiders.entity.RateLimit;
 import com.comicvaultraiders.comicvaultraiders.service.ComicBulkCreateQueueService;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
 import com.comicvaultraiders.comicvaultraiders.service.RateLimitService;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ import java.util.List;
 @Service
 public class ComicBulkUploadJob {
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     private final ComicBulkCreateQueueService comicBulkCreateQueueService;
 
@@ -70,7 +71,7 @@ public class ComicBulkUploadJob {
 
                 if(newComics!=null && !newComics.isEmpty()){
                     queueRow.setStartIndex(startindex);
-                    comicBulkCreateQueueService.updateRowInQueue(queueRow);
+                    comicBulkCreateQueueService.updateRowInQueue(queueRow.getId(), queueRow.getStartIndex());
                     //break;
                 }else{
                     comicBulkCreateQueueService.removeFromQueue(queueRow.getId());

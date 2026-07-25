@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
-import com.comicvaultraiders.comicvaultraiders.model.ComicBulkCreateQueue;
+import com.comicvaultraiders.comicvaultraiders.entity.ComicBulkCreateQueue;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicBulkCreateQueueRepo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.data.domain.Sort;
@@ -34,13 +34,13 @@ public class ComicBulkCreateQueueService {
     }
 
     @Transactional
-    public ComicBulkCreateQueue updateRowInQueue(ComicBulkCreateQueue queueRow) {
-        return comicBulkCreateQueueRepo.findById(queueRow.getId())
+    public ComicBulkCreateQueue updateRowInQueue(Long queueId, Long newStartIndex) {
+        return comicBulkCreateQueueRepo.findById(queueId)
                 .map(row -> {
-                    row.setStartIndex(queueRow.getStartIndex());
+                    row.setStartIndex(newStartIndex);
                     return comicBulkCreateQueueRepo.save(row);
                 })
-                .orElseThrow(() -> new EntityNotFoundException("Row not found with id " + queueRow.getId()));
+                .orElseThrow(() -> new EntityNotFoundException("Row not found with id " + queueId));
     }
 
     @Transactional

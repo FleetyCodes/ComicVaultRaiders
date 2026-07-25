@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
-import com.comicvaultraiders.comicvaultraiders.model.Comic;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;

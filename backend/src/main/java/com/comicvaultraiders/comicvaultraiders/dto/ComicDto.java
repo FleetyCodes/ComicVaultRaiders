@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.dto;
 
-import com.comicvaultraiders.comicvaultraiders.model.Comic;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
 import lombok.Getter;
 import lombok.Setter;
 

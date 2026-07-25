@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.controller;
 
-import com.comicvaultraiders.comicvaultraiders.model.ComicBulkCreateQueue;
+import com.comicvaultraiders.comicvaultraiders.entity.ComicBulkCreateQueue;
 import com.comicvaultraiders.comicvaultraiders.service.ComicBulkCreateQueueService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;

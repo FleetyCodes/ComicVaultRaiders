@@ -93,7 +93,7 @@ public class WebSecurityConfig {
                                         //,"/v3/api-docs.yaml"
                                 ).permitAll()
                                 .requestMatchers("/v1/comic/**", "/v1/user/**").authenticated()
-                                .requestMatchers("/v1/admin/**").hasRole("ADMIN")
+                                .requestMatchers("/v1/admin/**", "/v1/ai-agent/**").hasRole("ADMIN")
                                 .anyRequest().authenticated()
                 );
         // Add the JWT Token filter before the UsernamePasswordAuthenticationFilter

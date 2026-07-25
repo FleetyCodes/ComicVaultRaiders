@@ -1,9 +1,9 @@
 package com.comicvaultraiders.comicvaultraiders;
 
-import com.comicvaultraiders.comicvaultraiders.model.Comic;
-import com.comicvaultraiders.comicvaultraiders.model.User;
-import com.comicvaultraiders.comicvaultraiders.model.UserRole;
-import com.comicvaultraiders.comicvaultraiders.model.UserXComics;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
+import com.comicvaultraiders.comicvaultraiders.entity.User;
+import com.comicvaultraiders.comicvaultraiders.entity.UserRole;
+import com.comicvaultraiders.comicvaultraiders.entity.UserXComics;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.util.JwtUtil;

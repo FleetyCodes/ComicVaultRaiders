@@ -1,7 +1,9 @@
-package com.comicvaultraiders.comicvaultraiders.model;
+package com.comicvaultraiders.comicvaultraiders.entity;
 
+import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
@@ -11,6 +13,7 @@ import java.util.List;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "comic")
 @NamedQueries({
@@ -23,9 +26,20 @@ import java.util.List;
                 query = "SELECT c FROM Comic c LEFT JOIN c.userXComics uc ON uc.user.id = :userId WHERE uc IS NULL"),
         @NamedQuery(
                 name = "Comic.findCorruptDataComics",
-                query = "SELECT c FROM Comic c where crd between :fromDate AND :toDate AND (c.isCheckedByRepairJob = false OR c.isCheckedByRepairJob IS NULL) AND ((c.coverImgUrl is null or trim(c.coverImgUrl) = '' ) or c.releaseDate IS null )"),
+                query = "SELECT c FROM Comic c where crd between :fromDate AND :toDate AND (c.checkedByRepairJob = false OR c.checkedByRepairJob IS NULL) AND ((c.coverImgUrl is null or trim(c.coverImgUrl) = '' ) or c.releaseDate IS null )"),
 })
 public class Comic {
+
+    public Comic(ComicDto comicDto, Boolean isCheckedByRepairJob) {
+        this.setTitle(comicDto.getTitle());
+        this.setAuthor(comicDto.getAuthor());
+        this.setPublisher(comicDto.getPublisher());
+        this.setCoverImgUrl(comicDto.getCoverImgUrl());
+        this.setReleaseDate(comicDto.getReleaseDate());
+        this.setFormat(comicDto.getFormat());
+        this.setIssueNumber(comicDto.getIssueNumber());
+        this.setCheckedByRepairJob(isCheckedByRepairJob);
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -60,7 +74,7 @@ public class Comic {
     private ZonedDateTime crd;
 
     @Column(name = "repair_job_checked")
-    private Boolean isCheckedByRepairJob;
+    private Boolean checkedByRepairJob;
 
     @OneToMany(mappedBy = "comic", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<UserXComics> userXComics = new ArrayList<>();

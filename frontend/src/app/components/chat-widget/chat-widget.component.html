@@ -1,0 +1,36 @@
+<div class="chat-widget" [class.expanded]="isExpanded()">
+
+  <!-- Header, onclick open/close chat panel -->
+  <div class="chat-header" (click)="toggleExpand()">
+    <span>Ask for help</span>
+    <span class="toggle-icon">{{ isExpanded() ? '▾' : '▴' }}</span>
+  </div>
+
+  @if (isExpanded()) {
+  <div class="chat-body">
+    <div class="chat-messages" #messagesContainer>
+      @for (msg of chatService.messages(); track msg.id) {
+      @if(msg.role === 'bot') {
+      <div class="message bot">
+        <span class="bot-icon" [style.background-image]="'url(assets/images/ai_assistant/' + currentBotIcon() + ')'">
+        </span>
+        {{ msg.text }}
+      </div>
+      }@else {
+      <div class="message user">
+        <span class="user-icon"></span>
+        {{ msg.text }}
+      </div>
+      }
+      }
+      @if (chatService.isLoading()) {
+      <div class="message bot pending">Assistant is typing...</div>
+      }
+    </div>
+
+    <div class="chat-input">
+      <input [(ngModel)]="inputText" (keydown.enter)="onEnter($event)" [placeholder]="chatService.isLoading() ? 'Waiting for response...' : 'Type your question...'" [disabled]="chatService.isLoading()"/>
+    </div>
+  </div>
+  }
+</div>

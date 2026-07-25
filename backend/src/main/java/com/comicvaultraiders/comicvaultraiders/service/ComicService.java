@@ -3,9 +3,11 @@ package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.repository.ComicRepository;
-import com.comicvaultraiders.comicvaultraiders.model.Comic;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
 import jakarta.persistence.EntityNotFoundException;
-import org.apache.log4j.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,7 +22,7 @@ public class ComicService {
     private final ComicRepository comicRepository;
     private final UserService userService;
 
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     public ComicService(ComicRepository comicRepository, UserService userService) {
@@ -31,22 +33,14 @@ public class ComicService {
     @Transactional
     public Optional<Comic> createComic(Comic comic, boolean checkedByJob) {
         comic.setCrd(ZonedDateTime.now());
-        comic.setIsCheckedByRepairJob(checkedByJob);
+        comic.setCheckedByRepairJob(checkedByJob);
         return Optional.of(comicRepository.save(comic));
     }
 
     public Integer createBulkComics(List<ComicDto> scrapedComics) {
         int numofCreatedComics = 0;
         for(int i=0; i< scrapedComics.size(); i++){
-            Comic saveComic = new Comic();
-            saveComic.setTitle(scrapedComics.get(i).getTitle());
-            saveComic.setAuthor(scrapedComics.get(i).getAuthor());
-            saveComic.setPublisher(scrapedComics.get(i).getPublisher());
-            saveComic.setCoverImgUrl(scrapedComics.get(i).getCoverImgUrl());
-            saveComic.setReleaseDate(scrapedComics.get(i).getReleaseDate());
-            saveComic.setFormat(scrapedComics.get(i).getFormat());
-            saveComic.setIssueNumber(scrapedComics.get(i).getIssueNumber());
-            saveComic.setIsCheckedByRepairJob(true);
+            Comic saveComic = new Comic(scrapedComics.get(i), true);
             try{
                 Optional<Comic> newComic = createComic(saveComic, true);
                 if(newComic.isPresent()){
@@ -69,14 +63,16 @@ public class ComicService {
                     comic.setCoverImgUrl(comicDetails.getCoverImgUrl());
                     comic.setIssueNumber(comicDetails.getIssueNumber());
                     comic.setReleaseDate(comicDetails.getReleaseDate());
-                    comic.setIsCheckedByRepairJob(comicDetails.getIsCheckedByRepairJob());
+                    comic.setCheckedByRepairJob(comicDetails.getCheckedByRepairJob());
                     return comicRepository.save(comic);
                 })
                 .orElseThrow(() -> new EntityNotFoundException("Comic not found with id " + comicDetails.getId()));
     }
+
     public Optional<Comic> getComicById(Long id) {
         return comicRepository.findById(id);
     }
+
 
     public List<Comic> getAllComics() {
         return comicRepository.findAll();
@@ -85,6 +81,10 @@ public class ComicService {
     public List<ComicDto> getAllComicsWithoutUsers(String token){
         Long userId = userService.getUserId(token);
         return comicRepository.getAllComicsWithoutUser(userId).stream().map(ComicDto::new).toList();
+    }
+
+    public List<ComicDto> getAllComicsWithoutUser(Long userID){
+        return comicRepository.getAllComicsWithoutUser(userID).stream().map(ComicDto::new).toList();
     }
 
     public Page<ComicDto> getFilteredComics(Pageable pageable, String searchBy) {

@@ -1,15 +1,16 @@
-import { Routes } from '@angular/router';
-import { RegisterComponent } from './screens/registration-page/registration.component';
-import { LandingPageComponent } from './screens/landing-page/landing-page.component';
-import { LoginComponent } from './screens/login-page/login.component';
-import { LoggedInPageComponent } from './screens/logged-in-page/logged-in';
-import { NoAuthGuard } from './no.auth.guard';
-import { AuthGuard } from './auth.guard';
-import { MyComicsPageComponent } from './screens/my-comics/my-comics';
-import { temporaryUnavailableComponent } from './screens/wip-page/temporary-unavailable';
-import { WishlistedComicsPageComponent } from './screens/wishlist-page/wishlist.component';
-import { SettingsScreenComponent } from './screens/settings-page/settings-screen';
-import { HowToUseComponent } from './screens/how-to-use-page/how-to-use.component';
+import { Routes } from "@angular/router";
+import { AuthGuard } from "./auth.guard";
+import { NoAuthGuard } from "./no.auth.guard";
+import { HowToUseComponent } from "./pages/how-to-use-page/how-to-use.component";
+import { LandingPageComponent } from "./pages/landing-page/landing-page.component";
+import { LoggedInPageComponent } from "./pages/logged-in-page/logged-in";
+import { LoginComponent } from "./pages/login-page/login.component";
+import { MyComicsPageComponent } from "./pages/my-comics/my-comics";
+import { RegisterComponent } from "./pages/registration-page/registration.component";
+import { SettingsScreenComponent } from "./pages/settings-page/settings-screen";
+import { temporaryUnavailableComponent } from "./pages/wip-page/temporary-unavailable";
+import { WishlistedComicsPageComponent } from "./pages/wishlist-page/wishlist.component";
+
 
 export const routes: Routes = [
   { path: '', component: LandingPageComponent, canActivate: [NoAuthGuard] },

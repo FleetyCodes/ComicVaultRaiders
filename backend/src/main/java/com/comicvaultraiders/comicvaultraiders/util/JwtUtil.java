@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.util;
 
-import com.comicvaultraiders.comicvaultraiders.model.User;
+import com.comicvaultraiders.comicvaultraiders.entity.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;

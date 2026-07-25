@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environment.dev';
+import { JwtHelperService } from '@auth0/angular-jwt';
 
 
 export interface RegisterRequest {
@@ -28,7 +29,7 @@ export class UserService {
 
     private apiUrl = environment.apiUrl + "v1/user";
 
-    constructor(private http: HttpClient, private cookieService: CookieService) { }
+    constructor(private http: HttpClient, private cookieService: CookieService, private jwtHelper: JwtHelperService) { }
 
     
     register(data: RegisterRequest): Observable<any> {
@@ -65,6 +66,12 @@ export class UserService {
 
     isLoggedIn(): boolean {
         return !!this.getToken();
+    }
+
+    isAdmin(): boolean {
+        const token = this.getToken();
+        if (!token) return false;
+        return this.jwtHelper.decodeToken(token).userRole === 'ROLE_ADMIN';
     }
 
     clearToken() {

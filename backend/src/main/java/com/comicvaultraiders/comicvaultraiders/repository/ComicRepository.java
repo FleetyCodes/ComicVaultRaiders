@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.repository;
 
-import com.comicvaultraiders.comicvaultraiders.model.Comic;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

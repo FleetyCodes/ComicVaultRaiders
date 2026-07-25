@@ -2,8 +2,8 @@ package com.comicvaultraiders.comicvaultraiders.service;
 
 import com.comicvaultraiders.comicvaultraiders.dto.UserXComicsDto;
 import com.comicvaultraiders.comicvaultraiders.dto.filter.UserComicFilter;
+import com.comicvaultraiders.comicvaultraiders.entity.*;
 import com.comicvaultraiders.comicvaultraiders.exception.UserAlreadyExistsException;
-import com.comicvaultraiders.comicvaultraiders.model.*;
 import com.comicvaultraiders.comicvaultraiders.repository.UserRepository;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 import com.comicvaultraiders.comicvaultraiders.specification.UserComicSpecs;
@@ -32,15 +32,17 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
-    public UserService(UserRepository userRepository, UserXComicsRepo userXComicsRepo, EncryptionUtil encryptionUtil, JwtUtil jwtUtils) {
+    public UserService(UserRepository userRepository, UserXComicsRepo userXComicsRepo, AiRateLimitService aiRateLimitService, EncryptionUtil encryptionUtil, JwtUtil jwtUtils) {
         this.userRepository = userRepository;
         this.userXComicsRepo = userXComicsRepo;
+        this.aiRateLimitService = aiRateLimitService;
         this.encryptionUtil = encryptionUtil;
         this.jwtUtils = jwtUtils;
     }
 
     private final UserRepository userRepository;
     private final UserXComicsRepo userXComicsRepo;
+    private final AiRateLimitService aiRateLimitService;
     private final EncryptionUtil encryptionUtil;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     private final JwtUtil jwtUtils;
@@ -66,12 +68,16 @@ public class UserService implements UserDetailsService {
             appUserRole.setId(1L);
             appUserRole.setName("ROLE_APP_USER");
             user.setUserRole(appUserRole);
+
+            User newUser = userRepository.save(user);
+            aiRateLimitService.createAiRateLimit(new AiRateLimit(newUser.getId(), 0L));
+
+            return newUser;
         } catch (GeneralSecurityException e) {
             throw new RuntimeException("Encryption failed", e);
         } catch (UserAlreadyExistsException e) {
             throw new RuntimeException(e);
         }
-        return userRepository.save(user);
     }
 
     @Transactional

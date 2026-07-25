@@ -1,11 +1,13 @@
 package com.comicvaultraiders.comicvaultraiders.jobs.frequentjobs;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
-import com.comicvaultraiders.comicvaultraiders.model.Comic;
-import com.comicvaultraiders.comicvaultraiders.model.RateLimit;
+import com.comicvaultraiders.comicvaultraiders.entity.Comic;
+import com.comicvaultraiders.comicvaultraiders.entity.RateLimit;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
 import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
 import com.comicvaultraiders.comicvaultraiders.service.RateLimitService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -14,7 +16,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.apache.log4j.Logger;
+
 
 @Service
 public class comicDataRepairJob {
@@ -23,7 +25,7 @@ public class comicDataRepairJob {
     private final GoogleAPIService googleAPIService;
 
     private final RateLimitService rateLimitService;
-    private final Logger logger = Logger.getLogger(this.getClass());
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
     public comicDataRepairJob(ComicService comicService, GoogleAPIService googleAPIService, RateLimitService rateLimitService) {
         this.comicService = comicService;
@@ -74,7 +76,7 @@ public class comicDataRepairJob {
                         comic.setReleaseDate(tmpComic.get().getReleaseDate());
                     }
                 }
-                comic.setIsCheckedByRepairJob(true);
+                comic.setCheckedByRepairJob(true);
                 comicService.updateComic(comic);
                 logger.info("Comic Updated: " + comic.getId() + "th. id:  " + comic.getTitle());
             }else{

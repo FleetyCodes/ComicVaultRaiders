@@ -1,6 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.repository;
 
-import com.comicvaultraiders.comicvaultraiders.model.RefreshToken;
+import com.comicvaultraiders.comicvaultraiders.entity.RefreshToken;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

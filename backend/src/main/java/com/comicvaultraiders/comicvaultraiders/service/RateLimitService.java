@@ -1,7 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.service;
 
-import com.comicvaultraiders.comicvaultraiders.model.ComicBulkCreateQueue;
-import com.comicvaultraiders.comicvaultraiders.model.RateLimit;
+import com.comicvaultraiders.comicvaultraiders.entity.RateLimit;
 import com.comicvaultraiders.comicvaultraiders.repository.RateLimitRepo;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;

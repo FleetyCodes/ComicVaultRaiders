@@ -10,6 +10,7 @@ import { NoAuthGuard } from './no.auth.guard';
 import { Idle, IdleExpiry, SimpleExpiry } from '@ng-idle/core';
 import { Keepalive } from '@ng-idle/keepalive';
 import { authInterceptor } from './interceptors/auth.interceptor';
+import { JWT_OPTIONS, JwtHelperService } from '@auth0/angular-jwt';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -25,5 +26,6 @@ export const appConfig: ApplicationConfig = {
      Idle,
     Keepalive,
     { provide: IdleExpiry, useClass: SimpleExpiry  },
+    { provide: JWT_OPTIONS, useValue: {} }, JwtHelperService
   ],
 };
