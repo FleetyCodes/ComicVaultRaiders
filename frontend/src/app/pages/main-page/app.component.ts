@@ -26,9 +26,8 @@ export class AppComponent implements OnInit {
 
   constructor(private idleService: IdleService, public userService: UserService, private router: Router) { }
 
-  
-  title = 'Comic Vault Raiders';
   protected isLeftSideNav = signal<boolean>(false);
+  protected welcomeTitleText = signal<string>("Welcome Comic Vault Raider !");
 
   ngOnInit() {
     this.isLeftSideNav.set(this.userService.isLeftSidedNavbar());
@@ -39,6 +38,7 @@ export class AppComponent implements OnInit {
     this.userService.clearToken();
     this.idleService.stopIdleTimer();
     this.router.navigate(['/']);
+    this.welcomeTitleText.set("Welcome Comic Vault Raider !");
   }
 
   setLeftSideNav(isLeft: boolean){ 

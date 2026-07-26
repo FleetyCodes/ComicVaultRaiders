@@ -1,5 +1,6 @@
 package com.comicvaultraiders.comicvaultraiders.integration.ai.service;
 
+import com.anthropic.errors.BadRequestException;
 import com.comicvaultraiders.comicvaultraiders.entity.AiRateLimit;
 import com.comicvaultraiders.comicvaultraiders.entity.RateLimit;
 import com.comicvaultraiders.comicvaultraiders.integration.ai.tools.ComicTools;
@@ -43,7 +44,8 @@ public class AiAssistantService {
     }
 
     public String chat(String userMessage, Long userId) {
-        String claudeResponse;
+        String claudeResponse = "We are sorry, our agent is currently not available. " +
+                "If this this message occurs for a long period of time, please contact us in e-mail.";;
 
         AiRateLimit userAiRateLimit = aiRateLimitService.findByUserId(userId);
         RateLimit aiRateLimit = rateLimitService.findByApiName("ANTHROPIC_AI");
@@ -58,12 +60,15 @@ public class AiAssistantService {
                     .user(userMessage)
                     .call()
                     .content();
-        }catch(NonTransientAiException e){
-            logger.info(e.getMessage());
-            claudeResponse = "We are sorry, our agent is currently not available. " +
-                    "If this this message occurs for a long period of time, please contact us in e-mail.";
-        }
 
+        }catch(NonTransientAiException e){
+            logger.error(e.getMessage());
+        }catch(BadRequestException e){
+            logger.error(e.getMessage());
+            if(e.getMessage() != null && e.getMessage().contains("credit balance")){
+                claudeResponse =  "You don't have enough tokens left. Please check your balance.";
+            }
+        }
         return claudeResponse;
     }
 }

@@ -45,12 +45,7 @@
  
     <div class="main-content">
       <div *ngIf="isOnMainPage()">
-        @if(userService.isLoggedIn()) {
-           <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
-           <!--! itt majd lecserél profile.name-re -->
-        }@else{
-          <h1 id="mainTitle">Welcome Comic Vault Raider !</h1>
-        }
+        <h1 id="mainTitle">{{ welcomeTitleText() }}</h1>
         <p>
           Comic Vault Raiders - The website where you can catalog your books and
           recommend them to your friends !
