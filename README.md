@@ -9,7 +9,8 @@ Users can register, manage their comics, and organize them by series, publishers
 This is a study project with practical usage.
 
 ## Tech Stack
-- **Backend:** Java 17, Spring Boot 3.4.5, Spring Data JPA, Spring Security, OpenAPI (Swagger UI), JUnit, log4j, Maven, PostgreSQL
+- **Backend:** Java 17, Spring Boot 3.4.5, Spring Data JPA, Spring Security, Spring AI, OpenAPI (Swagger UI), JUnit, log4j, Maven, PostgreSQL
+- **Anthropic AI integration**
 - **Frontend:** Angular
 - **Authentication and Authorization:** JWT
 - **Database for testing:** H2 (test profile)
@@ -17,12 +18,13 @@ This is a study project with practical usage.
 
 ## Features
 - User registration and login
+- AI assistant with chat widget
 - Comic CRUD operations
 - Series and publisher management
 - Search and filtering
 - Scheduled jobs
 - Pagination
-- Role-based access
+- Role-based access functions
 - Local API documentation via Swagger UI
 - Logout on inactivity
 - Dynamic design on user interaction
@@ -35,7 +37,6 @@ This is a study project with practical usage.
 - statistics with aggregations
 - unit tests, more integration tests
 - sonarqube integration
-- spring ai
 - caching
 - aws integration
 - oauth2
