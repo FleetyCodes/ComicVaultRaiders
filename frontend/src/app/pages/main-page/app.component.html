@@ -55,7 +55,7 @@
           Comic Vault Raiders - The website where you can catalog your books and
           recommend them to your friends !
         </p>
-      <div *ngIf="userService.isLoggedIn()" && userService.isAdmin()>
+      <div *ngIf="userService.isLoggedIn() && userService.isAdmin()">
       <!--<div>-->
         <app-chat-widget ></app-chat-widget>
       </div>
