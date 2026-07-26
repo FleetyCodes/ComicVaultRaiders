@@ -21,13 +21,12 @@ import org.springframework.web.context.WebApplicationContext;
 import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.api.TestInstance;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import com.comicvaultraiders.comicvaultraiders.repository.UserXComicsRepo;
 
 import java.time.LocalDate;
 
 @SpringBootTest
-@AutoConfigureMockMvc
+//@AutoConfigureMockMvc
 @ActiveProfiles("test")
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class userXComicsIntegrationTest {
