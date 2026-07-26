@@ -3,7 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Comic } from '../models/comic';
 import { UserService } from './user.service';
-import { environment } from '../../environments/environment.dev';
+import { environment } from '../../environments/environment';
 
 
 

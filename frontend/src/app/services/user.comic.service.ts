@@ -3,7 +3,7 @@ import { UserComic } from "../models/user-comic";
 import { UserService } from "./user.service";
 import { HttpClient, HttpHeaders, HttpParams } from "@angular/common/http";
 import { Observable } from "rxjs";
-import { environment } from "../../environments/environment.dev";
+import { environment } from "../../environments/environment";
 import { SpringPageResponse } from "../models/page.model";
 
 
