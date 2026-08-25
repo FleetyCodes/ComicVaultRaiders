@@ -23,6 +23,8 @@
     margin-right: auto;
     display: grid;
     padding-bottom: 15px;
+    width: 270px;
+    position: relative;
 
     & h1 {
         text-align: center;
@@ -30,7 +32,7 @@
 
     & form {
         align-items: center;
-        display: flex;
+        display: grid;
         gap: 5px;
 
         & mat-form-field {
