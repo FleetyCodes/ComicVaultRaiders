@@ -21,9 +21,9 @@ import { basicDialog } from '../../components/basic-dialog/basic-dialog';
 })
 
 export class LoginComponent {
-    
+
     constructor(private router: Router, private userService: UserService, private dialog: MatDialog, private idleService: IdleService) { }
-    
+
     protected isLoading = signal<boolean>(false);
 
     goBack() {
@@ -44,6 +44,13 @@ export class LoginComponent {
                 this.userService.setToken(res.token);
                 this.isLoading.set(false);
                 this.idleService.startIdleTimer();
+                this.userService.getLoggedInUserCountByLast7Days().subscribe(count => {
+                    if (count > 1) {
+                        this.userService.setLoggedInUserCounterMessage(`${count} users logged in, in the last 7 days`);
+                    } else {
+                        this.userService.setLoggedInUserCounterMessage(`${count} user logged in, in the last 7 days`);
+                    }
+                });
                 router.navigate(['/logged-in']);
             },
             error: (err: any) => {
@@ -58,5 +65,5 @@ export class LoginComponent {
             }
         });
     }
-    
+
 }

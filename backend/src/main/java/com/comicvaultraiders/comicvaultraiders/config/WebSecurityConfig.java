@@ -90,6 +90,7 @@ public class WebSecurityConfig {
                                         ,"/v1/user/refresh"
                                         ,"/swagger-ui/**"
                                         ,"/v3/api-docs/**"
+                                        ,"/v1/user/loggedIn/**"
                                         //,"/v3/api-docs.yaml"
                                 ).permitAll()
                                 .requestMatchers("/v1/comic/**", "/v1/user/**").authenticated()

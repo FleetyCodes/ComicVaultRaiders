@@ -15,6 +15,10 @@ export class UserComicsService {
     constructor(private http: HttpClient, private userService: UserService) { }
 
     private userBaseApipiUrl = environment.apiUrl + "v1/user";
+    
+    protected userComics = signal<UserComic[]>([]);
+    protected userWishlistedComics = signal<UserComic[]>([]);
+
 
     removeUserComicApi(comicId: String): Observable<any> {
         const token = this.userService.getToken();
@@ -89,9 +93,6 @@ export class UserComicsService {
         });
         return this.http.get<UserComic[]>(`${this.userBaseApipiUrl}/comics`, { headers });
     }
-
-    protected userComics = signal<UserComic[]>([]);
-    protected userWishlistedComics = signal<UserComic[]>([]);
 
     //user collected comics methods
     setComicsObject(newComics: UserComic[]) {

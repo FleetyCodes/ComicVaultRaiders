@@ -1,4 +1,4 @@
-package com.comicvaultraiders.comicvaultraiders.integration.google;
+package com.comicvaultraiders.comicvaultraiders.integration.google.model;
 
 import com.fasterxml.jackson.annotation.*;
 

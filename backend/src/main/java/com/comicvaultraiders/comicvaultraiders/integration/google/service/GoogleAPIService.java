@@ -1,9 +1,9 @@
-package com.comicvaultraiders.comicvaultraiders.service;
+package com.comicvaultraiders.comicvaultraiders.integration.google.service;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.entity.Comic;
-import com.comicvaultraiders.comicvaultraiders.integration.google.Bookmodel;
-import com.comicvaultraiders.comicvaultraiders.integration.google.Item;
+import com.comicvaultraiders.comicvaultraiders.integration.google.model.Bookmodel;
+import com.comicvaultraiders.comicvaultraiders.integration.google.model.Item;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

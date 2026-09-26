@@ -127,6 +127,11 @@ public class UserController {
         return ResponseEntity.ok(userService.getUserComics(jwtUtils.getUserIdFromToken(jwtUtils.getJwtFromHeader(authHeader))));
     }
 
+    @GetMapping("/loggedIn/{fromDay}")
+    public ResponseEntity<?> getUserCountByLoginDateAfter(@PathVariable Long fromDay){
+        return ResponseEntity.ok(userService.getUserCountByLoginDateAfter(fromDay));
+    }
+
     @GetMapping(path = "/filteredComics")
     public ResponseEntity<?> getUserFilteredComics(
             @RequestHeader("Authorization") String authHeader,

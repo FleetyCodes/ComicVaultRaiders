@@ -182,4 +182,9 @@ public class UserService implements UserDetailsService {
         Specification<UserXComics> spec = UserComicSpecs.withFilters(filter);
         return  userXComicsRepo.findAll(spec, pageable).map(UserXComicsDto::new);
     }
+    public long getUserCountByLoginDateAfter(Long fromDay){
+        ZonedDateTime dateAfter = ZonedDateTime.now(ZoneId.of("UTC")).minusDays(fromDay);
+        return userRepository.countByLastLoginDateGreaterThan(dateAfter);
+    }
+
 }

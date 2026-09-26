@@ -3,7 +3,6 @@
     <div class="nav" [ngClass]="[isLeftSideNav() ? 'left-side-nav' : '']">
       <button *ngIf="isLeftSideNav()" id="position-left-button" mat-raised-button
         color="primary" (click)="setLeftSideNav(false)"></button>
-
       <div [ngClass]="[!isLeftSideNav() ? 'menu-items' : '']">
         <button class="nav_button" mat-raised-button color="primary"
           [routerLink]="['/']">
@@ -39,13 +38,15 @@
           Logout
         </button>
       </div>
+      <div id="logged-in-user-counter">{{ userService.getLoggedInUserCounterMessage()}}</div>
+
       <button *ngIf="!isLeftSideNav()" id="position-right-button" mat-raised-button
         color="primary" (click)="setLeftSideNav(true)"></button>
     </div>
  
     <div class="main-content">
       <div *ngIf="isOnMainPage()">
-        <h1 id="mainTitle">{{ welcomeTitleText() }}</h1>
+        <h1 id="mainTitle">{{ welcomeTitleText()}}</h1>
         <p>
           Comic Vault Raiders - The website where you can catalog your books and
           recommend them to your friends !

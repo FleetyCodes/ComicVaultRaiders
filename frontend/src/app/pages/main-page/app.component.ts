@@ -28,9 +28,17 @@ export class AppComponent implements OnInit {
 
   protected isLeftSideNav = signal<boolean>(false);
   protected welcomeTitleText = signal<string>("Welcome Comic Vault Raider !");
-
+  
   ngOnInit() {
     this.isLeftSideNav.set(this.userService.isLeftSidedNavbar());
+
+    this.userService.getLoggedInUserCountByLast7Days().subscribe(count => {
+      if(count > 1){
+        this.userService.setLoggedInUserCounterMessage(`${count} users logged in, in the last 7 days`);
+      }else{
+        this.userService.setLoggedInUserCounterMessage(`${count} user logged in, in the last 7 days`);
+      }
+    });
   }
 
   logout() {

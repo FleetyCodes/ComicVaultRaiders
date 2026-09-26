@@ -15,6 +15,8 @@ public interface UserRepository  extends JpaRepository<User, Long> {
 
     Optional<User> findByUsername(String username);
 
+    long countByLastLoginDateGreaterThan(ZonedDateTime dateAfter);
+
     @Query(name = "User.findUserByUserId")
     User findUserById(@Param("userId") Long userId);
 

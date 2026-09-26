@@ -4,7 +4,7 @@ import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
 import com.comicvaultraiders.comicvaultraiders.entity.Comic;
 import com.comicvaultraiders.comicvaultraiders.entity.RateLimit;
 import com.comicvaultraiders.comicvaultraiders.service.ComicService;
-import com.comicvaultraiders.comicvaultraiders.service.GoogleAPIService;
+import com.comicvaultraiders.comicvaultraiders.integration.google.service.GoogleAPIService;
 import com.comicvaultraiders.comicvaultraiders.service.RateLimitService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
