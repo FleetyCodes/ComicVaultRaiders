@@ -46,9 +46,9 @@ export class LoginComponent {
                 this.idleService.startIdleTimer();
                 this.userService.getLoggedInUserCountByLast7Days().subscribe(count => {
                     if (count > 1) {
-                        this.userService.setLoggedInUserCounterMessage(`${count} users logged in, in the last 7 days`);
+                        this.userService.setLoggedInUserCounterMessage(`${count} users logged in within the last 7 days`);
                     } else {
-                        this.userService.setLoggedInUserCounterMessage(`${count} user logged in, in the last 7 days`);
+                        this.userService.setLoggedInUserCounterMessage(`${count} user logged in within the last 7 days`);
                     }
                 });
                 router.navigate(['/logged-in']);

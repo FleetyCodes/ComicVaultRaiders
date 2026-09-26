@@ -29,7 +29,7 @@ export interface LoginResponse {
 export class UserService {
 
     private apiUrl = environment.apiUrl + "v1/user";
-    protected loggedInUserCounter = signal<string>("0 users logged in, in the last 7 days");
+    protected loggedInUserCounter = signal<string>("0 users logged in within the last 7 days");
 
     private platformId = inject(PLATFORM_ID);
     
