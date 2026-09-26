@@ -1,9 +1,10 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, PLATFORM_ID, signal } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { environment } from '../../environments/environment';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { isPlatformBrowser } from '@angular/common';
 
 
 export interface RegisterRequest {
@@ -30,19 +31,27 @@ export class UserService {
     private apiUrl = environment.apiUrl + "v1/user";
     protected loggedInUserCounter = signal<string>("0 users logged in, in the last 7 days");
 
+    private platformId = inject(PLATFORM_ID);
+    
     constructor(private http: HttpClient, private cookieService: CookieService, private jwtHelper: JwtHelperService) { }
 
-        
+
     register(data: RegisterRequest): Observable<any> {
         return this.http.post(`${this.apiUrl}/reg`, data);
     }
 
 
     loginApi(data: LoginRequest): Observable<LoginResponse> {
-        return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data, {withCredentials: true});
+        return this.http.post<LoginResponse>(`${this.apiUrl}/login`, data, { withCredentials: true });
     }
 
     getLoggedInUserCountByLast7Days(): Observable<number> {
+        if (!isPlatformBrowser(this.platformId)) {
+            return new Observable<number>((observer) => {
+                observer.next(0);
+                observer.complete();
+            });
+        }
         return this.http.get<number>(`${this.apiUrl}/loggedIn/7`);
     }
 
@@ -59,12 +68,12 @@ export class UserService {
         const headers = new HttpHeaders({
             'Authorization': `Bearer ${token}`,
         });
-        return this.http.post(`${this.apiUrl}/logout`, {}, {headers, withCredentials:true,  responseType: 'text'});
+        return this.http.post(`${this.apiUrl}/logout`, {}, { headers, withCredentials: true, responseType: 'text' });
     }
 
     refreshJwtToken(): Observable<LoginResponse> {
         const data = { refreshToken: this.getToken() };
-        return this.http.post<LoginResponse>(`${this.apiUrl}/refresh`, data, {withCredentials: true});
+        return this.http.post<LoginResponse>(`${this.apiUrl}/refresh`, data, { withCredentials: true });
     }
 
     setToken(token: string) {

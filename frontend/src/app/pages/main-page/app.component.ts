@@ -15,7 +15,7 @@ import { ChatWidgetComponent } from "../../components/chat-widget/chat-widget.co
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  providers: [AuthGuard, NoAuthGuard, Idle, Keepalive, ],
+  providers: [AuthGuard, NoAuthGuard, Idle, Keepalive,],
   styleUrls: ['./app.component.scss'],
   standalone: true,
   imports: [CommonModule, RouterOutlet, MatButtonModule, RouterModule, ChatWidgetComponent],
@@ -28,14 +28,17 @@ export class AppComponent implements OnInit {
 
   protected isLeftSideNav = signal<boolean>(false);
   protected welcomeTitleText = signal<string>("Welcome Comic Vault Raider !");
-  
+
   ngOnInit() {
     this.isLeftSideNav.set(this.userService.isLeftSidedNavbar());
+  }
 
+
+  ngAfterViewInit(): void {
     this.userService.getLoggedInUserCountByLast7Days().subscribe(count => {
-      if(count > 1){
+      if (count > 1) {
         this.userService.setLoggedInUserCounterMessage(`${count} users logged in, in the last 7 days`);
-      }else{
+      } else {
         this.userService.setLoggedInUserCounterMessage(`${count} user logged in, in the last 7 days`);
       }
     });
@@ -49,7 +52,7 @@ export class AppComponent implements OnInit {
     this.welcomeTitleText.set("Welcome Comic Vault Raider !");
   }
 
-  setLeftSideNav(isLeft: boolean){ 
+  setLeftSideNav(isLeft: boolean) {
     this.userService.setLeftSidedNavbar(isLeft);
     this.isLeftSideNav.set(isLeft);
   }
