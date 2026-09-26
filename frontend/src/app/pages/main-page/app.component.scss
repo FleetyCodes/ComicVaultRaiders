@@ -84,6 +84,7 @@
         text-transform: var(--mdc-protected-button-label-text-transform);
         font-weight: var(--mdc-protected-button-label-text-weight, var(--mat-sys-label-large-weight));
         padding: 0 var(--mat-protected-button-horizontal-padding, 24px);
+        z-index: 10;
     }
 
     #position-left-button {

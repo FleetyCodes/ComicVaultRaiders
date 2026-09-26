@@ -30,6 +30,20 @@
     color: black;
 }
 
+.mat-mdc-input-element:-webkit-autofill {
+    -webkit-text-fill-color: white;
+    box-shadow: 0 0 0 1000px var(--mdc-filled-text-field-container-color, var(--mat-sys-surface-variant)) inset;
+
+}
+
+.mat-mdc-input-element:-webkit-autofill:hover,
+.mat-mdc-input-element:-webkit-autofill:focus {
+    -webkit-text-fill-color: white;
+    box-shadow: #4C5554;
+
+}
+
+
 :host ::ng-deep .username-field .mat-mdc-text-field-wrapper {
     border-top-left-radius: 0;
     border-top-right-radius: 12px;
