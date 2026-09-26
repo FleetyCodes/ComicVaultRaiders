@@ -1,6 +1,7 @@
 package com.comicvaultraiders.comicvaultraiders.entity;
 
 import com.comicvaultraiders.comicvaultraiders.dto.ComicDto;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -30,6 +31,7 @@ import java.util.List;
 })
 public class Comic {
 
+    @JsonIgnore
     public Comic(ComicDto comicDto, Boolean isCheckedByRepairJob) {
         this.setTitle(comicDto.getTitle());
         this.setAuthor(comicDto.getAuthor());
@@ -40,6 +42,7 @@ public class Comic {
         this.setIssueNumber(comicDto.getIssueNumber());
         this.setCheckedByRepairJob(isCheckedByRepairJob);
     }
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
