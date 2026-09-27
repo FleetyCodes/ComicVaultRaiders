@@ -29,7 +29,15 @@
     </div>
 
     <div class="chat-input">
-      <input [(ngModel)]="inputText" (keydown.enter)="onEnter($event)" [placeholder]="chatService.isLoading() ? 'Waiting for response...' : 'Type your question...'" [disabled]="chatService.isLoading()"/>
+      <input [(ngModel)]="inputText" (keydown.enter)="onEnter($event)"
+        [placeholder]="chatService.isLoading() ? 'Waiting for response...' : 'Type your question...'"
+        [disabled]="chatService.isLoading()" />
+      <button class="send-btn" type="button" (click)="onSend()"
+        [disabled]="chatService.isLoading() || !inputText.trim()" aria-label="Küldés">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor">
+          <path d="M2 21l21-9L2 3v7l15 2-15 2v7z" />
+        </svg>
+      </button>
     </div>
   </div>
   }

@@ -7,7 +7,15 @@ import { UserService } from './user.service';
 
 @Injectable({ providedIn: 'root' })
 export class ChatService {
-  messages = signal<ChatMessage[]>([]);
+  messages = signal<ChatMessage[]>([
+    {
+      id: crypto.randomUUID(),
+      role: 'bot',
+      text: 'Hi! Looking for something new to read? Ask away!',
+      timestamp: new Date(),
+    }
+  ]);
+
   isLoading = signal(false);
 
   private apiUrl = environment.apiUrl + "v1/ai-agent";

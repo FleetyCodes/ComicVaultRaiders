@@ -18,6 +18,7 @@ export class ChatWidgetComponent {
   private robotImages = ['robot_0.png', 'robot_1.png', 'robot_2.png', 'robot_3.png'];
   currentBotIcon = signal(this.robotImages[0]);
   private currentIndex = 0;
+  
 
   @ViewChild('messagesContainer') messagesContainer!: ElementRef<HTMLDivElement>;
 
@@ -31,7 +32,7 @@ export class ChatWidgetComponent {
     const intervalId = setInterval(() => {
       this.currentIndex = (this.currentIndex + 1) % this.robotImages.length;
       this.currentBotIcon.set(this.robotImages[this.currentIndex]);
-    }, 1500); // 1.5 másodpercenként
+    }, 1500); // 1.5 sec
 
     this.destroyRef.onDestroy(() => clearInterval(intervalId));
   }
@@ -42,8 +43,12 @@ export class ChatWidgetComponent {
 
   onEnter(event: Event) {
     event.preventDefault();
+    this.onSend();
+  }
+
+  onSend() {
     const text = this.inputText.trim();
-    if (!text) return;
+    if (!text || this.chatService.isLoading()) return;
     this.chatService.sendMessage(text);
     this.inputText = '';
   }
