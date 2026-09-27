@@ -72,7 +72,7 @@
     #logged-in-user-counter{
         align-items: center;
         display: flex;
-        height: 35px;
+        height: auto;
         border-radius: 0;
         color: var(--mdc-protected-button-label-text-color, var(--mat-sys-primary));
         background-color: var(--mdc-protected-button-container-color, var(--mat-sys-surface));
